@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Modanta Çanta | Yönetim Paneli</title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,Helvetica,sans-serif}
+:root{--black:#090909;--gold:#d4af37;--soft:#f4d778;--bg:#f6f6f6;--red:#d62828;--green:#178c4f}
+body{background:var(--bg);color:#111;overflow-x:hidden}
+a{text-decoration:none;color:inherit}
+button,input,select,textarea{font-family:inherit}
+.panel{display:grid;grid-template-columns:280px 1fr;min-height:100vh}
+.sidebar{background:#0b0b0b;color:#fff;padding:18px;position:sticky;top:0;height:100vh;overflow:auto}
+.brand{display:flex;align-items:center;gap:10px;margin-bottom:24px}
+.brand img{width:48px;height:48px;border-radius:50%;border:1px solid var(--gold);object-fit:cover}
+.brand strong{font-size:20px}.brand span{color:var(--gold)}
+.side-btn{width:100%;background:#151515;color:#fff;border:1px solid rgba(212,175,55,.25);padding:15px;border-radius:16px;margin-bottom:10px;text-align:left;font-weight:900;cursor:pointer}
+.side-btn:hover,.side-btn.active{border-color:var(--gold);color:var(--soft);box-shadow:0 0 20px rgba(212,175,55,.18)}
+.main{padding:24px;overflow:hidden}
+.top{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:22px}
+.top h1{font-size:32px}.top p{color:#666;margin-top:6px}
+.site-btn{background:#090909;color:var(--soft);border:1px solid var(--gold);padding:12px 16px;border-radius:999px;font-weight:900}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:24px}
+.card{background:#fff;border:1px solid rgba(212,175,55,.35);border-radius:24px;padding:22px;box-shadow:0 14px 35px rgba(0,0,0,.06)}
+.card h3{font-size:19px;margin-bottom:8px}.card p{color:#666;line-height:1.5;font-size:14px}
+.card button{margin-top:16px;background:#090909;color:var(--soft);border:1px solid var(--gold);padding:11px 14px;border-radius:14px;font-weight:900;cursor:pointer}
+.list{display:grid;gap:12px}
+.item{background:#fff;border:1px solid rgba(212,175,55,.35);border-radius:20px;padding:14px;display:grid;grid-template-columns:86px 1fr auto;gap:14px;align-items:center}
+.item img{width:86px;height:86px;border-radius:14px;object-fit:cover;background:#eee}
+.item h3{font-size:18px;margin-bottom:6px}.meta{display:flex;flex-wrap:wrap;gap:6px}
+.pill{background:#111;color:var(--soft);border:1px solid var(--gold);border-radius:999px;padding:5px 9px;font-size:12px;font-weight:900}
+.actions{display:flex;gap:8px;flex-wrap:wrap}.edit,.delete{border:0;border-radius:12px;padding:10px 12px;font-weight:900;cursor:pointer}
+.edit{background:#111;color:var(--soft);border:1px solid var(--gold)}.delete{background:var(--red);color:#fff}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.55);backdrop-filter:blur(12px);z-index:99;display:none;padding:18px}
+.modal.active{display:flex;align-items:center;justify-content:center}
+.modal-box{width:min(980px,100%);max-height:calc(100vh - 36px);overflow:auto;background:#fff;border-radius:26px;border:1px solid var(--gold);box-shadow:0 30px 90px rgba(0,0,0,.35)}
+.modal-head{position:sticky;top:0;background:#fff;z-index:2;display:flex;justify-content:space-between;align-items:center;padding:18px;border-bottom:1px solid rgba(212,175,55,.35)}
+.modal-head h2{font-size:24px}.close{background:var(--gold);color:#111;border:0;padding:10px 14px;border-radius:12px;font-weight:900;cursor:pointer}
+.modal-body{padding:20px}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.group{margin-bottom:14px}.group label{display:block;font-weight:900;margin-bottom:7px}
+input,select,textarea{width:100%;border:1px solid rgba(0,0,0,.16);border-radius:14px;padding:13px;font-size:15px;outline:none;background:#fff}
+textarea{min-height:105px;resize:vertical}
+input:focus,select:focus,textarea:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(212,175,55,.18)}
+.full{grid-column:1/-1}
+.preview{height:230px;border:1px dashed var(--gold);border-radius:18px;display:flex;align-items:center;justify-content:center;overflow:hidden;color:#777;font-weight:900;background:#fafafa}
+.preview img{width:100%;height:100%;object-fit:cover}
+.save{width:100%;background:#090909;color:var(--soft);border:1px solid var(--gold);padding:15px;border-radius:16px;font-weight:900;font-size:16px;cursor:pointer}
+.status{margin-top:12px;padding:12px;border-radius:14px;font-weight:900;display:none}
+.status.ok{display:block;background:rgba(23,140,79,.12);color:var(--green)}
+.status.err{display:block;background:rgba(214,40,40,.12);color:var(--red)}
+.empty{background:#fff;border:1px dashed var(--gold);border-radius:18px;padding:25px;text-align:center;color:#777;font-weight:900}
+@media(max-width:950px){
+  .panel{grid-template-columns:1fr}
+  .sidebar{position:relative;height:auto;display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+  .brand{grid-column:1/-1}.side-btn{margin:0}
+  .cards{grid-template-columns:1fr 1fr}
+}
+@media(max-width:620px){
+  .main{padding:14px}.top{display:block}.site-btn{display:inline-flex;margin-top:12px}
+  .cards{grid-template-columns:1fr}
+  .form-grid{grid-template-columns:1fr}
+  .item{grid-template-columns:70px 1fr}.item img{width:70px;height:70px}.actions{grid-column:1/-1}
+  .modal{padding:10px}.modal-box{max-height:calc(100vh - 20px);border-radius:20px}
+  .modal-head{padding:14px}.modal-body{padding:14px}
+}
+</style>
+</head>
+
+<body>
+
+<div class="panel">
+  <aside class="sidebar">
+    <div class="brand">
+      <img src="https://pbs.twimg.com/media/HHaRfeXWIAExq29?format=jpg&name=240x240">
+      <strong>Modanta <span>Panel</span></strong>
+    </div>
+
+    <button class="side-btn active" onclick="openModal('productModal')">Ürün Ekle</button>
+    <button class="side-btn" onclick="openModal('manageModal')">Ürünleri Yönet</button>
+    <button class="side-btn" onclick="openModal('featuredModal')">Öne Çıkanlar</button>
+    <button class="side-btn" onclick="openModal('homeModal')">Ana Sayfa</button>
+    <button class="side-btn" onclick="openModal('aboutModal')">Hakkımızda</button>
+    <button class="side-btn" onclick="openModal('contactModal')">İletişim</button>
+    <button class="side-btn" onclick="openModal('faqModal')">SSS</button>
+    <button class="side-btn" onclick="openModal('ordersModal')">Müşteri Kayıtları</button>
+  </aside>
+
+  <main class="main">
+    <div class="top">
+      <div>
+        <h1>Yönetim Merkezi</h1>
+        <p>Ürün, stok, fiyat, ana sayfa, iletişim ve müşteri kayıtlarını buradan yönet.</p>
+      </div>
+      <a class="site-btn" href="index.html">Siteye Git</a>
+    </div>
+
+    <div class="cards">
+      <div class="card"><h3>Ürün Ekle</h3><p>Kodlu ürün ekle, görsel yükle, kategori ve stok gir.</p><button onclick="openModal('productModal')">Aç</button></div>
+      <div class="card"><h3>Ürünleri Yönet</h3><p>Fiyat, stok ve ürün bilgilerini düzenle veya sil.</p><button onclick="openModal('manageModal')">Aç</button></div>
+      <div class="card"><h3>Öne Çıkan Ürünler</h3><p>Ana sayfada görünecek ürünleri seç.</p><button onclick="openModal('featuredModal')">Aç</button></div>
+      <div class="card"><h3>Ana Sayfa</h3><p>Başlık, açıklama ve vitrin yazılarını düzenle.</p><button onclick="openModal('homeModal')">Aç</button></div>
+      <div class="card"><h3>Sayfalar</h3><p>Hakkımızda, iletişim ve SSS içeriklerini yönet.</p><button onclick="openModal('aboutModal')">Aç</button></div>
+      <div class="card"><h3>Müşteri Kayıtları</h3><p>Sipariş veya iletişim kayıtları burada listelenir.</p><button onclick="openModal('ordersModal')">Aç</button></div>
+    </div>
+
+    <div class="card">
+      <h3>Son Eklenen Ürünler</h3>
+      <div id="latestProducts" class="list" style="margin-top:15px">
+        <div class="empty">Ürünler yükleniyor...</div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- ÜRÜN EKLE -->
+<div class="modal" id="productModal">
+  <div class="modal-box">
+    <div class="modal-head"><h2>Ürün Ekle</h2><button class="close" onclick="closeModal('productModal')">Kapat</button></div>
+    <div class="modal-body">
+      <form id="productForm" class="form-grid">
+        <div class="group"><label>Ürün Kodu</label><input id="code" required placeholder="MD-001"></div>
+        <div class="group"><label>Kategori</label><select id="category" required><option value="">Seç</option><option>Çanta</option><option>Gözlük</option><option>Saat</option></select></div>
+        <div class="group full"><label>Ürün Adı</label><input id="name" required placeholder="Gold Detaylı Çanta"></div>
+        <div class="group"><label>Fiyat</label><input id="price" type="number" required placeholder="749"></div>
+        <div class="group"><label>Stok Adedi</label><input id="stock" type="number" required placeholder="10"></div>
+        <div class="group"><label>Stok Durumu</label><select id="stockStatus"><option>Stokta Var</option><option>Az Stok</option><option>Tükendi</option></select></div>
+        <div class="group"><label>Ana Sayfada Öne Çıksın mı?</label><select id="featured"><option value="true">Evet</option><option value="false">Hayır</option></select></div>
+        <div class="group full"><label>Açıklama</label><textarea id="description" required></textarea></div>
+        <div class="group full"><label>Ürün Görseli</label><input id="image" type="file" accept="image/*" required><div class="preview" id="preview">Görsel önizleme</div></div>
+        <div class="full"><button class="save" id="saveProduct" type="submit">Ürünü Kaydet</button><div id="productStatus" class="status"></div></div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- ÜRÜN YÖNET -->
+<div class="modal" id="manageModal">
+  <div class="modal-box">
+    <div class="modal-head"><h2>Ürünleri Yönet</h2><button class="close" onclick="closeModal('manageModal')">Kapat</button></div>
+    <div class="modal-body">
+      <input id="searchProduct" placeholder="Kod, ürün adı veya kategori ara..." style="margin-bottom:15px">
+      <div id="manageProducts" class="list"><div class="empty">Ürünler yükleniyor...</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ÖNE ÇIKAN -->
+<div class="modal" id="featuredModal">
+  <div class="modal-box">
+    <div class="modal-head"><h2>Öne Çıkan Ürünler</h2><button class="close" onclick="closeModal('featuredModal')">Kapat</button></div>
+    <div class="modal-body">
+      <p style="color:#666;margin-bottom:15px">Burada seçtiğin ürünler ana sayfadaki “Öne Çıkan Ürünler” bölümünde görünecek.</p>
+      <div id="featuredProducts" class="list"><div class="empty">Ürünler yükleniyor...</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ANA SAYFA -->
+<div class="modal" id="homeModal">
+  <div class="modal-box">
+    <div class="modal-head"><h2>Ana Sayfa Ayarları</h2><button class="close" onclick="closeModal('homeModal')">Kapat</button></div>
+    <div class="modal-body">
+      <form id="homeForm">
+        <div class="group"><label>Hero Başlığı</label><input id="homeTitle" placeholder="Tarz konuşur, Modanta tamamlar."></div>
+        <div class="group"><label>Hero Açıklaması</label><textarea id="homeDesc"></textarea></div>
+        <div class="group"><label>Kategori Bölümü Açıklaması</label><textarea id="categoryDesc"></textarea></div>
+        <button class="save">Ana Sayfayı Kaydet</button>
+        <div id="homeStatus" class="status"></div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- HAKKIMIZDA -->
+<div class="modal" id="aboutModal">
+  <div class="modal-box">
+    <div class="modal-head"><h2>Hakkımızda Sayfası</h2><button class="close" onclick="closeModal('aboutModal')">Kapat</button></div>
+    <div class="modal-body">
+      <form id="aboutForm">
+        <div class="group"><label>Başlık</label><input id="aboutTitle" placeholder="Hakkımızda"></div>
+        <div class="group"><label>İçerik</label><textarea id="aboutText"></textarea></div>
+        <button class="save">Kaydet</button>
+        <div id="aboutStatus" class="status"></div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- İLETİŞİM -->
+<div class="modal" id="contactModal">
+  <div class="modal-box">
+    <div class="modal-head"><h2>İletişim Bilgileri</h2><button class="close" onclick="closeModal('contactModal')">Kapat</button></div>
+    <div class="modal-body">
+      <form id="contactForm" class="form-grid">
+        <div class="group"><label>WhatsApp</label><input id="whatsapp" value="+905435755840"></div>
+        <div class="group"><label>Telefon</label><input id="phone"></div>
+        <div class="group"><label>Instagram</label><input id="instagram"></div>
+        <div class="group"><label>E-posta</label><input id="email"></div>
+        <div class="group full"><label>Adres</label><textarea id="address"></textarea></div>
+        <div class="full"><button class="save">İletişimi Kaydet</button><div id="contactStatus" class="status"></div></div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- SSS -->
+<div class="modal" id="faqModal">
+  <div class="modal-box">
+    <div class="modal-head"><h2>SSS Yönetimi</h2><button class="close" onclick="closeModal('faqModal')">Kapat</button></div>
+    <div class="modal-body">
+      <form id="faqForm">
+        <div class="group"><label>Soru</label><input id="faqQuestion"></div>
+        <div class="group"><label>Cevap</label><textarea id="faqAnswer"></textarea></div>
+        <button class="save">SSS Ekle</button>
+        <div id="faqStatus" class="status"></div>
+      </form>
+      <div id="faqList" class="list" style="margin-top:18px"></div>
+    </div>
+  </div>
+</div>
+
+<!-- MÜŞTERİ KAYITLARI -->
+<div class="modal" id="ordersModal">
+  <div class="modal-box">
+    <div class="modal-head"><h2>Müşteri Kayıtları</h2><button class="close" onclick="closeModal('ordersModal')">Kapat</button></div>
+    <div class="modal-body">
+      <div id="ordersList" class="list"><div class="empty">Henüz müşteri kaydı yok.</div></div>
+    </div>
+  </div>
+</div>
+
+<script>
+function openModal(id){document.getElementById(id).classList.add("active");document.body.style.overflow="hidden"}
+function closeModal(id){document.getElementById(id).classList.remove("active");document.body.style.overflow=""}
+</script>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-app.js";
+import {
+  getFirestore, collection, addDoc, doc, setDoc, updateDoc, deleteDoc,
+  onSnapshot, query, orderBy, serverTimestamp, getDoc
+} from "https://www.gstatic.com/firebasejs/12.12.1/firebase-firestore.js";
+import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-storage.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyAnXahaeXWh0JK1a8jNerRAfkN0OEXXkFc",
+  authDomain: "modanta-canta.firebaseapp.com",
+  projectId: "modanta-canta",
+  storageBucket: "modanta-canta.firebasestorage.app",
+  messagingSenderId: "138476521828",
+  appId: "1:138476521828:web:ea7c3bfb510b2c90fc9271"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const storage = getStorage(app);
+
+let products = [];
+
+const show = (el,type,msg)=>{el.className="status "+type;el.textContent=msg}
+
+image.addEventListener("change",()=>{
+  const file=image.files[0];
+  if(!file){preview.innerHTML="Görsel önizleme";return}
+  const r=new FileReader();
+  r.onload=e=>preview.innerHTML=`<img src="${e.target.result}">`;
+  r.readAsDataURL(file);
+});
+
+productForm.addEventListener("submit",async e=>{
+  e.preventDefault();
+  const file=image.files[0];
+  if(!file)return show(productStatus,"err","Görsel seçmelisin.");
+
+  try{
+    saveProduct.disabled=true;saveProduct.textContent="Yükleniyor...";
+    const imagePath=`products/${Date.now()}-${file.name.replaceAll(" ","-").toLowerCase()}`;
+    const imageRef=ref(storage,imagePath);
+    await uploadBytes(imageRef,file);
+    const imageUrl=await getDownloadURL(imageRef);
+
+    await addDoc(collection(db,"products"),{
+      code:code.value.trim(),
+      name:name.value.trim(),
+      category:category.value,
+      price:Number(price.value),
+      stock:Number(stock.value),
+      stockStatus:stockStatus.value,
+      featured:featured.value==="true",
+      description:description.value.trim(),
+      imageUrl,imagePath,
+      createdAt:serverTimestamp()
+    });
+
+    productForm.reset();preview.innerHTML="Görsel önizleme";
+    show(productStatus,"ok","Ürün başarıyla kaydedildi.");
+  }catch(err){show(productStatus,"err",err.message)}
+  finally{saveProduct.disabled=false;saveProduct.textContent="Ürünü Kaydet"}
+});
+
+onSnapshot(query(collection(db,"products"),orderBy("createdAt","desc")),snap=>{
+  products=[];
+  snap.forEach(d=>products.push({id:d.id,...d.data()}));
+  renderLatest();renderManage(products);renderFeatured();
+});
+
+function productHTML(p,manage=false){
+  return `
+  <div class="item">
+    <img src="${p.imageUrl}">
+    <div>
+      <h3>${p.name}</h3>
+      <div class="meta">
+        <span class="pill">Kod: ${p.code}</span>
+        <span class="pill">${p.category}</span>
+        <span class="pill">₺${p.price}</span>
+        <span class="pill">Stok: ${p.stock}</span>
+        <span class="pill">${p.stockStatus}</span>
+        ${p.featured?`<span class="pill">Öne Çıkan</span>`:""}
+      </div>
+    </div>
+    ${manage?`
+    <div class="actions">
+      <button class="edit" onclick="updatePriceStock('${p.id}')">Fiyat/Stok</button>
+      <button class="delete" onclick="deleteProduct('${p.id}','${p.imagePath||""}')">Sil</button>
+    </div>`:""}
+  </div>`;
+}
+
+function renderLatest(){latestProducts.innerHTML=products.slice(0,5).map(p=>productHTML(p,false)).join("")||`<div class="empty">Henüz ürün yok.</div>`}
+function renderManage(list){manageProducts.innerHTML=list.map(p=>productHTML(p,true)).join("")||`<div class="empty">Ürün yok.</div>`}
+function renderFeatured(){
+  featuredProducts.innerHTML=products.map(p=>`
+    <div class="item">
+      <img src="${p.imageUrl}">
+      <div><h3>${p.name}</h3><div class="meta"><span class="pill">${p.code}</span><span class="pill">${p.featured?"Ana sayfada":"Kapalı"}</span></div></div>
+      <button class="edit" onclick="toggleFeatured('${p.id}',${!p.featured})">${p.featured?"Kaldır":"Öne Çıkar"}</button>
+    </div>`).join("")||`<div class="empty">Ürün yok.</div>`;
+}
+
+searchProduct.addEventListener("input",()=>{
+  const t=searchProduct.value.toLowerCase();
+  renderManage(products.filter(p=>(p.name+p.code+p.category).toLowerCase().includes(t)));
+});
+
+window.updatePriceStock=async(id)=>{
+  const p=products.find(x=>x.id===id);
+  const newPrice=prompt("Yeni fiyat:",p.price);
+  if(newPrice===null)return;
+  const newStock=prompt("Yeni stok:",p.stock);
+  if(newStock===null)return;
+  const newStatus=prompt("Stok durumu: Stokta Var / Az Stok / Tükendi",p.stockStatus);
+  if(newStatus===null)return;
+  await updateDoc(doc(db,"products",id),{price:Number(newPrice),stock:Number(newStock),stockStatus:newStatus});
+};
+
+window.toggleFeatured=async(id,value)=>await updateDoc(doc(db,"products",id),{featured:value});
+
+window.deleteProduct=async(id,path)=>{
+  if(!confirm("Ürün silinsin mi?"))return;
+  await deleteDoc(doc(db,"products",id));
+  if(path) await deleteObject(ref(storage,path)).catch(()=>{});
+};
+
+homeForm.addEventListener("submit",async e=>{
+  e.preventDefault();
+  await setDoc(doc(db,"siteContent","home"),{
+    title:homeTitle.value,desc:homeDesc.value,categoryDesc:categoryDesc.value,updatedAt:serverTimestamp()
+  });
+  show(homeStatus,"ok","Ana sayfa ayarları kaydedildi.");
+});
+
+aboutForm.addEventListener("submit",async e=>{
+  e.preventDefault();
+  await setDoc(doc(db,"siteContent","about"),{title:aboutTitle.value,text:aboutText.value,updatedAt:serverTimestamp()});
+  show(aboutStatus,"ok","Hakkımızda kaydedildi.");
+});
+
+contactForm.addEventListener("submit",async e=>{
+  e.preventDefault();
+  await setDoc(doc(db,"siteContent","contact"),{
+    whatsapp:whatsapp.value,phone:phone.value,instagram:instagram.value,email:email.value,address:address.value,updatedAt:serverTimestamp()
+  });
+  show(contactStatus,"ok","İletişim bilgileri kaydedildi.");
+});
+
+faqForm.addEventListener("submit",async e=>{
+  e.preventDefault();
+  await addDoc(collection(db,"faqs"),{question:faqQuestion.value,answer:faqAnswer.value,createdAt:serverTimestamp()});
+  faqForm.reset();show(faqStatus,"ok","SSS eklendi.");
+});
+
+onSnapshot(query(collection(db,"faqs"),orderBy("createdAt","desc")),snap=>{
+  let arr=[];snap.forEach(d=>arr.push({id:d.id,...d.data()}));
+  faqList.innerHTML=arr.map(f=>`
+    <div class="item" style="grid-template-columns:1fr auto">
+      <div><h3>${f.question}</h3><p style="color:#666">${f.answer}</p></div>
+      <button class="delete" onclick="deleteFaq('${f.id}')">Sil</button>
+    </div>`).join("")||`<div class="empty">SSS yok.</div>`;
+});
+
+window.deleteFaq=async(id)=>{if(confirm("SSS silinsin mi?"))await deleteDoc(doc(db,"faqs",id))};
+
+onSnapshot(query(collection(db,"orders"),orderBy("createdAt","desc")),snap=>{
+  let arr=[];snap.forEach(d=>arr.push({id:d.id,...d.data()}));
+  ordersList.innerHTML=arr.map(o=>`
+    <div class="item" style="grid-template-columns:1fr">
+      <h3>${o.name||"Müşteri"}</h3>
+      <div class="meta"><span class="pill">${o.phone||"Telefon yok"}</span><span class="pill">${o.total||""}</span></div>
+      <p style="color:#666;margin-top:8px">${o.note||""}</p>
+    </div>`).join("")||`<div class="empty">Henüz müşteri kaydı yok.</div>`;
+});
+</script>
+
+</body>
+</html>
