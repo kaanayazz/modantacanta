@@ -63,29 +63,57 @@ a{text-decoration:none;color:inherit}
   margin:auto;
 }
 
-.hero-about{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:28px;
-  align-items:center;
-  margin-bottom:35px;
+.page-head{
+  margin-bottom:30px;
 }
 
-.about-text h1{
+.page-head h1{
   font-size:38px;
-  margin-bottom:15px;
+  margin-bottom:10px;
 }
 
-.about-text p{
+.page-head p{
   color:#555;
   line-height:1.8;
-  font-size:16px;
+  max-width:780px;
 }
 
-.image-box{
-  min-height:330px;
-  border:1px dashed rgba(212,175,55,.7);
+.about-list{
+  display:grid;
+  gap:24px;
+}
+
+.about-section{
+  border:1px solid rgba(212,175,55,.35);
   border-radius:24px;
+  padding:18px;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:22px;
+  align-items:center;
+  background:#fff;
+}
+
+.about-section.left .about-image{
+  order:1;
+}
+
+.about-section.left .about-content{
+  order:2;
+}
+
+.about-section.right .about-content{
+  order:1;
+}
+
+.about-section.right .about-image{
+  order:2;
+}
+
+.about-image{
+  min-height:320px;
+  border:1px dashed rgba(212,175,55,.65);
+  border-radius:20px;
   overflow:hidden;
   background:#fafafa;
   display:flex;
@@ -96,60 +124,37 @@ a{text-decoration:none;color:inherit}
   text-align:center;
 }
 
-.image-box img{
+.about-image img{
   width:100%;
   height:100%;
+  min-height:320px;
   object-fit:cover;
   display:block;
 }
 
-.content-grid{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:18px;
-  margin-top:30px;
+.about-content{
+  padding:8px;
 }
 
-.info-card{
-  border:1px solid rgba(212,175,55,.35);
-  border-radius:22px;
-  padding:22px;
-  background:#fff;
-}
-
-.info-card h2{
-  font-size:20px;
-  margin-bottom:10px;
-}
-
-.info-card p{
-  color:#555;
-  line-height:1.7;
-  font-size:15px;
-}
-
-.wide-section{
-  margin-top:30px;
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:22px;
-  align-items:center;
-}
-
-.wide-text{
-  border:1px solid rgba(212,175,55,.35);
-  border-radius:22px;
-  padding:24px;
-}
-
-.wide-text h2{
-  font-size:24px;
+.about-content h2{
+  font-size:28px;
   margin-bottom:12px;
 }
 
-.wide-text p{
+.about-content p{
   color:#555;
+  font-size:16px;
   line-height:1.8;
+  white-space:pre-line;
+}
+
+.empty-box{
+  border:1px dashed rgba(212,175,55,.7);
+  border-radius:22px;
+  padding:35px;
+  text-align:center;
+  color:#777;
+  font-weight:900;
 }
 
 .developer-footer{
@@ -166,21 +171,28 @@ a{text-decoration:none;color:inherit}
 }
 
 @media(max-width:800px){
-  .hero-about,
-  .wide-section{
+  .about-section{
     grid-template-columns:1fr;
   }
 
-  .content-grid{
-    grid-template-columns:1fr;
+  .about-section.left .about-image,
+  .about-section.right .about-image,
+  .about-section.left .about-content,
+  .about-section.right .about-content{
+    order:initial;
   }
 
-  .about-text h1{
+  .page-head h1{
     font-size:30px;
   }
 
-  .image-box{
-    min-height:260px;
+  .about-content h2{
+    font-size:24px;
+  }
+
+  .about-image,
+  .about-image img{
+    min-height:250px;
   }
 }
 
@@ -208,48 +220,14 @@ a{text-decoration:none;color:inherit}
 <main class="main">
   <div class="container">
 
-    <section class="hero-about">
-      <div class="about-text">
-        <h1 id="aboutTitle">Hakkımızda</h1>
-        <p id="aboutDesc">
-          Modanta Çanta; çanta, gözlük ve saat kategorilerinde şık ve kullanışlı ürünleri müşterileriyle buluşturur.
-        </p>
-      </div>
+    <div class="page-head">
+      <h1 id="aboutTitle">Hakkımızda</h1>
+      <p id="aboutDesc">Modanta Çanta hakkında bilgiler panelden düzenlenebilir.</p>
+    </div>
 
-      <div class="image-box" id="aboutMainImageBox">
-        Görsel alanı
-      </div>
-    </section>
-
-    <section class="content-grid">
-      <div class="info-card">
-        <h2 id="cardTitle1">Marka Anlayışımız</h2>
-        <p id="cardText1">Zarif, sade ve günlük kullanıma uygun ürünlerle müşterilerimize güvenilir bir alışveriş deneyimi sunmayı hedefliyoruz.</p>
-      </div>
-
-      <div class="info-card">
-        <h2 id="cardTitle2">Ürün Seçimi</h2>
-        <p id="cardText2">Çanta, gözlük ve saat modellerinde tarzı tamamlayan parçaları özenle seçiyoruz.</p>
-      </div>
-
-      <div class="info-card">
-        <h2 id="cardTitle3">Müşteri Memnuniyeti</h2>
-        <p id="cardText3">Sipariş öncesi ve sonrası iletişimi önemseyerek müşterilerimize hızlı destek sağlamaya çalışıyoruz.</p>
-      </div>
-    </section>
-
-    <section class="wide-section">
-      <div class="image-box" id="aboutSecondImageBox">
-        Görsel alanı
-      </div>
-
-      <div class="wide-text">
-        <h2 id="wideTitle">Modanta Çanta ile Stilini Tamamla</h2>
-        <p id="wideText">
-          Günlük kombinlerden özel günlere kadar tarzını tamamlayacak ürünleri sade, güvenilir ve anlaşılır bir alışveriş deneyimiyle sunuyoruz.
-        </p>
-      </div>
-    </section>
+    <div class="about-list" id="aboutList">
+      <div class="empty-box">Hakkımızda içerikleri panelden eklenecek.</div>
+    </div>
 
   </div>
 </main>
@@ -278,42 +256,59 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-function setText(id, value){
-  if(value) document.getElementById(id).textContent = value;
+const aboutTitle = document.getElementById("aboutTitle");
+const aboutDesc = document.getElementById("aboutDesc");
+const aboutList = document.getElementById("aboutList");
+
+function hasValue(value){
+  return value && String(value).trim() !== "";
 }
 
-function setImage(boxId, url){
-  const box = document.getElementById(boxId);
+function renderAbout(data){
+  aboutTitle.textContent = data.aboutTitle || "Hakkımızda";
+  aboutDesc.textContent = data.aboutDesc || "Modanta Çanta hakkında bilgiler panelden düzenlenebilir.";
 
-  if(url){
-    box.innerHTML = `<img src="${url}" alt="Modanta Çanta Hakkımızda Görseli">`;
+  const sections = Array.isArray(data.sections) ? data.sections : [];
+
+  if(sections.length === 0){
+    aboutList.innerHTML = `<div class="empty-box">Hakkımızda içerikleri panelden eklenecek.</div>`;
+    return;
   }
+
+  aboutList.innerHTML = sections.map(section => {
+    const title = section.title || "";
+    const text = section.text || "";
+    const imageUrl = section.imageUrl || "";
+    const imagePosition = section.imagePosition === "left" ? "left" : "right";
+
+    return `
+      <section class="about-section ${imagePosition}">
+        <div class="about-image">
+          ${
+            hasValue(imageUrl)
+            ? `<img src="${imageUrl}" alt="${title || "Modanta Çanta Hakkımızda"}">`
+            : `Görsel panelden eklenecek`
+          }
+        </div>
+
+        <div class="about-content">
+          <h2>${title || "Başlık panelden eklenecek"}</h2>
+          <p>${text || "Açıklama panelden eklenecek."}</p>
+        </div>
+      </section>
+    `;
+  }).join("");
 }
 
 const aboutRef = doc(db, "sitePages", "about");
 
 onSnapshot(aboutRef, (snap) => {
-  if(!snap.exists()) return;
+  if(!snap.exists()){
+    aboutList.innerHTML = `<div class="empty-box">Hakkımızda içerikleri panelden eklenecek.</div>`;
+    return;
+  }
 
-  const data = snap.data();
-
-  setText("aboutTitle", data.aboutTitle);
-  setText("aboutDesc", data.aboutDesc);
-
-  setText("cardTitle1", data.cardTitle1);
-  setText("cardText1", data.cardText1);
-
-  setText("cardTitle2", data.cardTitle2);
-  setText("cardText2", data.cardText2);
-
-  setText("cardTitle3", data.cardTitle3);
-  setText("cardText3", data.cardText3);
-
-  setText("wideTitle", data.wideTitle);
-  setText("wideText", data.wideText);
-
-  setImage("aboutMainImageBox", data.aboutMainImage);
-  setImage("aboutSecondImageBox", data.aboutSecondImage);
+  renderAbout(snap.data());
 });
 </script>
 
