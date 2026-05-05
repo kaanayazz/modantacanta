@@ -6,40 +6,19 @@
 <title>İletişim | Modanta Çanta</title>
 
 <style>
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-  font-family:Arial, Helvetica, sans-serif;
-}
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,Helvetica,sans-serif}
+:root{--gold:#d4af37}
+body{background:#fff;color:#111;min-height:100vh;display:flex;flex-direction:column}
+a{text-decoration:none;color:inherit}
 
-:root{
-  --gold:#d4af37;
-  --softGold:#f4d778;
-}
-
-body{
-  background:#fff;
-  color:#111;
-  min-height:100vh;
-  display:flex;
-  flex-direction:column;
-}
-
-a{
-  color:inherit;
-  text-decoration:none;
-}
-
-/* HEADER */
 .header{
   position:fixed;
   top:0;
   left:0;
   width:100%;
-  z-index:1000;
   background:#fff;
   border-bottom:1px solid rgba(212,175,55,.35);
+  z-index:1000;
 }
 
 .nav{
@@ -48,14 +27,12 @@ a{
   padding:12px 16px;
   display:flex;
   align-items:center;
-  justify-content:flex-start;
 }
 
 .brand{
   display:flex;
   align-items:center;
   gap:9px;
-  white-space:nowrap;
 }
 
 .brand img{
@@ -69,8 +46,6 @@ a{
 .brand-title{
   font-size:22px;
   font-weight:900;
-  color:#111;
-  letter-spacing:-.6px;
 }
 
 .brand-title span{
@@ -78,84 +53,103 @@ a{
   font-size:18px;
 }
 
-/* MAIN */
 .main{
   flex:1;
   padding:120px 18px 50px;
 }
 
 .container{
-  max-width:850px;
+  max-width:1050px;
   margin:auto;
 }
 
-.page-title{
-  margin-bottom:25px;
+.page-head{
+  margin-bottom:28px;
 }
 
-.page-title h1{
-  font-size:34px;
+.page-head h1{
+  font-size:38px;
   margin-bottom:10px;
 }
 
-.page-title p{
+.page-head p{
   color:#555;
   line-height:1.7;
-  font-size:16px;
+  max-width:720px;
 }
 
-.contact-box{
-  border:1px solid rgba(212,175,55,.35);
-  border-radius:22px;
-  padding:24px;
-  background:#fff;
+.contact-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:18px;
 }
 
-.contact-item{
-  padding:16px 0;
-  border-bottom:1px solid rgba(0,0,0,.08);
-}
-
-.contact-item:last-child{
-  border-bottom:0;
-}
-
-.contact-item strong{
-  display:block;
-  font-size:15px;
-  margin-bottom:6px;
-  color:#111;
-}
-
-.contact-item a,
-.contact-item span{
-  color:#333;
-  font-size:16px;
-  line-height:1.6;
-}
-
-.contact-note{
-  margin-top:25px;
+.contact-card{
   border:1px solid rgba(212,175,55,.35);
   border-radius:22px;
   padding:22px;
+  background:#fff;
 }
 
-.contact-note h2{
-  font-size:22px;
-  margin-bottom:10px;
-}
-
-.contact-note p{
-  color:#555;
-  line-height:1.7;
+.contact-card strong{
+  display:block;
   font-size:15px;
+  margin-bottom:8px;
+  color:#111;
 }
 
-/* FOOTER */
+.contact-card a,
+.contact-card span{
+  color:#444;
+  font-size:16px;
+  line-height:1.6;
+  word-break:break-word;
+}
+
+.address-box{
+  margin-top:18px;
+  border:1px solid rgba(212,175,55,.35);
+  border-radius:22px;
+  padding:24px;
+}
+
+.address-box h2{
+  font-size:24px;
+  margin-bottom:12px;
+}
+
+.address-box p{
+  color:#555;
+  line-height:1.8;
+}
+
+.map-box{
+  margin-top:18px;
+  border:1px solid rgba(212,175,55,.35);
+  border-radius:22px;
+  overflow:hidden;
+  min-height:320px;
+  display:none;
+}
+
+.map-box iframe{
+  width:100%;
+  height:360px;
+  border:0;
+  display:block;
+}
+
+.empty-contact{
+  border:1px dashed rgba(212,175,55,.7);
+  border-radius:22px;
+  padding:30px;
+  text-align:center;
+  color:#777;
+  font-weight:900;
+}
+
 .developer-footer{
   margin-top:auto;
-  background:transparent;
   color:#111;
   padding:22px 18px;
   text-align:center;
@@ -167,10 +161,13 @@ a{
   font-weight:900;
 }
 
-/* MOBİL */
-@media(max-width:600px){
-  .nav{
-    padding:10px 12px;
+@media(max-width:700px){
+  .contact-grid{
+    grid-template-columns:1fr;
+  }
+
+  .page-head h1{
+    font-size:30px;
   }
 
   .brand img{
@@ -190,19 +187,8 @@ a{
     padding:100px 14px 38px;
   }
 
-  .page-title h1{
-    font-size:28px;
-  }
-
-  .contact-box,
-  .contact-note{
-    border-radius:18px;
-    padding:18px;
-  }
-
   .developer-footer{
     font-size:13px;
-    padding:18px 12px;
   }
 }
 </style>
@@ -222,41 +208,19 @@ a{
 <main class="main">
   <div class="container">
 
-    <div class="page-title">
-      <h1>İletişim</h1>
-      <p>
-        Modanta Çanta ürünleri, sipariş süreci ve detaylı bilgi için bizimle iletişime geçebilirsiniz.
-      </p>
+    <div class="page-head">
+      <h1 id="contactTitle">İletişim</h1>
+      <p id="contactDesc">Modanta Çanta ile iletişime geçmek için aşağıdaki bilgileri kullanabilirsiniz.</p>
     </div>
 
-    <div class="contact-box">
-      <div class="contact-item">
-        <strong>WhatsApp</strong>
-        <a href="https://wa.me/905435755840" target="_blank">0543 575 58 40</a>
-      </div>
+    <div class="contact-grid" id="contactGrid"></div>
 
-      <div class="contact-item">
-        <strong>Telefon</strong>
-        <a href="tel:+905435755840">0543 575 58 40</a>
-      </div>
-
-      <div class="contact-item">
-        <strong>Web Sitesi</strong>
-        <a href="https://modantacanta.com/" target="_blank">modantacanta.com</a>
-      </div>
-
-      <div class="contact-item">
-        <strong>Çalışma Alanı</strong>
-        <span>Çanta, gözlük ve saat ürünleri</span>
-      </div>
+    <div class="address-box" id="addressBox" style="display:none;">
+      <h2>Adres Bilgileri</h2>
+      <p id="addressText"></p>
     </div>
 
-    <div class="contact-note">
-      <h2>Sipariş ve Bilgi</h2>
-      <p>
-        Beğendiğiniz ürünler hakkında detaylı bilgi almak, stok durumunu sormak veya sipariş oluşturmak için WhatsApp üzerinden iletişime geçebilirsiniz.
-      </p>
-    </div>
+    <div class="map-box" id="mapBox"></div>
 
   </div>
 </main>
@@ -264,6 +228,125 @@ a{
 <footer class="developer-footer">
   <strong>Kaan Ayaz Web Developer</strong> tarafından hazırlanmıştır
 </footer>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-app.js";
+import {
+  getFirestore,
+  doc,
+  onSnapshot
+} from "https://www.gstatic.com/firebasejs/12.12.1/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyAnXahaeXWh0JK1a8jNerRAfkN0OEXXkFc",
+  authDomain: "modanta-canta.firebaseapp.com",
+  projectId: "modanta-canta",
+  storageBucket: "modanta-canta.firebasestorage.app",
+  messagingSenderId: "138476521828",
+  appId: "1:138476521828:web:ea7c3bfb510b2c90fc9271"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+const contactGrid = document.getElementById("contactGrid");
+const addressBox = document.getElementById("addressBox");
+const addressText = document.getElementById("addressText");
+const mapBox = document.getElementById("mapBox");
+
+function hasValue(value){
+  return value && String(value).trim() !== "";
+}
+
+function makeCard(title, value, link){
+  if(!hasValue(value)) return "";
+
+  if(link){
+    return `
+      <div class="contact-card">
+        <strong>${title}</strong>
+        <a href="${link}" target="_blank">${value}</a>
+      </div>
+    `;
+  }
+
+  return `
+    <div class="contact-card">
+      <strong>${title}</strong>
+      <span>${value}</span>
+    </div>
+  `;
+}
+
+function phoneClean(phone){
+  return String(phone || "").replace(/\s/g,"").replace("+","");
+}
+
+function renderContact(data){
+  document.getElementById("contactTitle").textContent = data.contactTitle || "İletişim";
+  document.getElementById("contactDesc").textContent = data.contactDesc || "Modanta Çanta ile iletişime geçmek için aşağıdaki bilgileri kullanabilirsiniz.";
+
+  const phone = data.phone || "";
+  const whatsapp = data.whatsapp || "";
+  const email = data.email || "";
+  const instagram = data.instagram || "";
+  const trendyol = data.trendyol || "";
+  const n11 = data.n11 || "";
+  const hepsiburada = data.hepsiburada || "";
+  const ciceksepeti = data.ciceksepeti || "";
+  const website = data.website || "";
+  const city = data.city || "";
+  const district = data.district || "";
+  const address = data.address || "";
+  const mapEmbed = data.mapEmbed || "";
+
+  let html = "";
+
+  html += makeCard("Telefon", phone, hasValue(phone) ? `tel:+${phoneClean(phone)}` : "");
+  html += makeCard("WhatsApp", whatsapp, hasValue(whatsapp) ? `https://wa.me/${phoneClean(whatsapp)}` : "");
+  html += makeCard("E-Posta", email, hasValue(email) ? `mailto:${email}` : "");
+  html += makeCard("Instagram", instagram, instagram);
+  html += makeCard("Trendyol", trendyol, trendyol);
+  html += makeCard("N11", n11, n11);
+  html += makeCard("Hepsiburada", hepsiburada, hepsiburada);
+  html += makeCard("Çiçeksepeti", ciceksepeti, ciceksepeti);
+  html += makeCard("Web Sitesi", website, website);
+  html += makeCard("İl", city, "");
+  html += makeCard("İlçe", district, "");
+
+  if(!html){
+    html = `<div class="empty-contact">İletişim bilgileri panelden eklenecek.</div>`;
+  }
+
+  contactGrid.innerHTML = html;
+
+  if(hasValue(address)){
+    addressBox.style.display = "block";
+    addressText.textContent = address;
+  }else{
+    addressBox.style.display = "none";
+  }
+
+  if(hasValue(mapEmbed)){
+    mapBox.style.display = "block";
+    mapBox.innerHTML = mapEmbed;
+  }else{
+    mapBox.style.display = "none";
+    mapBox.innerHTML = "";
+  }
+}
+
+const contactRef = doc(db, "sitePages", "contact");
+
+onSnapshot(contactRef, (snap) => {
+  if(!snap.exists()){
+    contactGrid.innerHTML = `<div class="empty-contact">İletişim bilgileri panelden eklenecek.</div>`;
+    return;
+  }
+
+  renderContact(snap.data());
+});
+</script>
 
 </body>
 </html>
