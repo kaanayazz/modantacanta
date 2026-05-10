@@ -73,6 +73,12 @@ body::before{
   font-size:18px;
 }
 
+.nav-links{
+  display:flex;
+  gap:8px;
+  align-items:center;
+}
+
 .nav-btn{
   background:#090909;
   color:var(--softGold);
@@ -292,6 +298,7 @@ body::before{
   color:#ddd;
   line-height:1.9;
   font-size:16px;
+  white-space:pre-line;
 }
 
 .cta{
@@ -359,6 +366,11 @@ body::before{
   .brand-title{font-size:18px}
   .brand-title span{font-size:15px}
   .nav-btn{padding:9px 10px;font-size:12px}
+
+  .nav-links{
+    gap:5px;
+  }
+
   .main{padding:95px 12px 38px}
 
   .hero,
@@ -386,6 +398,9 @@ body::before{
       <div class="brand-title">Modanta <span>Çanta</span></div>
     </a>
 
+    <div class="nav-links">
+      <a href="alisveris.html" class="nav-btn">Alışveriş</a>
+    </div>
   </nav>
 </header>
 
@@ -484,35 +499,49 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
+const panelAboutBox = document.getElementById("panelAboutBox");
+const panelAboutTitle = document.getElementById("panelAboutTitle");
+const panelAboutText = document.getElementById("panelAboutText");
+const footerText = document.getElementById("footerText");
+
 function hasValue(value){
-  return value && String(value).trim() !== "";
+  return value !== undefined && value !== null && String(value).trim() !== "";
 }
 
 onSnapshot(doc(db,"siteContent","about"),snap=>{
-  if(!snap.exists()) return;
+  if(!snap.exists()){
+    panelAboutBox.style.display = "none";
+    return;
+  }
 
-  const data=snap.data();
+  const data = snap.data();
 
-  if(hasValue(data.title) || hasValue(data.text)){
-    panelAboutBox.style.display="block";
+  if(hasValue(data.title) || hasValue(data.text) || hasValue(data.slogan)){
+    panelAboutBox.style.display = "block";
+  }else{
+    panelAboutBox.style.display = "none";
   }
 
   if(hasValue(data.title)){
-    panelAboutTitle.textContent=data.title;
+    panelAboutTitle.textContent = data.title;
   }
 
-  if(hasValue(data.text)){
-    panelAboutText.textContent=data.text;
+  if(hasValue(data.slogan) && hasValue(data.text)){
+    panelAboutText.textContent = data.slogan + "\n\n" + data.text;
+  }else if(hasValue(data.text)){
+    panelAboutText.textContent = data.text;
+  }else if(hasValue(data.slogan)){
+    panelAboutText.textContent = data.slogan;
   }
 });
 
 onSnapshot(doc(db,"siteContent","seo"),snap=>{
   if(!snap.exists()) return;
 
-  const data=snap.data();
+  const data = snap.data();
 
   if(hasValue(data.title)){
-    document.title="Hakkımızda | "+data.title;
+    document.title = "Hakkımızda | " + data.title;
   }
 
   if(hasValue(data.desc)){
@@ -520,7 +549,7 @@ onSnapshot(doc(db,"siteContent","seo"),snap=>{
   }
 
   if(hasValue(data.footer)){
-    footerText.innerHTML=`<strong>${data.footer}</strong>`;
+    footerText.innerHTML = `<strong>${data.footer}</strong>`;
   }
 });
 </script>
