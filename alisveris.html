@@ -612,7 +612,11 @@ body::before{
         </p>
       </div>
 
-
+      <div class="shop-mini">
+        <strong id="productTotal">0 ürün</strong>
+        <p>Ürünleri kategoriye göre incele, favorini seç ve kolayca sepete ekle.</p>
+      </div>
+    </div>
 
     <div class="filter-row">
       <div class="search-box">
@@ -628,7 +632,7 @@ body::before{
     </div>
 
     <div class="products" id="productsGrid">
-      <div class="empty-products">Ürünler yükleniyor...</div>
+      <div class="empty-products">Ürünler hazırlanıyor...</div>
     </div>
 
   </div>
@@ -675,6 +679,7 @@ const sortSelect = document.getElementById("sortSelect");
 const categorySelect = document.getElementById("categorySelect");
 const toast = document.getElementById("toast");
 const productTotal = document.getElementById("productTotal");
+const footerText = document.getElementById("footerText");
 
 let allProducts = [];
 let cart = JSON.parse(localStorage.getItem("modantaCart") || "[]");
@@ -687,7 +692,7 @@ function saveCart(){
 saveCart();
 
 function showToast(text){
-  toast.textContent=text;
+  toast.textContent = text;
   toast.classList.add("show");
   cartBtn.classList.add("bump");
 
@@ -700,7 +705,7 @@ function phoneClean(phone){
 }
 
 function hasValue(value){
-  return value && String(value).trim() !== "";
+  return value !== undefined && value !== null && String(value).trim() !== "";
 }
 
 function money(n){
@@ -720,12 +725,13 @@ function normalizeCategory(value){
 }
 
 function shortText(text,max=90){
-  text=String(text||"");
-  return text.length>max ? text.slice(0,max)+"..." : text;
+  text = String(text || "");
+  return text.length > max ? text.slice(0,max) + "..." : text;
 }
 
 function detailsHTML(details){
   if(!details) return "";
+
   return Object.entries(details)
     .filter(([k,v])=>v)
     .slice(0,4)
@@ -735,63 +741,72 @@ function detailsHTML(details){
 
 onSnapshot(doc(db,"siteContent","contact"),snap=>{
   if(!snap.exists()) return;
-  const data=snap.data();
+
+  const data = snap.data();
 
   if(hasValue(data.whatsapp)){
-    wpIcon.href="https://wa.me/"+phoneClean(data.whatsapp);
-    wpIcon.style.display="flex";
+    wpIcon.href = "https://wa.me/" + phoneClean(data.whatsapp);
+    wpIcon.style.display = "flex";
   }
 
   if(hasValue(data.instagram)){
-    igIcon.href=data.instagram;
-    igIcon.style.display="flex";
+    igIcon.href = data.instagram;
+    igIcon.style.display = "flex";
   }
 });
 
 onSnapshot(doc(db,"siteContent","seo"),snap=>{
   if(!snap.exists()) return;
-  const data=snap.data();
 
-  if(data.title){
-    document.title="Alışveriş | "+data.title;
+  const data = snap.data();
+
+  if(hasValue(data.title)){
+    document.title = "Alışveriş | " + data.title;
   }
 
-  if(data.footer){
-    footerText.innerHTML=`<strong>${data.footer}</strong>`;
+  if(hasValue(data.footer)){
+    footerText.innerHTML = `<strong>${data.footer}</strong>`;
   }
 });
 
-onSnapshot(query(collection(db,"products"),orderBy("createdAt","desc")),snapshot=>{
-  allProducts=[];
-  snapshot.forEach(docSnap=>{
-    allProducts.push({
-      id:docSnap.id,
-      ...docSnap.data()
+onSnapshot(
+  query(collection(db,"products"),orderBy("createdAt","desc")),
+  snapshot=>{
+    allProducts = [];
+
+    snapshot.forEach(docSnap=>{
+      allProducts.push({
+        id:docSnap.id,
+        ...docSnap.data()
+      });
     });
-  });
-  renderProducts();
-},error=>{
-  productsGrid.innerHTML=`<div class="empty-products">Ürünler yüklenirken hata oluştu.</div>`;
-});
+
+    renderProducts();
+  },
+  error=>{
+    productsGrid.innerHTML = `<div class="empty-products">Ürünler gösterilirken hata oluştu: ${error.message}</div>`;
+  }
+);
 
 searchInput.addEventListener("input",renderProducts);
 sortSelect.addEventListener("change",renderProducts);
 categorySelect.addEventListener("change",renderProducts);
 
 function renderProducts(){
-  let products=[...allProducts];
-  const activeCategory=categorySelect.value;
+  let products = [...allProducts];
+  const activeCategory = categorySelect.value;
 
-  if(activeCategory!=="all"){
-    products=products.filter(product=>normalizeCategory(product.category)===activeCategory);
+  if(activeCategory !== "all"){
+    products = products.filter(product => normalizeCategory(product.category) === activeCategory);
   }
 
-  const search=searchInput.value.toLowerCase().trim();
+  const search = searchInput.value.toLowerCase().trim();
 
   if(search){
-    products=products.filter(product=>{
-      const text=`
+    products = products.filter(product=>{
+      const text = `
         ${product.name || ""}
+        ${product.code || ""}
         ${product.category || ""}
         ${product.description || ""}
         ${JSON.stringify(product.details || {})}
@@ -801,34 +816,34 @@ function renderProducts(){
     });
   }
 
-  if(sortSelect.value==="priceAsc"){
-    products.sort((a,b)=>Number(a.price||0)-Number(b.price||0));
+  if(sortSelect.value === "priceAsc"){
+    products.sort((a,b)=>Number(a.price || 0) - Number(b.price || 0));
   }
 
-  if(sortSelect.value==="priceDesc"){
-    products.sort((a,b)=>Number(b.price||0)-Number(a.price||0));
+  if(sortSelect.value === "priceDesc"){
+    products.sort((a,b)=>Number(b.price || 0) - Number(a.price || 0));
   }
 
-  if(sortSelect.value==="stock"){
-    products=products.filter(p=>
-      Number(p.stock||0)>0 &&
-      p.stockStatus!=="Stokta Yok" &&
-      p.stockStatus!=="Tükendi"
+  if(sortSelect.value === "stock"){
+    products = products.filter(p =>
+      Number(p.stock || 0) > 0 &&
+      p.stockStatus !== "Stokta Yok" &&
+      p.stockStatus !== "Tükendi"
     );
   }
 
-  productTotal.textContent=products.length+" ürün";
+  productTotal.textContent = products.length + " ürün";
 
-  if(products.length===0){
-    productsGrid.innerHTML=`<div class="empty-products">Şu anda bu filtreye uygun ürün bulunamadı.</div>`;
+  if(products.length === 0){
+    productsGrid.innerHTML = `<div class="empty-products">Şu anda bu filtreye uygun ürün bulunamadı.</div>`;
     return;
   }
 
-  productsGrid.innerHTML=products.map((product,index)=>{
+  productsGrid.innerHTML = products.map((product,index)=>{
     const outOfStock =
-      Number(product.stock||0)<=0 ||
-      product.stockStatus==="Stokta Yok" ||
-      product.stockStatus==="Tükendi";
+      Number(product.stock || 0) <= 0 ||
+      product.stockStatus === "Stokta Yok" ||
+      product.stockStatus === "Tükendi";
 
     return `
       <div class="product" style="animation-delay:${index*.05}s">
@@ -840,9 +855,7 @@ function renderProducts(){
         </div>
 
         <div class="product-info">
-
           <h3>${product.name || "Ürün"}</h3>
-
           <p>${shortText(product.description)}</p>
 
           <div class="details">
@@ -867,7 +880,6 @@ function renderProducts(){
           <a href="urun-detay.html?id=${product.id}" class="quick-link">
             Ürünü detaylı incele
           </a>
-
         </div>
 
       </div>
@@ -876,11 +888,11 @@ function renderProducts(){
 
   document.querySelectorAll(".order-btn").forEach(button=>{
     button.addEventListener("click",async()=>{
-      const id=button.dataset.id;
-      const existing=cart.find(item=>item.id===id);
+      const id = button.dataset.id;
+      const existing = cart.find(item=>item.id === id);
 
       if(existing){
-        existing.qty=Number(existing.qty||1)+1;
+        existing.qty = Number(existing.qty || 1) + 1;
       }else{
         cart.push({
           id,
@@ -895,7 +907,7 @@ function renderProducts(){
 
       saveCart();
 
-      button.textContent="Eklendi";
+      button.textContent = "Eklendi";
       showToast("Ürün sepete eklendi");
 
       await updateDoc(doc(db,"products",id),{
@@ -903,7 +915,7 @@ function renderProducts(){
       }).catch(()=>{});
 
       setTimeout(()=>{
-        button.textContent="Sepete Ekle";
+        button.textContent = "Sepete Ekle";
       },900);
     });
   });
