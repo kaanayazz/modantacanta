@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title id="pageTitle">Modanta Çanta</title>
-<meta name="description" id="pageDesc" content="Modanta Çanta; çanta, gözlük ve saat seçenekleriyle tarzını tamamlar.">
+<title>Modanta Çanta</title>
+<meta name="description" content="Modanta Çanta; çanta, gözlük ve saat seçenekleriyle tarzını tamamlar.">
 
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:Arial,Helvetica,sans-serif}
@@ -12,47 +12,572 @@
 html{scroll-behavior:smooth}
 body{background:#fff;color:#111;overflow-x:hidden}
 a{text-decoration:none;color:inherit}
-.header{position:fixed;top:0;left:0;width:100%;background:rgba(255,255,255,.95);backdrop-filter:blur(16px);border-bottom:1px solid rgba(212,175,55,.35);z-index:1000}
-.nav{max-width:1200px;margin:auto;padding:12px 16px;display:flex;align-items:center;justify-content:space-between}
-.brand{display:flex;align-items:center;gap:9px}
-.brand img{width:52px;height:52px;border-radius:50%;object-fit:cover;border:1px solid var(--gold)}
-.brand-title{font-size:22px;font-weight:900}.brand-title span{color:var(--gold);font-size:18px}
-.shop-btn{background:#090909;color:var(--softGold);border:1px solid var(--gold);padding:13px 18px;border-radius:999px;font-size:14px;font-weight:900;box-shadow:0 12px 30px rgba(0,0,0,.18)}
-.hero{min-height:100vh;padding:120px 20px 70px;background:radial-gradient(circle at 10% 15%,rgba(212,175,55,.22),transparent 32%),radial-gradient(circle at 90% 20%,rgba(0,0,0,.08),transparent 35%),linear-gradient(180deg,#fff,#fffaf0);display:flex;align-items:center}
-.hero-inner{max-width:1200px;margin:auto;display:grid;grid-template-columns:1fr 1fr;gap:45px;align-items:center}
-.hero h1{font-size:clamp(44px,6vw,78px);line-height:.96;letter-spacing:-3px;margin-bottom:24px}.hero h1 span{color:var(--gold)}
-.hero p{color:#555;font-size:17px;line-height:1.8;max-width:570px;margin-bottom:30px}
-.hero-visual{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-.hero-img{border-radius:32px;overflow:hidden;border:1px solid rgba(212,175,55,.45);box-shadow:0 25px 70px rgba(0,0,0,.14)}
-.hero-img.big{grid-row:span 2}.hero-img img{width:100%;height:100%;min-height:260px;object-fit:cover;display:block}.hero-img.big img{min-height:540px}
-section{padding:80px 20px}.container{max-width:1200px;margin:auto}
-.section-head{max-width:780px;margin-bottom:35px}.section-head h2{font-size:clamp(32px,4vw,52px);margin-bottom:14px;letter-spacing:-1.5px}.section-head h2 span{color:var(--gold)}
-.section-head p{color:#555;line-height:1.8;font-size:16px}
-.showcase-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
-.showcase-card{position:relative;min-height:410px;border-radius:32px;overflow:hidden;border:1px solid rgba(212,175,55,.45);box-shadow:0 20px 55px rgba(0,0,0,.12)}
-.showcase-card img{width:100%;height:100%;object-fit:cover;display:block}.showcase-card::after{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.82),rgba(0,0,0,.08))}
-.showcase-text{position:absolute;left:22px;right:22px;bottom:22px;z-index:2;color:#fff}.showcase-text h3{color:var(--softGold);font-size:26px;margin-bottom:8px}.showcase-text p{color:#eee;line-height:1.6;font-size:14px}
-.products-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
-.product-card{background:#fff;border:1px solid rgba(212,175,55,.4);border-radius:26px;overflow:hidden;box-shadow:0 18px 45px rgba(0,0,0,.09)}
-.product-card img{width:100%;height:260px;object-fit:cover;display:block}
-.product-body{padding:16px}.product-body h3{font-size:18px;margin-bottom:8px}.product-body p{color:#666;font-size:14px;line-height:1.5;margin-bottom:12px}.price{font-size:20px;font-weight:900;color:#111;margin-bottom:12px}.pill{display:inline-block;background:#111;color:var(--softGold);border:1px solid var(--gold);border-radius:999px;padding:5px 9px;font-size:12px;font-weight:900;margin-bottom:8px}
-.product-btn{display:block;text-align:center;background:#090909;color:var(--softGold);border:1px solid var(--gold);padding:12px;border-radius:14px;font-weight:900}
-.split{background:#090909;color:#fff}.split-inner{display:grid;grid-template-columns:1fr 1fr;gap:35px;align-items:center}
-.split-img{border-radius:34px;overflow:hidden;border:1px solid rgba(212,175,55,.55)}.split-img img{width:100%;height:520px;object-fit:cover;display:block}
-.split h2{font-size:clamp(34px,4vw,56px);line-height:1.05;margin-bottom:20px}.split h2 span{color:var(--softGold)}
-.split p{color:#ddd;line-height:1.8;font-size:16px;margin-bottom:18px}
-.features{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}.feature{border:1px solid rgba(212,175,55,.35);border-radius:24px;padding:24px;background:#fff}.feature strong{display:block;font-size:20px;margin-bottom:10px}.feature p{color:#555;line-height:1.7;font-size:14px}
-.gallery{display:grid;grid-template-columns:1.2fr .8fr 1fr;gap:16px}.gallery img{width:100%;height:340px;object-fit:cover;border-radius:28px;border:1px solid rgba(212,175,55,.4);box-shadow:0 18px 45px rgba(0,0,0,.10)}
-.gallery img:nth-child(1){height:520px}.gallery img:nth-child(3){height:430px}
-.cta{text-align:center;background:radial-gradient(circle at center,rgba(212,175,55,.22),transparent 38%),#fffaf0}
-.cta h2{font-size:clamp(34px,5vw,64px);margin-bottom:16px;letter-spacing:-2px}.cta h2 span{color:var(--gold)}
-.cta p{max-width:720px;margin:0 auto 28px;color:#555;line-height:1.8;font-size:16px}
-.big-btn{display:inline-block;background:#090909;color:var(--softGold);border:1px solid var(--gold);padding:18px 28px;border-radius:999px;font-weight:900;font-size:16px;box-shadow:0 18px 45px rgba(0,0,0,.22)}
-.footer{padding:22px 18px;text-align:center;color:#111;font-size:15px;font-weight:600}.footer strong{font-weight:900}
-.empty{border:1px dashed var(--gold);border-radius:22px;padding:30px;text-align:center;color:#777;font-weight:900;grid-column:1/-1}
-@media(max-width:1000px){.products-grid{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:900px){.hero-inner,.split-inner{grid-template-columns:1fr}.showcase-grid,.features{grid-template-columns:1fr 1fr}.gallery{grid-template-columns:1fr}.gallery img,.gallery img:nth-child(1),.gallery img:nth-child(3){height:360px}}
-@media(max-width:600px){.nav{padding:10px 12px}.brand img{width:42px;height:42px}.brand-title{font-size:18px}.brand-title span{font-size:15px}.shop-btn{padding:10px 12px;font-size:12px}.hero{padding:105px 16px 55px}.hero h1{letter-spacing:-2px}.hero-visual{gap:10px}.hero-img{border-radius:22px}.hero-img img{min-height:180px}.hero-img.big img{min-height:380px}section{padding:55px 16px}.showcase-grid,.features,.products-grid{grid-template-columns:1fr}.showcase-card{min-height:340px}.split-img img{height:360px}.footer{font-size:13px}}
+
+.header{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  background:rgba(255,255,255,.92);
+  backdrop-filter:blur(18px);
+  border-bottom:1px solid rgba(212,175,55,.35);
+  box-shadow:0 12px 35px rgba(0,0,0,.06);
+  z-index:1000;
+}
+
+.nav{
+  max-width:1200px;
+  margin:auto;
+  padding:12px 16px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+}
+
+.brand{
+  display:flex;
+  align-items:center;
+  gap:9px;
+}
+
+.brand img{
+  width:52px;
+  height:52px;
+  border-radius:50%;
+  object-fit:cover;
+  border:1px solid var(--gold);
+  box-shadow:0 0 22px rgba(212,175,55,.25);
+}
+
+.brand-title{
+  font-size:22px;
+  font-weight:900;
+}
+
+.brand-title span{
+  color:var(--gold);
+  font-size:18px;
+}
+
+.shop-btn{
+  background:#090909;
+  color:var(--softGold);
+  border:1px solid var(--gold);
+  padding:13px 18px;
+  border-radius:999px;
+  font-size:14px;
+  font-weight:900;
+  box-shadow:0 12px 30px rgba(0,0,0,.18);
+}
+
+.hero{
+  min-height:100vh;
+  padding:120px 20px 70px;
+  background:
+    radial-gradient(circle at 10% 15%,rgba(212,175,55,.22),transparent 32%),
+    radial-gradient(circle at 90% 20%,rgba(0,0,0,.08),transparent 35%),
+    linear-gradient(180deg,#fff,#fffaf0);
+  display:flex;
+  align-items:center;
+}
+
+.hero-inner{
+  max-width:1200px;
+  margin:auto;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:45px;
+  align-items:center;
+}
+
+.hero h1{
+  font-size:clamp(44px,6vw,78px);
+  line-height:.96;
+  letter-spacing:-3px;
+  margin-bottom:24px;
+}
+
+.hero h1 span{
+  color:var(--gold);
+}
+
+.hero p{
+  color:#555;
+  font-size:17px;
+  line-height:1.8;
+  max-width:570px;
+  margin-bottom:30px;
+}
+
+.hero-visual{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:16px;
+}
+
+.hero-img{
+  border-radius:32px;
+  overflow:hidden;
+  border:1px solid rgba(212,175,55,.45);
+  box-shadow:0 25px 70px rgba(0,0,0,.14);
+}
+
+.hero-img.big{
+  grid-row:span 2;
+}
+
+.hero-img img{
+  width:100%;
+  height:100%;
+  min-height:260px;
+  object-fit:cover;
+  display:block;
+  transition:.6s ease;
+}
+
+.hero-img:hover img{
+  transform:scale(1.07);
+}
+
+.hero-img.big img{
+  min-height:540px;
+}
+
+section{
+  padding:80px 20px;
+}
+
+.container{
+  max-width:1200px;
+  margin:auto;
+}
+
+.section-head{
+  max-width:780px;
+  margin-bottom:35px;
+}
+
+.section-head h2{
+  font-size:clamp(32px,4vw,52px);
+  margin-bottom:14px;
+  letter-spacing:-1.5px;
+}
+
+.section-head h2 span{
+  color:var(--gold);
+}
+
+.section-head p{
+  color:#555;
+  line-height:1.8;
+  font-size:16px;
+}
+
+.showcase-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:20px;
+}
+
+.showcase-card{
+  position:relative;
+  min-height:410px;
+  border-radius:32px;
+  overflow:hidden;
+  border:1px solid rgba(212,175,55,.45);
+  box-shadow:0 20px 55px rgba(0,0,0,.12);
+  transition:.35s ease;
+}
+
+.showcase-card:hover{
+  transform:translateY(-8px);
+  box-shadow:0 0 34px rgba(212,175,55,.30),0 28px 60px rgba(0,0,0,.13);
+}
+
+.showcase-card img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+  transition:.6s ease;
+}
+
+.showcase-card:hover img{
+  transform:scale(1.08);
+}
+
+.showcase-card::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:linear-gradient(to top,rgba(0,0,0,.82),rgba(0,0,0,.08));
+}
+
+.showcase-text{
+  position:absolute;
+  left:22px;
+  right:22px;
+  bottom:22px;
+  z-index:2;
+  color:#fff;
+}
+
+.showcase-text h3{
+  color:var(--softGold);
+  font-size:26px;
+  margin-bottom:8px;
+}
+
+.showcase-text p{
+  color:#eee;
+  line-height:1.6;
+  font-size:14px;
+}
+
+.products-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:18px;
+}
+
+.product-card{
+  background:#fff;
+  border:1px solid rgba(212,175,55,.4);
+  border-radius:26px;
+  overflow:hidden;
+  box-shadow:0 18px 45px rgba(0,0,0,.09);
+  transition:.35s ease;
+}
+
+.product-card:hover{
+  transform:translateY(-8px);
+  box-shadow:0 0 32px rgba(212,175,55,.30),0 28px 60px rgba(0,0,0,.13);
+}
+
+.product-card img{
+  width:100%;
+  height:260px;
+  object-fit:cover;
+  display:block;
+  transition:.55s ease;
+}
+
+.product-card:hover img{
+  transform:scale(1.07);
+}
+
+.product-body{
+  padding:16px;
+}
+
+.product-body h3{
+  font-size:18px;
+  margin-bottom:8px;
+}
+
+.product-body p{
+  color:#666;
+  font-size:14px;
+  line-height:1.5;
+  margin-bottom:12px;
+}
+
+.price{
+  font-size:20px;
+  font-weight:900;
+  color:#111;
+  margin-bottom:12px;
+}
+
+.pill{
+  display:inline-block;
+  background:#111;
+  color:var(--softGold);
+  border:1px solid var(--gold);
+  border-radius:999px;
+  padding:5px 9px;
+  font-size:12px;
+  font-weight:900;
+  margin-bottom:8px;
+}
+
+.product-btn{
+  display:block;
+  text-align:center;
+  background:#090909;
+  color:var(--softGold);
+  border:1px solid var(--gold);
+  padding:12px;
+  border-radius:14px;
+  font-weight:900;
+}
+
+.split{
+  background:#090909;
+  color:#fff;
+}
+
+.split-inner{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:35px;
+  align-items:center;
+}
+
+.split-img{
+  border-radius:34px;
+  overflow:hidden;
+  border:1px solid rgba(212,175,55,.55);
+  box-shadow:0 24px 70px rgba(0,0,0,.22);
+}
+
+.split-img img{
+  width:100%;
+  height:520px;
+  object-fit:cover;
+  display:block;
+}
+
+.split h2{
+  font-size:clamp(34px,4vw,56px);
+  line-height:1.05;
+  margin-bottom:20px;
+}
+
+.split h2 span{
+  color:var(--softGold);
+}
+
+.split p{
+  color:#ddd;
+  line-height:1.8;
+  font-size:16px;
+  margin-bottom:18px;
+}
+
+.features{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:18px;
+}
+
+.feature{
+  border:1px solid rgba(212,175,55,.35);
+  border-radius:24px;
+  padding:24px;
+  background:#fff;
+  box-shadow:0 14px 35px rgba(0,0,0,.06);
+  transition:.3s ease;
+}
+
+.feature:hover{
+  transform:translateY(-7px);
+  box-shadow:0 0 28px rgba(212,175,55,.25),0 22px 50px rgba(0,0,0,.10);
+}
+
+.feature strong{
+  display:block;
+  font-size:20px;
+  margin-bottom:10px;
+}
+
+.feature p{
+  color:#555;
+  line-height:1.7;
+  font-size:14px;
+}
+
+.gallery{
+  display:grid;
+  grid-template-columns:1.2fr .8fr 1fr;
+  gap:16px;
+}
+
+.gallery img{
+  width:100%;
+  height:340px;
+  object-fit:cover;
+  border-radius:28px;
+  border:1px solid rgba(212,175,55,.4);
+  box-shadow:0 18px 45px rgba(0,0,0,.10);
+  transition:.4s ease;
+}
+
+.gallery img:hover{
+  transform:translateY(-6px) scale(1.01);
+}
+
+.gallery img:nth-child(1){
+  height:520px;
+}
+
+.gallery img:nth-child(3){
+  height:430px;
+}
+
+.cta{
+  text-align:center;
+  background:
+    radial-gradient(circle at center,rgba(212,175,55,.22),transparent 38%),
+    #fffaf0;
+}
+
+.cta h2{
+  font-size:clamp(34px,5vw,64px);
+  margin-bottom:16px;
+  letter-spacing:-2px;
+}
+
+.cta h2 span{
+  color:var(--gold);
+}
+
+.cta p{
+  max-width:720px;
+  margin:0 auto 28px;
+  color:#555;
+  line-height:1.8;
+  font-size:16px;
+}
+
+.big-btn{
+  display:inline-block;
+  background:#090909;
+  color:var(--softGold);
+  border:1px solid var(--gold);
+  padding:18px 28px;
+  border-radius:999px;
+  font-weight:900;
+  font-size:16px;
+  box-shadow:0 18px 45px rgba(0,0,0,.22);
+  transition:.25s ease;
+}
+
+.big-btn:hover{
+  transform:translateY(-3px);
+  box-shadow:0 0 30px rgba(212,175,55,.35);
+}
+
+.footer{
+  padding:22px 18px;
+  text-align:center;
+  color:#111;
+  font-size:15px;
+  font-weight:600;
+}
+
+.footer strong{
+  font-weight:900;
+}
+
+.empty{
+  border:1px dashed var(--gold);
+  border-radius:22px;
+  padding:30px;
+  text-align:center;
+  color:#777;
+  font-weight:900;
+  grid-column:1/-1;
+}
+
+@media(max-width:1000px){
+  .products-grid{
+    grid-template-columns:repeat(2,1fr);
+  }
+}
+
+@media(max-width:900px){
+  .hero-inner,
+  .split-inner{
+    grid-template-columns:1fr;
+  }
+
+  .showcase-grid,
+  .features{
+    grid-template-columns:1fr 1fr;
+  }
+
+  .gallery{
+    grid-template-columns:1fr;
+  }
+
+  .gallery img,
+  .gallery img:nth-child(1),
+  .gallery img:nth-child(3){
+    height:360px;
+  }
+}
+
+@media(max-width:600px){
+  .nav{
+    padding:10px 12px;
+  }
+
+  .brand img{
+    width:42px;
+    height:42px;
+  }
+
+  .brand-title{
+    font-size:18px;
+  }
+
+  .brand-title span{
+    font-size:15px;
+  }
+
+  .shop-btn{
+    padding:10px 12px;
+    font-size:12px;
+  }
+
+  .hero{
+    padding:105px 16px 55px;
+  }
+
+  .hero h1{
+    letter-spacing:-2px;
+  }
+
+  .hero-visual{
+    gap:10px;
+  }
+
+  .hero-img{
+    border-radius:22px;
+  }
+
+  .hero-img img{
+    min-height:180px;
+  }
+
+  .hero-img.big img{
+    min-height:380px;
+  }
+
+  section{
+    padding:55px 16px;
+  }
+
+  .showcase-grid,
+  .features,
+  .products-grid{
+    grid-template-columns:1fr;
+  }
+
+  .showcase-card{
+    min-height:340px;
+  }
+
+  .split-img img{
+    height:360px;
+  }
+
+  .footer{
+    font-size:13px;
+  }
+}
 </style>
 </head>
 
@@ -64,6 +589,7 @@ section{padding:80px 20px}.container{max-width:1200px;margin:auto}
       <img src="https://pbs.twimg.com/media/HHaRfeXWIAExq29?format=jpg&name=240x240" alt="Modanta Çanta Logo">
       <div class="brand-title">Modanta <span>Çanta</span></div>
     </a>
+
   </nav>
 </header>
 
@@ -81,9 +607,17 @@ section{padding:80px 20px}.container{max-width:1200px;margin:auto}
     </div>
 
     <div class="hero-visual">
-      <div class="hero-img big"><img src="https://images.unsplash.com/photo-1590874103328-eac38a683ce7?auto=format&fit=crop&w=900&q=80" alt="Çanta"></div>
-      <div class="hero-img"><img src="https://images.unsplash.com/photo-1511499767150-a48a237f0083?auto=format&fit=crop&w=900&q=80" alt="Gözlük"></div>
-      <div class="hero-img"><img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=900&q=80" alt="Saat"></div>
+      <div class="hero-img big">
+        <img src="https://images.unsplash.com/photo-1590874103328-eac38a683ce7?auto=format&fit=crop&w=900&q=80" alt="Çanta">
+      </div>
+
+      <div class="hero-img">
+        <img src="https://images.unsplash.com/photo-1511499767150-a48a237f0083?auto=format&fit=crop&w=900&q=80" alt="Gözlük">
+      </div>
+
+      <div class="hero-img">
+        <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=900&q=80" alt="Saat">
+      </div>
     </div>
   </div>
 </section>
@@ -92,21 +626,35 @@ section{padding:80px 20px}.container{max-width:1200px;margin:auto}
   <div class="container">
     <div class="section-head">
       <h2>Her kombine yakışan <span>seçkin parçalar</span></h2>
-      <p id="categoryIntro">Sadece ürün değil; görünümünü tamamlayan, gün içinde yanında taşıyacağın, sade ama dikkat çeken parçalar.</p>
+      <p id="categoryIntro">
+        Sadece ürün değil; görünümünü tamamlayan, gün içinde yanında taşıyacağın,
+        sade ama dikkat çeken parçalar.
+      </p>
     </div>
 
     <div class="showcase-grid">
       <div class="showcase-card">
         <img src="https://images.unsplash.com/photo-1594223274512-ad4803739b7c?auto=format&fit=crop&w=900&q=80" alt="Çanta modelleri">
-        <div class="showcase-text"><h3>Çanta</h3><p id="bagDesc">Günlük kullanımda şık, sade ve güçlü bir tamamlayıcı.</p></div>
+        <div class="showcase-text">
+          <h3>Çanta</h3>
+          <p id="bagDesc">Günlük kullanımda şık, sade ve güçlü bir tamamlayıcı.</p>
+        </div>
       </div>
+
       <div class="showcase-card">
         <img src="https://images.unsplash.com/photo-1577803645773-f96470509666?auto=format&fit=crop&w=900&q=80" alt="Gözlük modelleri">
-        <div class="showcase-text"><h3>Gözlük</h3><p id="glassDesc">Yüz hattını öne çıkaran modern ve iddialı detay.</p></div>
+        <div class="showcase-text">
+          <h3>Gözlük</h3>
+          <p id="glassDesc">Yüz hattını öne çıkaran modern ve iddialı detay.</p>
+        </div>
       </div>
+
       <div class="showcase-card">
         <img src="https://images.unsplash.com/photo-1434056886845-dac89ffe9b56?auto=format&fit=crop&w=900&q=80" alt="Saat modelleri">
-        <div class="showcase-text"><h3>Saat</h3><p id="watchDesc">Zamana zarafet katan sade ama güçlü aksesuar.</p></div>
+        <div class="showcase-text">
+          <h3>Saat</h3>
+          <p id="watchDesc">Zamana zarafet katan sade ama güçlü aksesuar.</p>
+        </div>
       </div>
     </div>
   </div>
@@ -116,10 +664,11 @@ section{padding:80px 20px}.container{max-width:1200px;margin:auto}
   <div class="container">
     <div class="section-head">
       <h2>Öne çıkan <span>ürünler</span></h2>
-      <p>Panelde “Öne Çıkan” olarak işaretlenen ürünler burada otomatik görünür.</p>
+      <p>Tarzını tamamlayacak seçili ürünleri keşfet.</p>
     </div>
+
     <div class="products-grid" id="featuredProducts">
-      <div class="empty">Ürünler yükleniyor...</div>
+      <div class="empty">Ürünler hazırlanıyor...</div>
     </div>
   </div>
 </section>
@@ -129,10 +678,17 @@ section{padding:80px 20px}.container{max-width:1200px;margin:auto}
     <div class="split-img">
       <img src="https://images.unsplash.com/photo-1496747611176-843222e1e57c?auto=format&fit=crop&w=1000&q=80" alt="Modanta Stil">
     </div>
+
     <div>
-      <h2 id="aboutTitle">Bir parçayla <span>tüm görünüm değişir.</span></h2>
-      <p id="aboutSlogan">Doğru çanta, doğru gözlük veya doğru saat; sade bir kombini bile daha özenli hale getirir.</p>
-      <p id="aboutText">Modanta Çanta’da amaç yalnızca ürün satmak değil; müşterinin kendini daha iyi hissettiği, stilini daha rahat ifade ettiği parçalar sunmaktır.</p>
+      <h2>Bir parçayla <span>tüm görünüm değişir.</span></h2>
+      <p>
+        Doğru çanta, doğru gözlük veya doğru saat; sade bir kombini bile daha özenli,
+        daha güçlü ve daha dikkat çekici hale getirir.
+      </p>
+      <p>
+        Modanta Çanta’da amaç yalnızca ürün sunmak değil; müşterinin kendini daha iyi
+        hissettiği, stilini daha rahat ifade ettiği parçalarla buluşmasını sağlamaktır.
+      </p>
       <a href="alisveris.html" class="big-btn">Hadi Alışverişe Gidelim</a>
     </div>
   </div>
@@ -142,13 +698,32 @@ section{padding:80px 20px}.container{max-width:1200px;margin:auto}
   <div class="container">
     <div class="section-head">
       <h2>Neden <span>Modanta?</span></h2>
-      <p>Ürün seçimi, görsel duruş ve müşteriyle iletişim sürecinde sade, anlaşılır ve güven veren bir alışveriş deneyimi hedeflenir.</p>
+      <p>
+        Ürün seçimi, görsel duruş ve müşteriyle iletişim sürecinde sade,
+        anlaşılır ve güven veren bir alışveriş deneyimi hedeflenir.
+      </p>
     </div>
+
     <div class="features">
-      <div class="feature"><strong>Şık Seçim</strong><p>Günlük kullanıma ve özel kombinlere uyum sağlayan dikkat çekici ürünler.</p></div>
-      <div class="feature"><strong>Kolay Sipariş</strong><p>Beğendiğin ürünü sepete ekleyip sipariş sürecini kolayca başlatabilirsin.</p></div>
-      <div class="feature"><strong>Tarz Odaklı</strong><p>Çanta, gözlük ve saat ile görünümünü tek dokunuşta tamamlayabilirsin.</p></div>
-      <div class="feature"><strong>Güvenli İletişim</strong><p>Sipariş öncesi ürün detaylarını öğrenmek için kolayca iletişim kurabilirsin.</p></div>
+      <div class="feature">
+        <strong>Şık Seçim</strong>
+        <p>Günlük kullanıma ve özel kombinlere uyum sağlayan dikkat çekici ürünler.</p>
+      </div>
+
+      <div class="feature">
+        <strong>Kolay Sipariş</strong>
+        <p>Beğendiğin ürünü sepete ekleyip sipariş sürecini kolayca başlatabilirsin.</p>
+      </div>
+
+      <div class="feature">
+        <strong>Tarz Odaklı</strong>
+        <p>Çanta, gözlük ve saat ile görünümünü tek dokunuşta tamamlayabilirsin.</p>
+      </div>
+
+      <div class="feature">
+        <strong>Güvenli İletişim</strong>
+        <p>Sipariş öncesi ürün detaylarını öğrenmek için kolayca iletişim kurabilirsin.</p>
+      </div>
     </div>
   </div>
 </section>
@@ -157,8 +732,11 @@ section{padding:80px 20px}.container{max-width:1200px;margin:auto}
   <div class="container">
     <div class="section-head">
       <h2>Görünümünü tamamlayan <span>ilham alanları</span></h2>
-      <p>Minimal, zarif ve güçlü parçalarla stilini daha etkili göstermenin en kolay yolu.</p>
+      <p>
+        Minimal, zarif ve güçlü parçalarla stilini daha etkili göstermenin en kolay yolu.
+      </p>
     </div>
+
     <div class="gallery">
       <img src="https://images.unsplash.com/photo-1509631179647-0177331693ae?auto=format&fit=crop&w=900&q=80" alt="Moda">
       <img src="https://images.unsplash.com/photo-1529139574466-a303027c1d8b?auto=format&fit=crop&w=900&q=80" alt="Stil">
@@ -170,7 +748,10 @@ section{padding:80px 20px}.container{max-width:1200px;margin:auto}
 <section class="cta">
   <div class="container">
     <h2>Şimdi tarzına <span>Modanta dokunuşu</span> ekle.</h2>
-    <p>Çanta, gözlük ve saat seçeneklerini incele; stilini tamamlayan ürünü seç ve alışveriş sayfasından kolayca sepete ekle.</p>
+    <p>
+      Çanta, gözlük ve saat seçeneklerini incele; stilini tamamlayan ürünü seç
+      ve alışveriş sayfasından kolayca sepete ekle.
+    </p>
     <a href="alisveris.html" class="big-btn">Hadi Alışverişe Gidelim</a>
   </div>
 </section>
@@ -184,7 +765,12 @@ section{padding:80px 20px}.container{max-width:1200px;margin:auto}
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-app.js";
 import {
-  getFirestore, collection, doc, onSnapshot, query, orderBy
+  getFirestore,
+  collection,
+  doc,
+  onSnapshot,
+  query,
+  orderBy
 } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-firestore.js";
 
 const firebaseConfig = {
@@ -201,9 +787,27 @@ const db = getFirestore(app);
 
 const money = n => "₺" + Number(n || 0).toLocaleString("tr-TR");
 
+function hasValue(value){
+  return value && String(value).trim() !== "";
+}
+
 function setText(id,value){
-  const el=document.getElementById(id);
-  if(el && value) el.textContent=value;
+  const el = document.getElementById(id);
+  if(el && hasValue(value)){
+    el.textContent = value;
+  }
+}
+
+function setHTML(id,value){
+  const el = document.getElementById(id);
+  if(el && hasValue(value)){
+    el.innerHTML = value;
+  }
+}
+
+function shortText(text,max=88){
+  text = String(text || "");
+  return text.length > max ? text.slice(0,max) + "..." : text;
 }
 
 function loadDoc(name,callback){
@@ -213,53 +817,59 @@ function loadDoc(name,callback){
 }
 
 loadDoc("home",d=>{
-  if(d.title) homeTitle.innerHTML = d.title.includes("<span>") ? d.title : d.title;
+  if(hasValue(d.title)){
+    setHTML("homeTitle",d.title);
+  }
+
   setText("homeDesc",d.desc);
-  if(d.button) homeButton.textContent=d.button;
+
+  if(hasValue(d.button)){
+    homeButton.textContent = d.button;
+  }
 });
 
 loadDoc("categories",d=>{
+  setText("categoryIntro",d.categoryIntro);
   setText("bagDesc",d.bagDesc);
   setText("glassDesc",d.glassDesc);
   setText("watchDesc",d.watchDesc);
 });
 
-loadDoc("about",d=>{
-  if(d.title) aboutTitle.innerHTML = d.title.includes("<span>") ? d.title : d.title;
-  setText("aboutSlogan",d.slogan);
-  setText("aboutText",d.text);
-});
-
 loadDoc("seo",d=>{
-  if(d.title){
-    document.title=d.title;
+  if(hasValue(d.title)){
+    document.title = d.title;
   }
-  if(d.desc){
-    document.querySelector('meta[name="description"]').setAttribute("content",d.desc);
+
+  if(hasValue(d.desc)){
+    document
+      .querySelector('meta[name="description"]')
+      .setAttribute("content",d.desc);
   }
-  if(d.footer){
+
+  if(hasValue(d.footer)){
     footerText.innerHTML = `<strong>${d.footer}</strong>`;
   }
 });
 
 onSnapshot(query(collection(db,"products"),orderBy("createdAt","desc")),snap=>{
-  let products=[];
+  let products = [];
   snap.forEach(d=>products.push({id:d.id,...d.data()}));
 
-  const featured=products.filter(p=>p.featured).slice(0,8);
+  const featured = products.filter(p=>p.featured).slice(0,8);
 
   featuredProducts.innerHTML = featured.map(p=>`
     <div class="product-card">
       <img src="${p.imageUrl || ""}" alt="${p.name || "Ürün"}">
+
       <div class="product-body">
         <span class="pill">${p.category || "Ürün"}</span>
         <h3>${p.name || "Ürün"}</h3>
-        <p>${p.description || ""}</p>
+        <p>${shortText(p.description)}</p>
         <div class="price">${money(p.price)}</div>
         <a href="urun-detay.html?id=${p.id}" class="product-btn">Ürünü İncele</a>
       </div>
     </div>
-  `).join("") || `<div class="empty">Henüz öne çıkan ürün yok. Panelden ürün ekleyip “Öne Çıkan” yap.</div>`;
+  `).join("") || `<div class="empty">Şu anda öne çıkan ürün bulunmuyor.</div>`;
 });
 </script>
 
