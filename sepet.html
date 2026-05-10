@@ -7,479 +7,117 @@
 <meta name="description" content="Modanta Çanta sepet ve sipariş tamamlama sayfası.">
 
 <style>
-
-html,
-body{
-  width:100%;
-  max-width:100%;
-  overflow-x:hidden;
-}
-
-*{
-  -webkit-tap-highlight-color:transparent;
-}
-
-body{
-  user-select:none;
-  -webkit-user-select:none;
-  -ms-user-select:none;
-}
-
-img,
-button,
-a{
-  -webkit-user-drag:none;
-  user-select:none;
-}
-
-*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,Helvetica,sans-serif}
-:root{--black:#090909;--gold:#d4af37;--softGold:#f4d778;--cream:#fffaf0;--red:#d62828;--green:#178c4f;--blue:#0b5cff}
-html{scroll-behavior:smooth}
-body{background:#fff;color:#111;min-height:100vh;display:flex;flex-direction:column;overflow-x:hidden}
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,Helvetica,sans-serif;-webkit-tap-highlight-color:transparent}
+:root{--black:#090909;--gold:#d4af37;--softGold:#f4d778;--green:#178c4f;--red:#d62828}
+html,body{width:100%;max-width:100%;overflow-x:hidden}
+body{background:#fff;color:#111;min-height:100vh;display:flex;flex-direction:column;user-select:none}
 a{text-decoration:none;color:inherit}
 button,input,textarea,select{font-family:inherit}
-
+button{cursor:pointer}
 body::before{
   content:"";
   position:fixed;
   inset:0;
   z-index:-1;
-  pointer-events:none;
   background:
     radial-gradient(circle at 12% 12%,rgba(212,175,55,.20),transparent 28%),
     radial-gradient(circle at 88% 16%,rgba(0,0,0,.07),transparent 30%),
     linear-gradient(180deg,#fff,#fffaf0 55%,#fff);
 }
 
-.header{
-  position:fixed;
-  top:0;
-  left:0;
-  width:100%;
-  background:rgba(255,255,255,.88);
-  backdrop-filter:blur(20px);
-  border-bottom:1px solid rgba(212,175,55,.35);
-  box-shadow:0 12px 35px rgba(0,0,0,.06);
-  z-index:1000;
-}
+.header{position:fixed;top:0;left:0;width:100%;background:rgba(255,255,255,.9);backdrop-filter:blur(20px);border-bottom:1px solid rgba(212,175,55,.35);box-shadow:0 12px 35px rgba(0,0,0,.06);z-index:1000}
+.nav{max-width:1250px;margin:auto;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.brand{display:flex;align-items:center;gap:9px;white-space:nowrap}
+.brand img{width:50px;height:50px;border-radius:50%;object-fit:cover;border:1px solid var(--gold);box-shadow:0 0 22px rgba(212,175,55,.25)}
+.brand-title{font-size:22px;font-weight:900}
+.brand-title span{color:var(--gold);font-size:18px}
+.back-btn{background:#090909;color:var(--softGold);border:1px solid var(--gold);padding:11px 15px;border-radius:999px;font-size:14px;font-weight:900}
 
-.nav{
-  max-width:1250px;
-  margin:auto;
-  padding:12px 16px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:12px;
-}
+.main{flex:1;padding:115px 18px 60px}
+.container{max-width:1200px;margin:auto}
+.hero{background:linear-gradient(135deg,#111,#050505);color:#fff;border:1px solid rgba(212,175,55,.45);border-radius:36px;padding:38px;margin-bottom:24px;box-shadow:0 24px 70px rgba(0,0,0,.18)}
+.hero h1{font-size:clamp(36px,6vw,68px);line-height:.96;letter-spacing:-2px;margin-bottom:14px}
+.hero h1 span{color:var(--softGold)}
+.hero p{color:#ddd;max-width:820px;line-height:1.8;font-size:16px}
 
-.brand{
-  display:flex;
-  align-items:center;
-  gap:9px;
-  white-space:nowrap;
-}
+.cart-layout{display:grid;grid-template-columns:1.1fr .9fr;gap:22px;align-items:start}
+.panel{border:1px solid rgba(212,175,55,.38);border-radius:28px;padding:20px;background:rgba(255,255,255,.94);box-shadow:0 16px 40px rgba(0,0,0,.07)}
+.panel h2{font-size:24px;margin-bottom:16px}
 
-.brand img{
-  width:50px;
-  height:50px;
-  border-radius:50%;
-  object-fit:cover;
-  border:1px solid var(--gold);
-  box-shadow:0 0 22px rgba(212,175,55,.25);
-}
+.cart-item{display:grid;grid-template-columns:90px 1fr auto;gap:13px;align-items:center;border:1px solid rgba(212,175,55,.35);border-radius:20px;padding:11px;margin-bottom:12px;background:#fff;transition:.25s ease}
+.cart-item:hover{transform:translateY(-4px);box-shadow:0 0 24px rgba(212,175,55,.20),0 18px 40px rgba(0,0,0,.08)}
+.cart-item img{width:90px;height:90px;border-radius:15px;object-fit:cover;background:#f7f7f7}
+.cart-item h3{font-size:16px;margin-bottom:5px}
+.cart-item p{color:#666;font-size:13px;line-height:1.5}
+.item-price{color:#b88a18;font-size:18px;font-weight:900;margin-top:6px}
+.qty-box{display:flex;align-items:center;gap:7px;margin-top:8px}
+.qty-box button{width:30px;height:30px;border-radius:10px;border:1px solid var(--gold);background:#090909;color:var(--softGold);font-weight:900}
+.qty-box span{min-width:26px;text-align:center;font-weight:900}
+.remove-btn{background:#c91818;color:#fff;border:0;border-radius:12px;padding:9px 11px;font-weight:900}
 
-.brand-title{
-  font-size:22px;
-  font-weight:900;
-}
+.empty{border:1px dashed rgba(212,175,55,.75);border-radius:22px;padding:30px;text-align:center;color:#777;font-weight:900;background:#fff}
 
-.brand-title span{
-  color:var(--gold);
-  font-size:18px;
-}
+.form-grid{display:grid;gap:11px}
+.form-grid input,.form-grid textarea,.form-grid select{width:100%;border:1px solid rgba(0,0,0,.16);border-radius:15px;padding:13px;font-size:15px;outline:none;background:#fff}
+.form-grid input:focus,.form-grid textarea:focus,.form-grid select:focus{border-color:var(--gold);box-shadow:0 0 0 4px rgba(212,175,55,.16)}
+.form-grid textarea{min-height:95px;resize:vertical}
+.phone-row{display:grid;grid-template-columns:82px 1fr;gap:8px}
+.phone-code{display:flex;align-items:center;justify-content:center;border:1px solid rgba(0,0,0,.16);border-radius:15px;background:#fffaf0;font-weight:900;color:#111}
+.email-row{display:grid;grid-template-columns:1fr 150px;gap:8px}
+.location-row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 
-.back-btn{
-  background:#090909;
-  color:var(--softGold);
-  border:1px solid var(--gold);
-  padding:11px 15px;
-  border-radius:999px;
-  font-size:14px;
-  font-weight:900;
-  box-shadow:0 10px 24px rgba(0,0,0,.12);
-}
+.error-box{display:none;margin:0 0 14px;background:rgba(214,40,40,.10);color:#b00020;border:1px solid rgba(214,40,40,.25);border-radius:16px;padding:13px;font-weight:900;line-height:1.5}
 
-.main{
-  flex:1;
-  padding:115px 18px 60px;
-}
+.total-box{margin-top:16px;border:1px solid rgba(212,175,55,.35);border-radius:18px;padding:16px;background:#fffaf0}
+.total-row{display:flex;justify-content:space-between;gap:12px;font-size:16px;margin-bottom:8px}
+.total-row strong{font-size:22px;color:#b88a18}
 
-.container{
-  max-width:1200px;
-  margin:auto;
-}
+.complete-btn,.whatsapp-btn,.clear-btn,.cancel-btn{width:100%;border-radius:18px;padding:15px;font-weight:900;font-size:16px}
+.complete-btn{margin-top:14px;background:#090909;color:var(--softGold);border:1px solid var(--gold)}
+.whatsapp-btn{margin-top:9px;background:#178c4f;color:#fff;border:0;display:none}
+.cancel-btn{margin-top:9px;background:#fff3f3;color:#b00020;border:1px solid rgba(214,40,40,.30);display:none}
+.clear-btn{margin-top:9px;background:#fff;color:#111;border:1px solid rgba(0,0,0,.18)}
+.notice{margin-top:12px;color:#666;line-height:1.6;font-size:13px}
 
-.hero{
-  position:relative;
-  overflow:hidden;
-  background:
-    radial-gradient(circle at 15% 15%,rgba(212,175,55,.24),transparent 34%),
-    linear-gradient(135deg,#111,#050505);
-  color:#fff;
-  border:1px solid rgba(212,175,55,.45);
-  border-radius:36px;
-  padding:38px;
-  margin-bottom:24px;
-  box-shadow:0 24px 70px rgba(0,0,0,.18);
-}
+.success-box{display:none;margin-top:18px;border:1px solid rgba(23,140,79,.35);background:rgba(23,140,79,.10);color:#12663b;border-radius:20px;padding:16px;font-weight:900;line-height:1.6}
 
-.hero h1{
-  font-size:clamp(36px,6vw,68px);
-  line-height:.96;
-  letter-spacing:-2px;
-  margin-bottom:14px;
-}
+.payment-box{margin-top:18px;display:none;background:linear-gradient(135deg,#0b5cff,#00a3ff);color:#fff;border-radius:24px;padding:20px;box-shadow:0 20px 55px rgba(11,92,255,.22)}
+.payment-box h3{font-size:24px;margin-bottom:10px}
+.payment-box p{line-height:1.7;color:#eef5ff;margin-bottom:10px}
+.pay-row{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.22);border-radius:16px;padding:12px;margin-top:9px}
+.pay-row small{display:block;opacity:.82;margin-bottom:5px}
+.pay-row strong{font-size:16px;word-break:break-word}
 
-.hero h1 span{
-  color:var(--softGold);
-}
+.copy-flex{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.copy-btn{background:#fff;color:#111;border:0;border-radius:12px;padding:10px 14px;font-weight:900;min-width:100px}
+.copy-btn:active{transform:scale(.97)}
 
-.hero p{
-  color:#ddd;
-  max-width:820px;
-  line-height:1.8;
-  font-size:16px;
-}
+.warning-box{margin-top:18px;background:rgba(255,193,7,.14);border:1px solid rgba(255,193,7,.42);color:#fff;border-radius:18px;padding:16px;line-height:1.7;font-weight:800}
+.policy-box{margin-top:18px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.22);border-radius:20px;padding:16px}
+.policy-box h4{font-size:20px;margin-bottom:10px;color:#fff}
+.policy-box p{font-size:14px;line-height:1.8;color:#eef5ff;margin-bottom:10px}
+.policy-box ul{padding-left:18px;margin-top:8px}
+.policy-box li{font-size:14px;line-height:1.8;color:#eef5ff;margin-bottom:8px}
 
-.cart-layout{
-  display:grid;
-  grid-template-columns:1.1fr .9fr;
-  gap:22px;
-  align-items:start;
-}
-
-.panel{
-  border:1px solid rgba(212,175,55,.38);
-  border-radius:28px;
-  padding:20px;
-  background:rgba(255,255,255,.94);
-  box-shadow:0 16px 40px rgba(0,0,0,.07);
-}
-
-.panel h2{
-  font-size:24px;
-  margin-bottom:16px;
-}
-
-.cart-item{
-  display:grid;
-  grid-template-columns:90px 1fr auto;
-  gap:13px;
-  align-items:center;
-  border:1px solid rgba(212,175,55,.35);
-  border-radius:20px;
-  padding:11px;
-  margin-bottom:12px;
-  background:#fff;
-  transition:.25s ease;
-}
-
-.cart-item:hover{
-  transform:translateY(-4px);
-  box-shadow:0 0 24px rgba(212,175,55,.20),0 18px 40px rgba(0,0,0,.08);
-}
-
-.cart-item img{
-  width:90px;
-  height:90px;
-  border-radius:15px;
-  object-fit:cover;
-  background:#f7f7f7;
-}
-
-.cart-item h3{
-  font-size:16px;
-  margin-bottom:5px;
-}
-
-.cart-item p{
-  color:#666;
-  font-size:13px;
-  line-height:1.5;
-}
-
-.item-price{
-  color:#b88a18;
-  font-size:18px;
-  font-weight:900;
-  margin-top:6px;
-}
-
-.qty-box{
-  display:flex;
-  align-items:center;
-  gap:7px;
-  margin-top:8px;
-}
-
-.qty-box button{
-  width:30px;
-  height:30px;
-  border-radius:10px;
-  border:1px solid var(--gold);
-  background:#090909;
-  color:var(--softGold);
-  font-weight:900;
-  cursor:pointer;
-}
-
-.qty-box span{
-  min-width:26px;
-  text-align:center;
-  font-weight:900;
-}
-
-.remove-btn{
-  background:#c91818;
-  color:#fff;
-  border:0;
-  border-radius:12px;
-  padding:9px 11px;
-  font-weight:900;
-  cursor:pointer;
-}
-
-.empty{
-  border:1px dashed rgba(212,175,55,.75);
-  border-radius:22px;
-  padding:30px;
-  text-align:center;
-  color:#777;
-  font-weight:900;
-  background:#fff;
-}
-
-.form-grid{
-  display:grid;
-  gap:11px;
-}
-
-.form-grid input,
-.form-grid textarea,
-.form-grid select{
-  width:100%;
-  border:1px solid rgba(0,0,0,.16);
-  border-radius:15px;
-  padding:13px;
-  font-size:15px;
-  outline:none;
-  background:#fff;
-}
-
-.form-grid input:focus,
-.form-grid textarea:focus,
-.form-grid select:focus{
-  border-color:var(--gold);
-  box-shadow:0 0 0 4px rgba(212,175,55,.16);
-}
-
-.form-grid textarea{
-  min-height:95px;
-  resize:vertical;
-}
-
-.total-box{
-  margin-top:16px;
-  border:1px solid rgba(212,175,55,.35);
-  border-radius:18px;
-  padding:16px;
-  background:#fffaf0;
-}
-
-.total-row{
-  display:flex;
-  justify-content:space-between;
-  gap:12px;
-  font-size:16px;
-  margin-bottom:8px;
-}
-
-.total-row strong{
-  font-size:22px;
-  color:#b88a18;
-}
-
-.complete-btn{
-  width:100%;
-  margin-top:14px;
-  background:#090909;
-  color:var(--softGold);
-  border:1px solid var(--gold);
-  border-radius:18px;
-  padding:16px;
-  font-weight:900;
-  font-size:16px;
-  cursor:pointer;
-}
-
-.whatsapp-btn{
-  width:100%;
-  margin-top:9px;
-  background:#178c4f;
-  color:#fff;
-  border:0;
-  border-radius:16px;
-  padding:14px;
-  font-weight:900;
-  cursor:pointer;
-  display:none;
-}
-
-.clear-btn{
-  width:100%;
-  margin-top:9px;
-  background:#fff;
-  color:#111;
-  border:1px solid rgba(0,0,0,.18);
-  border-radius:16px;
-  padding:13px;
-  font-weight:900;
-  cursor:pointer;
-}
-
-.notice{
-  margin-top:12px;
-  color:#666;
-  line-height:1.6;
-  font-size:13px;
-}
-
-.payment-box{
-  margin-top:18px;
-  display:none;
-  background:linear-gradient(135deg,#0b5cff,#00a3ff);
-  color:#fff;
-  border-radius:24px;
-  padding:20px;
-  box-shadow:0 20px 55px rgba(11,92,255,.22);
-}
-
-.payment-box h3{
-  font-size:24px;
-  margin-bottom:10px;
-}
-
-.payment-box p{
-  line-height:1.7;
-  color:#eef5ff;
-  margin-bottom:10px;
-}
-
-.pay-row{
-  background:rgba(255,255,255,.14);
-  border:1px solid rgba(255,255,255,.22);
-  border-radius:16px;
-  padding:12px;
-  margin-top:9px;
-}
-
-.pay-row small{
-  display:block;
-  opacity:.82;
-  margin-bottom:5px;
-}
-
-.pay-row strong{
-  font-size:16px;
-  word-break:break-word;
-}
-
-.success-box{
-  display:none;
-  margin-top:18px;
-  border:1px solid rgba(23,140,79,.35);
-  background:rgba(23,140,79,.10);
-  color:#12663b;
-  border-radius:20px;
-  padding:16px;
-  font-weight:900;
-  line-height:1.6;
-}
-
-.developer-footer{
-  margin-top:auto;
-  color:#111;
-  padding:22px 18px;
-  text-align:center;
-  font-size:15px;
-  font-weight:600;
-}
-
-.developer-footer strong{
-  font-weight:900;
-}
+.developer-footer{margin-top:auto;color:#111;padding:22px 18px;text-align:center;font-size:15px;font-weight:600}
+.developer-footer strong{font-weight:900}
 
 @media(max-width:850px){
-  .cart-layout{
-    grid-template-columns:1fr;
-  }
-
-  .hero{
-    border-radius:28px;
-    padding:28px;
-  }
+  .cart-layout{grid-template-columns:1fr}
+  .hero{border-radius:28px;padding:28px}
 }
-
 @media(max-width:600px){
-  .nav{
-    padding:10px 12px;
-  }
-
-  .brand img{
-    width:42px;
-    height:42px;
-  }
-
-  .brand-title{
-    font-size:18px;
-  }
-
-  .brand-title span{
-    font-size:15px;
-  }
-
-  .back-btn{
-    padding:9px 10px;
-    font-size:12px;
-  }
-
-  .main{
-    padding:95px 12px 38px;
-  }
-
-  .panel{
-    border-radius:22px;
-    padding:14px;
-  }
-
-  .cart-item{
-    grid-template-columns:74px 1fr;
-  }
-
-  .cart-item img{
-    width:74px;
-    height:74px;
-  }
-
-  .remove-btn{
-    grid-column:1/-1;
-  }
-
-  .developer-footer{
-    font-size:13px;
-    padding:18px 12px;
-  }
+  .nav{padding:10px 12px}
+  .brand img{width:42px;height:42px}
+  .brand-title{font-size:18px}
+  .brand-title span{font-size:15px}
+  .back-btn{padding:9px 10px;font-size:12px}
+  .main{padding:95px 12px 38px}
+  .panel{border-radius:22px;padding:14px}
+  .cart-item{grid-template-columns:74px 1fr}
+  .cart-item img{width:74px;height:74px}
+  .remove-btn{grid-column:1/-1}
+  .email-row,.location-row{grid-template-columns:1fr}
 }
 </style>
 </head>
@@ -492,7 +130,6 @@ body::before{
       <img src="https://pbs.twimg.com/media/HHaRfeXWIAExq29?format=jpg&name=240x240" alt="Modanta Çanta Logo">
       <div class="brand-title">Modanta <span>Çanta</span></div>
     </a>
-
     <a href="alisveris.html" class="back-btn">Alışverişe Dön</a>
   </nav>
 </header>
@@ -504,7 +141,7 @@ body::before{
       <h1>Sepetini <span>tamamla.</span></h1>
       <p>
         Ürünlerini kontrol et, teslimat bilgilerini doldur ve siparişini oluştur.
-        Sipariş sonrası ödeme bilgileri ekranda gösterilir.
+        Sipariş oluşturulduktan sonra ödeme bilgileri görünür ve WhatsApp mesajı hazır hale gelir.
       </p>
     </section>
 
@@ -518,9 +155,26 @@ body::before{
       <section class="panel">
         <h2>Sipariş Bilgileri</h2>
 
+        <div class="error-box" id="errorBox"></div>
+
         <div class="form-grid">
           <input id="customerName" placeholder="Ad Soyad">
-          <input id="customerPhone" placeholder="Telefon">
+
+          <div class="phone-row">
+            <div class="phone-code">+90</div>
+            <input id="customerPhone" inputmode="numeric" maxlength="10" placeholder="5XX XXX XX XX">
+          </div>
+
+          <div class="email-row">
+            <input id="emailName" placeholder="E-posta kullanıcı adı">
+            <select id="emailDomain">
+              <option value="@gmail.com">@gmail.com</option>
+              <option value="@icloud.com">@icloud.com</option>
+              <option value="@hotmail.com">@hotmail.com</option>
+              <option value="@outlook.com">@outlook.com</option>
+              <option value="@yahoo.com">@yahoo.com</option>
+            </select>
+          </div>
 
           <select id="cargoCompany">
             <option value="">Kargo firması seç</option>
@@ -532,6 +186,16 @@ body::before{
             <option value="Trendyol Express">Trendyol Express</option>
           </select>
 
+          <div class="location-row">
+            <select id="citySelect">
+              <option value="">İl seç</option>
+            </select>
+
+            <select id="districtSelect" disabled>
+              <option value="">Önce il seç</option>
+            </select>
+          </div>
+
           <textarea id="customerAddress" placeholder="Açık adres"></textarea>
           <textarea id="customerNote" placeholder="Sipariş notu"></textarea>
         </div>
@@ -541,7 +205,6 @@ body::before{
             <span>Ürün adedi</span>
             <strong id="itemCount">0</strong>
           </div>
-
           <div class="total-row">
             <span>Toplam</span>
             <strong id="cartTotal">₺0</strong>
@@ -549,27 +212,45 @@ body::before{
         </div>
 
         <button class="complete-btn" id="completeBtn" onclick="completeOrder()">Siparişi Oluştur</button>
-        <button class="whatsapp-btn" id="whatsappBtn">WhatsApp Mesajını Aç</button>
+        <button class="whatsapp-btn" id="whatsappBtn">WhatsApp Mesajını Gönder</button>
+        <button class="cancel-btn" id="cancelBtn">WhatsApp ile Siparişi İptal Et</button>
         <button class="clear-btn" onclick="clearCart()">Sepeti Temizle</button>
 
         <p class="notice">
-          Sipariş oluşturulduktan sonra ödeme bilgileri bu sayfada görünür. Ödeme açıklamasına sipariş kodunu yazman önerilir.
+          Sipariş oluşturulduktan sonra WhatsApp mesajı hazır olarak açılır. Müşteri sadece gönder butonuna basar.
         </p>
 
         <div class="success-box" id="successBox"></div>
 
         <div class="payment-box" id="paymentBox">
           <h3>Ödeme Bilgileri</h3>
-          <p id="paymentText">Siparişiniz alınmıştır. Ödeme bilgileri aşağıdadır.</p>
+
+          <p id="paymentText">
+            Siparişiniz alınmıştır. Ödeme yaptıktan sonra dekontu WhatsApp üzerinden göndermeniz gerekir.
+          </p>
+
+          <div class="pay-row">
+            <small>Sipariş Kodu</small>
+            <div class="copy-flex">
+              <strong id="createdOrderCode">-</strong>
+              <button class="copy-btn" onclick="copyText('createdOrderCode')">Kopyala</button>
+            </div>
+          </div>
 
           <div class="pay-row">
             <small>Alıcı Adı</small>
-            <strong id="payName">-</strong>
+            <div class="copy-flex">
+              <strong id="payName">-</strong>
+              <button class="copy-btn" onclick="copyText('payName')">Kopyala</button>
+            </div>
           </div>
 
           <div class="pay-row">
             <small>IBAN</small>
-            <strong id="payIban">-</strong>
+            <div class="copy-flex">
+              <strong id="payIban">-</strong>
+              <button class="copy-btn" onclick="copyText('payIban')">Kopyala</button>
+            </div>
           </div>
 
           <div class="pay-row">
@@ -579,13 +260,47 @@ body::before{
 
           <div class="pay-row">
             <small>Ödeme Açıklaması</small>
-            <strong id="payNote">Sipariş kodunu açıklamaya yazınız.</strong>
+            <div class="copy-flex">
+              <strong id="payNote">Sipariş kodunu açıklamaya yazınız.</strong>
+              <button class="copy-btn" onclick="copyText('payNote')">Kopyala</button>
+            </div>
+          </div>
+
+          <div class="warning-box">
+            ⚠️ Ödeme tamamlanmadan ürün gönderimi yapılmaz. Havale/EFT işlemi sonrası dekontun WhatsApp üzerinden paylaşılması gerekir.
+            Ödeme açıklamasına sipariş kodunun yazılması sipariş eşleştirme sürecini hızlandırır.
+          </div>
+
+          <div class="policy-box">
+            <h4>İade, İptal ve Sipariş Süreci</h4>
+
+            <p>
+              Sipariş oluşturulduktan sonra ödeme tamamlanana kadar ürün hazırlama ve kargo süreci başlatılmaz.
+              Bu nedenle ödeme yapılmadan ürün gönderimi gerçekleştirilmez.
+            </p>
+
+            <p>
+              Müşteri, siparişi hazırlık sürecine geçmeden önce WhatsApp destek hattı üzerinden iptal talebi oluşturabilir.
+              İptal talebi için sipariş kodunun paylaşılması gerekir.
+            </p>
+
+            <ul>
+              <li>Ödeme yapılmadıysa sipariş, müşteri talebiyle WhatsApp üzerinden iptal edilebilir.</li>
+              <li>Ödeme yapıldıysa iptal ve iade süreci, ödeme/dekont kontrolünden sonra değerlendirilir.</li>
+              <li>Ürün kargoya verilmişse süreç kargo durumu, ürün durumu ve tüketici hakları kapsamında değerlendirilir.</li>
+              <li>Kişiye özel hazırlanan, kullanılmış, hasar görmüş veya tekrar satışa uygun olmayan ürünlerde iade kabul edilmeyebilir.</li>
+              <li>Sahte ödeme bildirimi, hatalı dekont paylaşımı veya ödeme yapılmadan ürün talep edilmesi durumunda sipariş işleme alınmaz.</li>
+            </ul>
+
+            <p>
+              Hukuki süreçlerde sipariş kayıtları, müşteri tarafından paylaşılan bilgiler, WhatsApp yazışmaları,
+              ödeme dekontu ve kargo kayıtları esas alınabilir.
+            </p>
           </div>
         </div>
+
       </section>
-
     </div>
-
   </div>
 </main>
 
@@ -618,7 +333,7 @@ const db = getFirestore(app);
 
 let whatsappNumber = "905435755840";
 let lastWhatsappUrl = "";
-
+let lastCancelUrl = "";
 let cart = JSON.parse(localStorage.getItem("modantaCart") || "[]");
 
 const cartItems = document.getElementById("cartItems");
@@ -627,8 +342,12 @@ const cartTotal = document.getElementById("cartTotal");
 const paymentBox = document.getElementById("paymentBox");
 const successBox = document.getElementById("successBox");
 const whatsappBtn = document.getElementById("whatsappBtn");
+const cancelBtn = document.getElementById("cancelBtn");
 const completeBtn = document.getElementById("completeBtn");
 const footerText = document.getElementById("footerText");
+const errorBox = document.getElementById("errorBox");
+const citySelect = document.getElementById("citySelect");
+const districtSelect = document.getElementById("districtSelect");
 
 function hasValue(value){
   return value !== undefined && value !== null && String(value).trim() !== "";
@@ -650,9 +369,137 @@ function makeOrderCode(){
   return "MD-" + Date.now().toString().slice(-6) + "-" + Math.floor(100 + Math.random() * 900);
 }
 
+function showError(message){
+  errorBox.style.display = "block";
+  errorBox.innerHTML = message;
+  errorBox.scrollIntoView({behavior:"smooth",block:"center"});
+}
+
+function hideError(){
+  errorBox.style.display = "none";
+  errorBox.innerHTML = "";
+}
+
+function getEmail(){
+  const name = safeValue("emailName").replace(/\s/g,"");
+  const domain = safeValue("emailDomain");
+  return name ? name + domain : "";
+}
+
+function isValidEmail(email){
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+
+function saveCart(){
+  localStorage.setItem("modantaCart", JSON.stringify(cart));
+}
+
+function getTotal(){
+  return cart.reduce((sum,item)=>{
+    return sum + (Number(item.price || 0) * Number(item.qty || 1));
+  },0);
+}
+
+function getCount(){
+  return cart.reduce((sum,item)=>{
+    return sum + Number(item.qty || 1);
+  },0);
+}
+
+window.copyText = async function(id){
+  const el = document.getElementById(id);
+  const text = String(el?.textContent || "").trim();
+
+  if(!text || text === "-"){
+    alert("Kopyalanacak bilgi bulunamadı.");
+    return;
+  }
+
+  try{
+    await navigator.clipboard.writeText(text);
+    alert("Kopyalandı: " + text);
+  }catch(error){
+    const temp = document.createElement("textarea");
+    temp.value = text;
+    document.body.appendChild(temp);
+    temp.select();
+    document.execCommand("copy");
+    document.body.removeChild(temp);
+    alert("Kopyalandı: " + text);
+  }
+};
+
+async function loadCities(){
+  try{
+    const res = await fetch("https://turkiyeapi.dev/api/v1/provinces");
+    const json = await res.json();
+    const cities = json.data || [];
+
+    citySelect.innerHTML = `<option value="">İl seç</option>`;
+
+    cities
+      .sort((a,b)=>a.name.localeCompare(b.name,"tr"))
+      .forEach(city=>{
+        const option = document.createElement("option");
+        option.value = city.name;
+        option.dataset.id = city.id;
+        option.textContent = city.name;
+        citySelect.appendChild(option);
+      });
+
+  }catch(error){
+    citySelect.innerHTML = `<option value="">İller yüklenemedi</option>`;
+    showError("İl listesi yüklenemedi. İnternet bağlantısını kontrol edin.");
+  }
+}
+
+async function loadDistricts(provinceId){
+  districtSelect.disabled = true;
+  districtSelect.innerHTML = `<option value="">İlçeler yükleniyor...</option>`;
+
+  try{
+    const res = await fetch(`https://turkiyeapi.dev/api/v1/districts?provinceId=${provinceId}&limit=1000`);
+    const json = await res.json();
+    const districts = json.data || [];
+
+    districtSelect.innerHTML = `<option value="">İlçe seç</option>`;
+
+    districts
+      .sort((a,b)=>a.name.localeCompare(b.name,"tr"))
+      .forEach(district=>{
+        const option = document.createElement("option");
+        option.value = district.name;
+        option.textContent = district.name;
+        districtSelect.appendChild(option);
+      });
+
+    districtSelect.disabled = false;
+
+  }catch(error){
+    districtSelect.innerHTML = `<option value="">İlçeler yüklenemedi</option>`;
+    showError("İlçe listesi yüklenemedi. İnternet bağlantısını kontrol edin.");
+  }
+}
+
+citySelect.addEventListener("change",()=>{
+  const selected = citySelect.options[citySelect.selectedIndex];
+  const provinceId = selected?.dataset?.id;
+
+  if(!provinceId){
+    districtSelect.disabled = true;
+    districtSelect.innerHTML = `<option value="">Önce il seç</option>`;
+    return;
+  }
+
+  loadDistricts(provinceId);
+});
+
+document.getElementById("customerPhone").addEventListener("input",e=>{
+  e.target.value = e.target.value.replace(/\D/g,"").slice(0,10);
+});
+
 onSnapshot(doc(db,"siteContent","contact"),snap=>{
   if(!snap.exists()) return;
-
   const data = snap.data();
 
   if(hasValue(data.whatsapp)){
@@ -664,7 +511,6 @@ onSnapshot(doc(db,"siteContent","contact"),snap=>{
 
 onSnapshot(doc(db,"siteContent","payment"),snap=>{
   if(!snap.exists()) return;
-
   const paymentInfo = snap.data();
 
   if(hasValue(paymentInfo.name)) document.getElementById("payName").textContent = paymentInfo.name;
@@ -676,29 +522,12 @@ onSnapshot(doc(db,"siteContent","payment"),snap=>{
 
 onSnapshot(doc(db,"siteContent","seo"),snap=>{
   if(!snap.exists()) return;
-
   const data = snap.data();
 
   if(hasValue(data.footer)){
     footerText.innerHTML = `<strong>${data.footer}</strong>`;
   }
 });
-
-function saveCart(){
-  localStorage.setItem("modantaCart", JSON.stringify(cart));
-}
-
-function getTotal(){
-  return cart.reduce((sum,item) => {
-    return sum + (Number(item.price || 0) * Number(item.qty || 1));
-  }, 0);
-}
-
-function getCount(){
-  return cart.reduce((sum,item)=>{
-    return sum + Number(item.qty || 1);
-  },0);
-}
 
 function renderCart(){
   itemCount.textContent = getCount();
@@ -709,22 +538,19 @@ function renderCart(){
     return;
   }
 
-  cartItems.innerHTML = cart.map((item,index) => `
+  cartItems.innerHTML = cart.map((item,index)=>`
     <div class="cart-item">
       <img src="${item.imageUrl || ""}" alt="${item.name || "Ürün"}">
-
       <div>
         <h3>${item.name || "Ürün"}</h3>
         <p>Kod: ${item.code || "-"} | ${item.category || ""}</p>
         <div class="item-price">${money(Number(item.price || 0) * Number(item.qty || 1))}</div>
-
         <div class="qty-box">
           <button onclick="changeQty(${index},-1)">−</button>
           <span>${item.qty || 1}</span>
           <button onclick="changeQty(${index},1)">+</button>
         </div>
       </div>
-
       <button class="remove-btn" onclick="removeItem(${index})">Sil</button>
     </div>
   `).join("");
@@ -756,19 +582,35 @@ window.clearCart = function(){
 };
 
 window.completeOrder = async function(){
+  hideError();
+
   if(cart.length === 0){
-    alert("Sepet boş.");
+    showError("Sepetiniz boş. Sipariş oluşturmak için önce ürün eklemelisiniz.");
     return;
   }
 
   const name = safeValue("customerName");
-  const phone = safeValue("customerPhone");
+  const phoneRaw = safeValue("customerPhone");
+  const phone = "+90" + phoneRaw;
+  const email = getEmail();
   const cargoCompany = safeValue("cargoCompany");
+  const city = safeValue("citySelect");
+  const district = safeValue("districtSelect");
   const address = safeValue("customerAddress");
   const note = safeValue("customerNote");
 
-  if(!name || !phone || !cargoCompany || !address){
-    alert("Lütfen ad soyad, telefon, kargo firması ve adres bilgilerini doldur.");
+  if(!name || !phoneRaw || !email || !cargoCompany || !city || !district || !address){
+    showError("Lütfen ad soyad, telefon, e-posta, kargo firması, il, ilçe ve açık adres bilgilerini doldurun.");
+    return;
+  }
+
+  if(phoneRaw.length !== 10 || !phoneRaw.startsWith("5")){
+    showError("Telefon numarası +90 ile başlar. Kutunun içine sadece 5XX XXX XX XX şeklinde 10 haneli numarayı yazın.");
+    return;
+  }
+
+  if(!isValidEmail(email)){
+    showError("Lütfen geçerli bir e-posta bilgisi yazın.");
     return;
   }
 
@@ -779,7 +621,10 @@ window.completeOrder = async function(){
     orderCode,
     name,
     phone,
+    email,
     cargoCompany,
+    city,
+    district,
     address,
     note,
     total,
@@ -795,49 +640,73 @@ window.completeOrder = async function(){
   try{
     await addDoc(collection(db,"orders"),orderData);
 
+    document.getElementById("createdOrderCode").textContent = orderCode;
+
     successBox.style.display = "block";
     successBox.innerHTML = `
-      Siparişiniz alındı.<br>
+      Siparişiniz başarıyla oluşturuldu.<br>
       Sipariş Kodunuz: <strong>${orderCode}</strong><br>
-      Toplam Tutar: <strong>${money(total)}</strong>
+      Toplam Tutar: <strong>${money(total)}</strong><br>
+      Ödeme bilgilerini aşağıdan kopyalayabilirsiniz. WhatsApp mesajınız da hazırlandı.
     `;
 
     paymentBox.style.display = "block";
 
-    const productText = cart.map((item,i) =>
+    const productText = cart.map((item,i)=>
       `${i + 1}) ${item.name || "Ürün"} | Kod: ${item.code || "-"} | Adet: ${item.qty || 1} | ${money(Number(item.price || 0) * Number(item.qty || 1))}`
     ).join("%0A");
 
     const message =
-`Merhaba Modanta Çanta,%0A%0AYeni sipariş oluşturdum.%0A%0A` +
-`Sipariş Kodu: ${encodeURIComponent(orderCode)}%0A%0A` +
+`Merhaba Modanta Çanta,%0A%0ASipariş oluşturdum.%0A%0A` +
+`Sipariş Kodu: ${encodeURIComponent(orderCode)}%0A` +
+`Toplam Tutar: ${encodeURIComponent(money(total))}%0A%0A` +
 `Müşteri Bilgileri:%0A` +
 `Ad Soyad: ${encodeURIComponent(name)}%0A` +
 `Telefon: ${encodeURIComponent(phone)}%0A` +
+`E-posta: ${encodeURIComponent(email)}%0A` +
 `Kargo Firması: ${encodeURIComponent(cargoCompany)}%0A` +
+`İl: ${encodeURIComponent(city)}%0A` +
+`İlçe: ${encodeURIComponent(district)}%0A` +
 `Adres: ${encodeURIComponent(address)}%0A` +
 `Not: ${encodeURIComponent(note || "-")}%0A%0A` +
 `Ürünler:%0A${productText}%0A%0A` +
-`Toplam: ${encodeURIComponent(money(total))}%0A%0A` +
-`Ödeme açıklaması: ${encodeURIComponent(orderCode)}`;
+`Ödeme Bilgileri:%0A` +
+`Alıcı: ${encodeURIComponent(document.getElementById("payName").textContent)}%0A` +
+`IBAN: ${encodeURIComponent(document.getElementById("payIban").textContent)}%0A` +
+`Banka: ${encodeURIComponent(document.getElementById("payBank").textContent)}%0A` +
+`Ödeme Açıklaması: ${encodeURIComponent(orderCode)}%0A%0A` +
+`Not: Ödeme tamamlanmadan ürün gönderimi yapılmadığını biliyorum.`;
 
     lastWhatsappUrl = `https://wa.me/${whatsappNumber}?text=${message}`;
 
+    const cancelMessage =
+`Merhaba Modanta Çanta,%0A%0ASiparişimi iptal etmek istiyorum.%0A%0A` +
+`Sipariş Kodu: ${encodeURIComponent(orderCode)}%0A` +
+`Ad Soyad: ${encodeURIComponent(name)}%0A` +
+`Telefon: ${encodeURIComponent(phone)}%0A%0A` +
+`İptal talebimin kontrol edilmesini rica ederim.`;
+
+    lastCancelUrl = `https://wa.me/${whatsappNumber}?text=${cancelMessage}`;
+
     whatsappBtn.style.display = "block";
     whatsappBtn.onclick = () => window.open(lastWhatsappUrl,"_blank");
+
+    cancelBtn.style.display = "block";
+    cancelBtn.onclick = () => window.open(lastCancelUrl,"_blank");
 
     cart = [];
     saveCart();
     renderCart();
 
   }catch(error){
-    alert("Sipariş oluşturulurken hata oluştu: " + error.message);
+    showError("Sipariş oluşturulurken hata oluştu: " + error.message);
   }finally{
     completeBtn.disabled = false;
     completeBtn.textContent = "Siparişi Oluştur";
   }
 };
 
+loadCities();
 renderCart();
 </script>
 
