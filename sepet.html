@@ -496,6 +496,7 @@ body::before{
         <div class="form-grid">
           <input id="customerName" placeholder="Ad Soyad">
           <input id="customerPhone" placeholder="Telefon">
+
           <select id="cargoCompany">
             <option value="">Kargo firması seç</option>
             <option value="Yurtiçi Kargo">Yurtiçi Kargo</option>
@@ -505,6 +506,7 @@ body::before{
             <option value="PTT Kargo">PTT Kargo</option>
             <option value="Trendyol Express">Trendyol Express</option>
           </select>
+
           <textarea id="customerAddress" placeholder="Açık adres"></textarea>
           <textarea id="customerNote" placeholder="Sipariş notu"></textarea>
         </div>
@@ -590,7 +592,6 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
 let whatsappNumber = "905435755840";
-let paymentInfo = {};
 let lastWhatsappUrl = "";
 
 let cart = JSON.parse(localStorage.getItem("modantaCart") || "[]");
@@ -602,9 +603,14 @@ const paymentBox = document.getElementById("paymentBox");
 const successBox = document.getElementById("successBox");
 const whatsappBtn = document.getElementById("whatsappBtn");
 const completeBtn = document.getElementById("completeBtn");
+const footerText = document.getElementById("footerText");
 
 function hasValue(value){
-  return value && String(value).trim() !== "";
+  return value !== undefined && value !== null && String(value).trim() !== "";
+}
+
+function safeValue(id){
+  return String(document.getElementById(id)?.value || "").trim();
 }
 
 function phoneClean(phone){
@@ -634,13 +640,13 @@ onSnapshot(doc(db,"siteContent","contact"),snap=>{
 onSnapshot(doc(db,"siteContent","payment"),snap=>{
   if(!snap.exists()) return;
 
-  paymentInfo = snap.data();
+  const paymentInfo = snap.data();
 
-  if(hasValue(paymentInfo.name)) payName.textContent = paymentInfo.name;
-  if(hasValue(paymentInfo.iban)) payIban.textContent = paymentInfo.iban;
-  if(hasValue(paymentInfo.bank)) payBank.textContent = paymentInfo.bank;
-  if(hasValue(paymentInfo.note)) payNote.textContent = paymentInfo.note;
-  if(hasValue(paymentInfo.text)) paymentText.textContent = paymentInfo.text;
+  if(hasValue(paymentInfo.name)) document.getElementById("payName").textContent = paymentInfo.name;
+  if(hasValue(paymentInfo.iban)) document.getElementById("payIban").textContent = paymentInfo.iban;
+  if(hasValue(paymentInfo.bank)) document.getElementById("payBank").textContent = paymentInfo.bank;
+  if(hasValue(paymentInfo.note)) document.getElementById("payNote").textContent = paymentInfo.note;
+  if(hasValue(paymentInfo.text)) document.getElementById("paymentText").textContent = paymentInfo.text;
 });
 
 onSnapshot(doc(db,"siteContent","seo"),snap=>{
@@ -658,11 +664,15 @@ function saveCart(){
 }
 
 function getTotal(){
-  return cart.reduce((sum,item) => sum + (Number(item.price || 0) * Number(item.qty || 1)), 0);
+  return cart.reduce((sum,item) => {
+    return sum + (Number(item.price || 0) * Number(item.qty || 1));
+  }, 0);
 }
 
 function getCount(){
-  return cart.reduce((sum,item)=>sum + Number(item.qty || 1),0);
+  return cart.reduce((sum,item)=>{
+    return sum + Number(item.qty || 1);
+  },0);
 }
 
 function renderCart(){
@@ -726,11 +736,11 @@ window.completeOrder = async function(){
     return;
   }
 
-  const name = customerName.value.trim();
-  const phone = customerPhone.value.trim();
-  const cargoCompany = document.getElementById("cargoCompany").value.trim();
-  const address = customerAddress.value.trim();
-  const note = customerNote.value.trim();
+  const name = safeValue("customerName");
+  const phone = safeValue("customerPhone");
+  const cargoCompany = safeValue("cargoCompany");
+  const address = safeValue("customerAddress");
+  const note = safeValue("customerNote");
 
   if(!name || !phone || !cargoCompany || !address){
     alert("Lütfen ad soyad, telefon, kargo firması ve adres bilgilerini doldur.");
@@ -787,6 +797,7 @@ window.completeOrder = async function(){
 `Ödeme açıklaması: ${encodeURIComponent(orderCode)}`;
 
     lastWhatsappUrl = `https://wa.me/${whatsappNumber}?text=${message}`;
+
     whatsappBtn.style.display = "block";
     whatsappBtn.onclick = () => window.open(lastWhatsappUrl,"_blank");
 
