@@ -14,6 +14,13 @@ img,button,a{-webkit-user-drag:none;user-select:none}
 :root{--black:#090909;--gold:#d4af37;--softGold:#f4d778;--cream:#fffaf0;--red:#d62828}
 html{scroll-behavior:smooth}
 body{background:#fff;color:#111;overflow-x:hidden;min-height:100vh;display:flex;flex-direction:column}
+body.modal-lock{
+  position:fixed;
+  left:0;
+  right:0;
+  width:100%;
+  overflow:hidden;
+}
 a{text-decoration:none;color:inherit}
 button{font-family:inherit;-webkit-tap-highlight-color:transparent}
 
@@ -54,9 +61,9 @@ body::before{
 .brand{display:flex;align-items:center;gap:9px;white-space:nowrap}
 
 .brand img{
-  width:50px;
-  height:50px;
-  border-radius:50%;
+  width:58px;
+  height:52px;
+  border-radius:18px;
   object-fit:cover;
   border:1px solid var(--gold);
   box-shadow:0 0 22px rgba(212,175,55,.25);
@@ -78,12 +85,6 @@ body::before{
   justify-content:center;
   overflow:hidden;
   box-shadow:0 10px 24px rgba(0,0,0,.12);
-  transition:.25s ease;
-}
-
-.icon-btn:hover{
-  transform:translateY(-3px) rotate(-5deg);
-  box-shadow:0 0 25px rgba(212,175,55,.45);
 }
 
 .icon-btn img{
@@ -111,12 +112,17 @@ body::before{
   box-shadow:0 0 28px rgba(212,175,55,.35);
 }
 
-.cart-btn.bump{animation:cartBump .45s ease}
+.cart-btn.bump{
+  animation:cartColorBump .85s ease;
+}
 
-@keyframes cartBump{
-  0%{transform:scale(1)}
-  35%{transform:scale(1.13) rotate(-3deg)}
-  100%{transform:scale(1)}
+@keyframes cartColorBump{
+  0%{transform:scale(1);background:#090909;color:var(--softGold)}
+  18%{transform:scale(1.35) rotate(-5deg);background:#ff2e88;color:#fff}
+  36%{transform:scale(1.22) rotate(5deg);background:#ff7a18;color:#fff}
+  55%{transform:scale(1.30) rotate(-3deg);background:#3c7bff;color:#fff}
+  75%{transform:scale(1.12);background:#08a74e;color:#fff}
+  100%{transform:scale(1);background:#090909;color:var(--softGold)}
 }
 
 .top-tabs{
@@ -128,7 +134,7 @@ body::before{
   background:rgba(255,255,255,.95);
   backdrop-filter:blur(16px);
   display:grid;
-  grid-template-columns:repeat(4,1fr);
+  grid-template-columns:repeat(3,1fr);
   border-bottom:1px solid rgba(212,175,55,.35);
 }
 
@@ -220,7 +226,12 @@ body::before{
   justify-content:center;
 }
 
-.shop-mini strong{font-size:30px;color:#111;margin-bottom:8px}
+.shop-mini strong{
+  font-size:30px;
+  color:#111;
+  margin-bottom:8px;
+}
+
 .shop-mini p{color:#666;line-height:1.7}
 
 .filter-row{
@@ -371,8 +382,21 @@ body::before{
 }
 
 .price{
-  color:#079844;
+  display:flex;
+  justify-content:flex-end;
+  align-items:center;
+  gap:8px;
   font-size:23px;
+  font-weight:900;
+}
+
+.tl-icon{
+  color:var(--gold);
+  font-weight:900;
+}
+
+.price-number{
+  color:#079844;
   font-weight:900;
 }
 
@@ -494,32 +518,98 @@ body::before{
   display:none;
   background:#fff;
   overflow-y:auto;
+  overscroll-behavior:contain;
 }
 
 .product-modal.show{display:block}
 
-.modal-close{
-  position:fixed;
-  right:18px;
-  top:18px;
-  z-index:5;
-  width:48px;
-  height:48px;
-  border-radius:50%;
+
+
+ .modal-top-bar{
+  position:sticky;
+  top:0;
+  z-index:99999;
+  width:100%;
+  height:84px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 22px;
+  background:linear-gradient(90deg,#050505 0%,#111 44%,#2b0707 74%,#8b1010 100%);
   border:0;
-  background:#d62828;
+  box-shadow:0 16px 42px rgba(0,0,0,.38);
+  backdrop-filter:blur(18px);
+}
+
+.modal-top-price{
+  margin:0;
+  margin-left:18px;
+  padding:0;
+  background:transparent;
+  border:0;
+  border-radius:0;
+  box-shadow:none;
   color:#fff;
-  font-size:34px;
+  display:flex;
+  align-items:center;
+  justify-content:flex-start;
+  gap:9px;
+  font-size:30px;
+  font-weight:900;
+  line-height:1;
+  text-align:left;
+}
+
+.modal-top-price .tl-icon{
+  order:1;
+  color:var(--softGold);
+  font-size:28px;
+  font-weight:900;
+  line-height:1;
+}
+
+.modal-top-price .price-number{
+  order:2;
+  color:#fff;
+  font-size:30px;
+  font-weight:900;
+  line-height:1;
+  letter-spacing:.4px;
+}
+
+.modal-close{
+  margin:0;
+  margin-left:auto;
+  padding:0;
+  width:auto;
+  height:auto;
+  border:0;
+  outline:0;
+  background:transparent;
+  color:#fff;
+  font-size:46px;
   line-height:1;
   font-weight:900;
   cursor:pointer;
-  box-shadow:0 14px 30px rgba(214,40,40,.35);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  box-shadow:none;
+}
+
+.modal-close:hover{
+  transform:scale(1.08);
+  box-shadow:none;
+}
+
+.modal-price{
+  display:none !important;
 }
 
 .modal-page{
   width:100%;
   min-height:100vh;
-  padding:86px 18px 40px;
+  padding:26px 18px 40px;
   background:
     radial-gradient(circle at 15% 10%,rgba(212,175,55,.18),transparent 30%),
     linear-gradient(180deg,#fff,#fffaf0 70%,#fff);
@@ -576,11 +666,9 @@ body::before{
   margin-bottom:18px;
 }
 
+
 .modal-price{
-  color:#079844;
-  font-size:36px;
-  font-weight:900;
-  margin-bottom:16px;
+  display:none;
 }
 
 .modal-detail-list{
@@ -748,7 +836,7 @@ body::before{
   .icon-btn{width:38px;height:38px}
   .cart-btn{padding:9px 10px;font-size:12px}
 
-  .top-tabs{top:63px;grid-template-columns:repeat(4,1fr)}
+  .top-tabs{top:63px;grid-template-columns:repeat(3,1fr)}
 
   .top-tabs a,
   .top-tabs select{
@@ -789,16 +877,14 @@ body::before{
   .product-info p{font-size:11px;min-height:35px;margin-bottom:8px}
   .fast-text{font-size:11px}
   .stars{font-size:15px}
-  .price{font-size:17px}
+  .price{font-size:17px;gap:6px}
 
   .qty-box{
     padding:6px;
     border-radius:12px;
   }
 
-  .qty-box span{
-    font-size:11px;
-  }
+  .qty-box span{font-size:11px}
 
   .qty-control button{
     width:26px;
@@ -806,9 +892,7 @@ body::before{
     font-size:16px;
   }
 
-  .qty-control strong{
-    font-size:13px;
-  }
+  .qty-control strong{font-size:13px}
 
   .order-btn,
   .quick-link{
@@ -819,15 +903,31 @@ body::before{
 
   .developer-footer{font-size:13px;padding:18px 12px}
 
-  .modal-close{
-    width:42px;
-    height:42px;
-    font-size:30px;
-    right:13px;
-    top:13px;
+  .modal-top-bar{
+    height:72px;
+    padding:0 14px;
   }
 
-  .modal-page{padding:72px 10px 30px}
+  .modal-top-price{
+    margin:0;
+    margin-left:10px;
+    font-size:25px;
+    gap:7px;
+  }
+
+  .modal-top-price .tl-icon{
+    font-size:24px;
+  }
+
+  .modal-top-price .price-number{
+    font-size:25px;
+  }
+
+  .modal-close{
+    font-size:40px;
+  }
+
+  .modal-page{padding:16px 10px 30px}
 
   .modal-img{
     height:340px;
@@ -842,12 +942,8 @@ body::before{
 
   .modal-title{font-size:27px}
   .modal-desc{font-size:14px}
-  .modal-price{font-size:28px}
 
-  .modal-detail-list{
-    grid-template-columns:1fr;
-  }
-
+  .modal-detail-list{grid-template-columns:1fr}
   .review-stars button{font-size:28px}
 }
 </style>
@@ -903,7 +999,7 @@ body::before{
       </div>
 
       <div class="shop-mini">
-        <strong id="productTotal">0 ürün</strong>
+        <strong id="productTotal">Seçkin Vitrin</strong>
         <p>Ürünleri kategoriye göre incele, favorini seç ve kolayca sepete ekle.</p>
       </div>
     </div>
@@ -931,7 +1027,14 @@ body::before{
 <div class="toast" id="toast">Ürün sepete eklendi</div>
 
 <div class="product-modal" id="productModal">
-  <button class="modal-close" id="modalClose">×</button>
+  <div class="modal-top-bar">
+    <div class="modal-top-price" id="modalTopPrice">
+      <span class="price-number">0</span>
+      <span class="tl-icon">₺</span>
+    </div>
+
+    <button class="modal-close" id="modalClose" type="button">×</button>
+  </div>
 
   <div class="modal-page">
     <div class="modal-inner">
@@ -942,7 +1045,6 @@ body::before{
         <h2 class="modal-title" id="modalTitle">Ürün</h2>
         <p class="modal-desc" id="modalDesc"></p>
 
-        <div class="modal-price" id="modalPrice">₺0</div>
 
         <div class="modal-detail-list" id="modalDetailList"></div>
 
@@ -1020,7 +1122,6 @@ const searchInput = document.getElementById("searchInput");
 const sortSelect = document.getElementById("sortSelect");
 const categorySelect = document.getElementById("categorySelect");
 const toast = document.getElementById("toast");
-const productTotal = document.getElementById("productTotal");
 const footerText = document.getElementById("footerText");
 
 const productModal = document.getElementById("productModal");
@@ -1029,7 +1130,7 @@ const modalImg = document.getElementById("modalImg");
 const modalCategory = document.getElementById("modalCategory");
 const modalTitle = document.getElementById("modalTitle");
 const modalDesc = document.getElementById("modalDesc");
-const modalPrice = document.getElementById("modalPrice");
+const modalTopPrice = document.getElementById("modalTopPrice");
 const modalDetailList = document.getElementById("modalDetailList");
 const modalAddBtn = document.getElementById("modalAddBtn");
 const modalQtyMinus = document.getElementById("modalQtyMinus");
@@ -1047,6 +1148,7 @@ let selectedRating = 0;
 let productQtyMap = {};
 let cart = JSON.parse(localStorage.getItem("modantaCart") || "[]");
 let reviews = JSON.parse(localStorage.getItem("modantaReviews") || "{}");
+let savedScrollY = 0;
 
 function saveCart(){
   localStorage.setItem("modantaCart", JSON.stringify(cart));
@@ -1061,7 +1163,7 @@ function showToast(text){
   cartBtn.classList.add("bump");
 
   setTimeout(()=>toast.classList.remove("show"),1500);
-  setTimeout(()=>cartBtn.classList.remove("bump"),500);
+  setTimeout(()=>cartBtn.classList.remove("bump"),900);
 }
 
 function phoneClean(phone){
@@ -1073,7 +1175,15 @@ function hasValue(value){
 }
 
 function money(n){
-  return "₺" + Number(n || 0).toLocaleString("tr-TR");
+  return Number(n || 0).toLocaleString("tr-TR");
+}
+
+function priceHTML(n){
+  return `<span class="tl-icon">₺</span><span class="price-number">${money(n)}</span>`;
+}
+
+function modalPriceHTML(n){
+  return `<span class="price-number">${money(n)}</span><span class="tl-icon">₺</span>`;
 }
 
 function normalizeCategory(value){
@@ -1105,6 +1215,7 @@ function getRating(productId){
   }
 
   const rating = Number(item.rating || 5);
+
   return {
     rating,
     count:1,
@@ -1152,8 +1263,6 @@ function productDetailHTML(product){
   detailItems.push(["Kategori", product.category || "Ürün"]);
   detailItems.push(["Stok Durumu", product.stockStatus || "Stok bilgisi"]);
   detailItems.push(["Stok Adedi", hasValue(product.stock) ? product.stock : "Belirtilmedi"]);
-  detailItems.push(["Fiyat", money(product.price)]);
-
   if(product.details){
     Object.entries(product.details).forEach(([key,value])=>{
       if(value){
@@ -1168,6 +1277,18 @@ function productDetailHTML(product){
       <strong>${value}</strong>
     </div>
   `).join("");
+}
+
+function lockPageScroll(){
+  savedScrollY = window.scrollY || document.documentElement.scrollTop || 0;
+  document.body.classList.add("modal-lock");
+  document.body.style.top = `-${savedScrollY}px`;
+}
+
+function unlockPageScroll(){
+  document.body.classList.remove("modal-lock");
+  document.body.style.top = "";
+  window.scrollTo(0,savedScrollY);
 }
 
 function setReviewStars(rating){
@@ -1192,7 +1313,10 @@ function openProductModal(product){
   modalCategory.textContent = product.category || "Ürün";
   modalTitle.textContent = product.name || "Ürün";
   modalDesc.textContent = product.description || "Ürün açıklaması bulunmuyor.";
-  modalPrice.textContent = money(product.price);
+  modalTopPrice.innerHTML = `
+    <span class="tl-icon">₺</span>
+    <span class="price-number">${money(product.price)}</span>
+  `;
   modalDetailList.innerHTML = productDetailHTML(product);
 
   reviewText.value = savedReview.comment || "";
@@ -1203,12 +1327,12 @@ function openProductModal(product){
   setReviewStars(selectedRating);
 
   productModal.classList.add("show");
-  document.body.style.overflow = "hidden";
+  lockPageScroll();
 }
 
 function closeProductModal(){
   productModal.classList.remove("show");
-  document.body.style.overflow = "";
+  unlockPageScroll();
 }
 
 modalClose.addEventListener("click",closeProductModal);
@@ -1341,8 +1465,6 @@ function renderProducts(){
     );
   }
 
-  productTotal.textContent = products.length + " ürün";
-
   if(products.length === 0){
     productsGrid.innerHTML = `<div class="empty-products">Şu anda bu filtreye uygun ürün bulunamadı.</div>`;
     return;
@@ -1359,7 +1481,7 @@ function renderProducts(){
     }
 
     const rating = getRating(product.id);
-    const productCode = product.code ? "Kod: " + product.code : "Kod yok";
+    const productCode = product.code || "Kod yok";
 
     return `
       <div class="product" style="animation-delay:${index*.05}s">
@@ -1378,7 +1500,7 @@ function renderProducts(){
           <div class="stars">${rating.text} ${rating.count ? `(${rating.count})` : ""}</div>
 
           <div class="product-row">
-            <span class="price">${money(product.price)}</span>
+            <span class="price">${priceHTML(product.price)}</span>
           </div>
 
           <div class="qty-box">
