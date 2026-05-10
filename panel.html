@@ -170,7 +170,28 @@ function openFS(id){document.getElementById(id).classList.add('active');document
 function closeFS(id){document.getElementById(id).classList.remove('active');document.body.style.overflow=''}
 function tab(group,id){document.querySelectorAll('.'+group).forEach(x=>x.classList.remove('active'));document.getElementById(id).classList.add('active');event.target.parentElement.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));event.target.classList.add('active')}
 async function sha256(text){const data=new TextEncoder().encode(text);const hash=await crypto.subtle.digest('SHA-256',data);return Array.from(new Uint8Array(hash)).map(b=>b.toString(16).padStart(2,'0')).join('')}
-async function panelLogin(){const u=await sha256(loginUser.value.trim());const p=await sha256(loginPass.value.trim());const cu='5a078bb4c32517900c0cf74caa05cfdb6a7ffeb9dfa041c1e2013736a31da796';const cp='ba56aede685c455d2678694533f9ee9a6c99407c7a15bd2af82909d5f4f17410';if(u===cu&&p===cp){sessionStorage.setItem('modantaPanelLogin','ok');loginScreen.style.display='none'}else{loginError.textContent='Kullanıcı adı veya şifre hatalı.'}}
+async function panelLogin(){
+  const userValue = String(document.getElementById('loginUser')?.value || '').trim();
+  const passValue = String(document.getElementById('loginPass')?.value || '').trim();
+
+  if(!userValue || !passValue){
+    loginError.textContent='Kullanıcı adı ve şifre gir.';
+    return;
+  }
+
+  const u = await sha256(userValue);
+  const p = await sha256(passValue);
+
+  const cu='5a078bb4c32517900c0cf74caa05cfdb6a7ffeb9dfa041c1e2013736a31da796';
+  const cp='ba56aede685c455d2678694533f9ee9a6c99407c7a15bd2af82909d5f4f17410';
+
+  if(u===cu&&p===cp){
+    sessionStorage.setItem('modantaPanelLogin','ok');
+    loginScreen.style.display='none';
+  }else{
+    loginError.textContent='Kullanıcı adı veya şifre hatalı.';
+  }
+}
 function logoutPanel(){sessionStorage.removeItem('modantaPanelLogin');location.reload()}if(sessionStorage.getItem('modantaPanelLogin')==='ok'){loginScreen.style.display='none'}
 function renderCategoryFields(){const c=category.value;let html='';if(c==='Çanta'){html=`<div class="group"><label>Çanta Tipi</label><input id="detailType" placeholder="Omuz çantası / El çantası"></div><div class="group"><label>Malzeme</label><input id="detailMaterial" placeholder="Deri / suni deri"></div><div class="group"><label>Renk</label><input id="detailColor" placeholder="Siyah / gold"></div><div class="group"><label>Ölçü</label><input id="detailSize" placeholder="25x18 cm"></div>`}else if(c==='Gözlük'){html=`<div class="group"><label>Gözlük Tipi</label><input id="detailType" placeholder="Güneş gözlüğü"></div><div class="group"><label>Cam Rengi</label><input id="detailLens" placeholder="Siyah / kahve"></div><div class="group"><label>Çerçeve</label><input id="detailFrame" placeholder="Gold metal"></div><div class="group"><label>UV Koruma</label><input id="detailUv" placeholder="UV400"></div>`}else if(c==='Saat'){html=`<div class="group"><label>Saat Tipi</label><input id="detailType" placeholder="Kadın kol saati"></div><div class="group"><label>Kordon</label><input id="detailStrap" placeholder="Metal / deri"></div><div class="group"><label>Kasa Rengi</label><input id="detailCase" placeholder="Gold"></div><div class="group"><label>Su Geçirmezlik</label><input id="detailWater" placeholder="Var / Yok"></div>`}categoryFields.innerHTML=html}
 function collectDetails(){const fields=categoryFields.querySelectorAll('input');let obj={};fields.forEach(i=>obj[i.previousElementSibling.textContent]=i.value);return obj}
