@@ -55,18 +55,18 @@ function categoryMap(category = "") {
   const c = String(category).toLowerCase();
 
   if (c.includes("çanta") || c.includes("canta")) {
-    return "Apparel & Accessories &gt; Handbags, Wallets &amp; Cases &gt; Handbags";
+    return "Apparel &amp; Accessories &gt; Handbags, Wallets &amp; Cases &gt; Handbags";
   }
 
   if (c.includes("gözlük") || c.includes("gozluk")) {
-    return "Apparel & Accessories &gt; Clothing Accessories &gt; Sunglasses";
+    return "Apparel &amp; Accessories &gt; Clothing Accessories &gt; Sunglasses";
   }
 
   if (c.includes("saat")) {
-    return "Apparel & Accessories &gt; Jewelry &gt; Watches";
+    return "Apparel &amp; Accessories &gt; Jewelry &gt; Watches";
   }
 
-  return "Apparel & Accessories";
+  return "Apparel &amp; Accessories";
 }
 
 function merchantItem(id, p) {
