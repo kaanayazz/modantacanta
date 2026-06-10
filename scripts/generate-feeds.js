@@ -22,7 +22,7 @@ const db = admin.firestore();
 
 function xmlEscape(value = "") {
   return String(value ?? "")
-    .replace(/&(?!(amp|lt|gt|quot|apos);)/g, "&amp;")
+    .replace(/&/g, "&amp;")
     .replace(/</g, "&lt;")
     .replace(/>/g, "&gt;")
     .replace(/"/g, "&quot;")
@@ -51,24 +51,6 @@ function availability(product) {
   };
 }
 
-function categoryMap(category = "") {
-  const c = String(category).toLowerCase();
-
-  if (c.includes("çanta") || c.includes("canta")) {
-    return "Apparel &amp; Accessories &gt; Handbags, Wallets &amp; Cases &gt; Handbags";
-  }
-
-  if (c.includes("gözlük") || c.includes("gozluk")) {
-    return "Apparel &amp; Accessories &gt; Clothing Accessories &gt; Sunglasses";
-  }
-
-  if (c.includes("saat")) {
-    return "Apparel &amp; Accessories &gt; Jewelry &gt; Watches";
-  }
-
-  return "Apparel &amp; Accessories";
-}
-
 function merchantItem(id, p) {
   const a = availability(p);
 
@@ -83,7 +65,6 @@ function merchantItem(id, p) {
       <g:price>${cleanPrice(p.price)}</g:price>
       <g:brand>${xmlEscape(p.brand || BRAND)}</g:brand>
       <g:condition>${xmlEscape(p.condition || "new")}</g:condition>
-      <g:google_product_category>${categoryMap(p.category)}</g:google_product_category>
       <g:product_type>${xmlEscape(p.category || "Ürün")}</g:product_type>
       <g:identifier_exists>no</g:identifier_exists>
     </item>`;
@@ -109,18 +90,12 @@ function facebookItem(id, p) {
 
 async function main() {
   const snap = await db.collection("products").get();
-
   const products = [];
 
   snap.forEach(doc => {
     const p = doc.data();
-
     if (!p.name || !p.price || !p.imageUrl) return;
-
-    products.push({
-      id: doc.id,
-      ...p
-    });
+    products.push({ id: doc.id, ...p });
   });
 
   const merchantItems = products.map(p => merchantItem(p.id, p)).join("\n");
