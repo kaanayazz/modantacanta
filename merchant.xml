@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:g="http://base.google.com/ns/1.0">
+<channel>
+
+<title>Modanta Çanta</title>
+<link>https://modantacanta.com</link>
+<description>Modanta Çanta Ürün Feed</description>
+
+<item>
+<g:id>jFHgkRaAiIpqv0Glzp7T</g:id>
+<g:title>Golda Çanta</g:title>
+<g:description>Detaylı Modantacanta ürünü.</g:description>
+<g:link>https://modantacanta.com/alisveris.html</g:link>
+<g:image_link>BURAYA_FIREBASE_IMAGE_URL</g:image_link>
+<g:availability>in_stock</g:availability>
+<g:condition>new</g:condition>
+<g:price>750 TRY</g:price>
+<g:brand>Modanta Çanta</g:brand>
+<g:product_type>Çanta</g:product_type>
+<g:identifier_exists>no</g:identifier_exists>
+</item>
+
+</channel>
+</rss>
