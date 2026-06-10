@@ -1,0 +1,36 @@
+name: Update product XML feeds
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 */6 * * *"
+
+permissions:
+  contents: write
+
+jobs:
+  update-feeds:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Repo dosyalarını al
+        uses: actions/checkout@v4
+
+      - name: Node kur
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Paketleri yükle
+        run: npm install
+
+      - name: XML dosyalarını Firebase ürünlerinden oluştur
+        run: npm run generate-feeds
+        env:
+          FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+
+      - name: Değişiklikleri GitHub'a gönder
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "Update merchant and facebook XML feeds"
+          file_pattern: "merchant.xml facebook.xml"
