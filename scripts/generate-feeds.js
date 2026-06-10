@@ -21,12 +21,12 @@ admin.initializeApp({
 const db = admin.firestore();
 
 function xmlEscape(value = "") {
-  return String(value)
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&apos;");
+  return String(value ?? "")
+    .replace(/&(?!(amp|lt|gt|quot|apos);)/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&apos;");
 }
 
 function cleanPrice(value) {
@@ -55,15 +55,15 @@ function categoryMap(category = "") {
   const c = String(category).toLowerCase();
 
   if (c.includes("çanta") || c.includes("canta")) {
-    return "Apparel & Accessories > Handbags, Wallets & Cases > Handbags";
+    return "Apparel & Accessories &gt; Handbags, Wallets &amp; Cases &gt; Handbags";
   }
 
   if (c.includes("gözlük") || c.includes("gozluk")) {
-    return "Apparel & Accessories > Clothing Accessories > Sunglasses";
+    return "Apparel & Accessories &gt; Clothing Accessories &gt; Sunglasses";
   }
 
   if (c.includes("saat")) {
-    return "Apparel & Accessories > Jewelry > Watches";
+    return "Apparel & Accessories &gt; Jewelry &gt; Watches";
   }
 
   return "Apparel & Accessories";
@@ -83,7 +83,7 @@ function merchantItem(id, p) {
       <g:price>${cleanPrice(p.price)}</g:price>
       <g:brand>${xmlEscape(p.brand || BRAND)}</g:brand>
       <g:condition>${xmlEscape(p.condition || "new")}</g:condition>
-      <g:google_product_category>${xmlEscape(categoryMap(p.category))}</g:google_product_category>
+      <g:google_product_category>${categoryMap(p.category)}</g:google_product_category>
       <g:product_type>${xmlEscape(p.category || "Ürün")}</g:product_type>
       <g:identifier_exists>no</g:identifier_exists>
     </item>`;
@@ -111,6 +111,7 @@ async function main() {
   const snap = await db.collection("products").get();
 
   const products = [];
+
   snap.forEach(doc => {
     const p = doc.data();
 
