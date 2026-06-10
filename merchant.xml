@@ -1,24 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:g="http://base.google.com/ns/1.0">
-<channel>
+  <channel>
+    <title>Modanta Çanta Ürün Feed</title>
+    <link>https://modantacanta.com</link>
+    <description>Modanta Çanta Google Merchant ürünleri</description>
 
-<title>Modanta Çanta</title>
-<link>https://modantacanta.com</link>
-<description>Modanta Çanta Ürün Feed</description>
-
-<item>
-<g:id>jFHgkRaAiIpqv0Glzp7T</g:id>
-<g:title>Golda Çanta</g:title>
-<g:description>Detaylı Modantacanta ürünü.</g:description>
-<g:link>https://modantacanta.com/alisveris.html</g:link>
-<g:image_link>https://firebasestorage.googleapis.com/v0/b/modanta-canta.firebasestorage.app/o/products%2F1781105564564-whatsapp-image-2026-06-10-at-18.30.43.jpeg?alt=media&token=1193787e-28d4-4d0f-83f7-259df7077a7c</g:image_link>
-<g:availability>in_stock</g:availability>
-<g:condition>new</g:condition>
-<g:price>750 TRY</g:price>
-<g:brand>Modanta Çanta</g:brand>
-<g:product_type>Çanta</g:product_type>
-<g:identifier_exists>no</g:identifier_exists>
-</item>
-
-</channel>
+    <item>
+      <g:id>63697</g:id>
+      <g:title>Golda Çanta</g:title>
+      <g:description>Detaylı Mondatcanta ürünü.</g:description>
+      <g:link>https://modantacanta.com/alisveris.html</g:link>
+      <g:image_link>https://firebasestorage.googleapis.com/v0/b/modanta-canta.firebasestorage.app/o/products%2F1781105564564-whatsapp-image-2026-06-10-at-18.30.43.jpeg?alt=media&amp;token=1193787e-28d4-4d0f-83f7-259df7077a7c</g:image_link>
+      <g:availability>in_stock</g:availability>
+      <g:price>750.00 TRY</g:price>
+      <g:brand>Modanta Çanta</g:brand>
+      <g:condition>new</g:condition>
+      <g:google_product_category>Apparel &amp; Accessories &gt; Handbags, Wallets &amp; Cases &gt; Handbags</g:google_product_category>
+      <g:product_type>Çanta</g:product_type>
+      <g:identifier_exists>no</g:identifier_exists>
+    </item>
+  </channel>
 </rss>
