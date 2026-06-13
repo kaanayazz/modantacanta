@@ -2,20 +2,21 @@
 <rss version="2.0" xmlns:g="http://base.google.com/ns/1.0">
   <channel>
     <title>Modanta Çanta Facebook Ürün Feed</title>
-    <link>https://modantacanta.com</link>
+    <link>https://modantacanta.com/</link>
     <description>Modanta Çanta Meta katalog ürünleri</description>
 
     <item>
       <g:id>63697</g:id>
       <g:title>Golda Çanta</g:title>
-      <g:description>Detaylı Mondatcanta ürünü.</g:description>
-      <g:link>https://modantacanta.com/alisveris.html</g:link>
+      <g:description>Modanta Çanta koleksiyonunda yer alan şık ve modern çanta ürünü.</g:description>
+      <g:link>https://modantacanta.com/</g:link>
       <g:image_link>https://firebasestorage.googleapis.com/v0/b/modanta-canta.firebasestorage.app/o/products%2F1781105564564-whatsapp-image-2026-06-10-at-18.30.43.jpeg?alt=media&amp;token=1193787e-28d4-4d0f-83f7-259df7077a7c</g:image_link>
       <g:availability>in stock</g:availability>
       <g:price>750.00 TRY</g:price>
       <g:brand>Modanta Çanta</g:brand>
       <g:condition>new</g:condition>
       <g:product_type>Çanta</g:product_type>
+      <g:identifier_exists>no</g:identifier_exists>
     </item>
   </channel>
 </rss>
