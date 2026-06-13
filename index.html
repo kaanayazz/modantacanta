@@ -326,6 +326,54 @@ body.has-announcement .main{padding-top:138px}
 .maintenance-box p{color:#e5e7eb;line-height:1.7}
 @media(max-width:650px){body.has-announcement .header{top:50px}body.has-announcement .main{padding-top:146px!important}.site-announcement{font-size:13px}}
 
+
+/* MOBİL MENÜ VE FİLTRE SON DÜZELTME */
+.side-menu-links{display:flex!important;flex-direction:column!important;gap:10px!important}
+.side-menu-links .side-link{margin-bottom:0!important}
+.side-menu-links .studio-box{margin-top:0!important;margin-bottom:0!important}
+.side-menu>.studio-box{display:none!important}
+
+.search-box input,.sort-select,.cat-select,.form-grid select,#emailDomain,#cargoCompany,#citySelect,#districtSelect{
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+}
+.sort-select,.cat-select,.form-grid select,#emailDomain,#cargoCompany,#citySelect,#districtSelect{
+  appearance:none!important;
+  -webkit-appearance:none!important;
+  background-color:#fff!important;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='%23111111' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E")!important;
+  background-repeat:no-repeat!important;
+  background-position:right 16px center!important;
+  background-size:18px 18px!important;
+  padding-right:48px!important;
+  line-height:1.2!important;
+}
+select::-ms-expand{display:none}
+.filter-row{align-items:center!important}
+
+@media(max-width:650px){
+  .side-menu-links .side-link,
+  .side-menu-links .studio-box,
+  .quick-link,
+  .white-btn,
+  .copy-btn{
+    background:#111!important;
+    color:#fff!important;
+    border-color:#111!important;
+    box-shadow:0 12px 26px rgba(16,24,40,.13)!important;
+  }
+  .side-menu-links .side-link span,
+  .side-menu-links .studio-box small{color:#fff!important}
+  .side-menu-links .side-link:hover,
+  .side-menu-links .studio-box:hover,
+  .quick-link:hover,
+  .white-btn:hover,
+  .copy-btn:hover{background:#000!important;color:#fff!important;border-color:#000!important}
+  .filter-row{grid-template-columns:1fr!important;gap:10px!important}
+  .search-box input,.sort-select,.cat-select{height:52px!important;border-radius:16px!important;font-size:14px!important}
+  .sort-select,.cat-select{background-position:right 15px center!important;padding:0 46px 0 15px!important}
+}
+
 </style>
 </head>
 <body>
@@ -364,8 +412,8 @@ body.has-announcement .main{padding-top:138px}
     <button class="side-link" type="button" data-open-page="refund">İptal İade <span>›</span></button>
     <button class="side-link" type="button" data-open-page="contact">İletişim <span>›</span></button>
     <button class="side-link" type="button" data-open-page="about">Hakkımızda <span>›</span></button>
+    <a class="studio-box" href="https://kaanayaz.com.tr/" target="_blank" rel="noopener">Kaan Ayaz Studio<small>Web Developer</small></a>
   </div>
-  <a class="studio-box" href="https://kaanayaz.com.tr/" target="_blank" rel="noopener">Kaan Ayaz Studio<small>Web Developer</small></a>
 </aside>
 
 <main class="main" id="home">
