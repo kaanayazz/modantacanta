@@ -1100,10 +1100,9 @@
       <img class="login-logo" src="https://pbs.twimg.com/media/HHaRfeXWIAExq29?format=jpg&name=240x240" alt="Modanta">
       <h1>Modanta Panel Girişi</h1>
       <p>Ürünleri, siparişleri, ödeme bilgilerini ve site içeriklerini yönet.</p>
-      <input id="loginUser" placeholder="Kullanıcı adı" autocomplete="off" autocapitalize="off" spellcheck="false">
-      <input id="loginPass" type="password" placeholder="Şifre" autocomplete="current-password" spellcheck="false">
-      <button type="button" onclick="panelLogin()">Panele Gir</button>
+      <button type="button" onclick="panelLogin()">Google ile Giriş Yap</button>
       <div id="loginError" class="login-error"></div>
+      <p class="mini-note" style="color:#c8c8c8;margin-top:10px">Sadece yetkili Google hesapları panele giriş yapabilir.</p>
     </div>
   </div>
 
@@ -1569,6 +1568,16 @@
     let cropImageObj = null;
     let cropObjectUrl = null;
     let fire = {};
+    let firebaseApp = null;
+    let firebaseAuth = null;
+    let firebaseAuthMod = null;
+    let firebaseAuthProvider = null;
+    let backendStarted = false;
+
+    const allowedAdminEmails = [
+      'volkanilgin762534@gmail.com',
+      'ikinciadmin@gmail.com'
+    ];
 
     const $ = id => document.getElementById(id);
     const $$ = selector => Array.from(document.querySelectorAll(selector));
@@ -1634,36 +1643,93 @@
       if (cb) cb(ok);
     }
 
-    async function sha256(text) {
-      const data = new TextEncoder().encode(String(text || ''));
-      const hash = await crypto.subtle.digest('SHA-256', data);
-      return Array.from(new Uint8Array(hash)).map(b => b.toString(16).padStart(2, '0')).join('');
+    function isAllowedAdminEmail(email) {
+      return allowedAdminEmails.includes(String(email || '').toLowerCase());
+    }
+
+    async function ensureFirebaseAuth() {
+      if (firebaseAuth && firebaseAuthMod && firebaseAuthProvider) {
+        return { auth: firebaseAuth, authMod: firebaseAuthMod, provider: firebaseAuthProvider };
+      }
+
+      const version = '10.12.5';
+      const [appMod, authMod] = await Promise.all([
+        import(`https://www.gstatic.com/firebasejs/${version}/firebase-app.js`),
+        import(`https://www.gstatic.com/firebasejs/${version}/firebase-auth.js`)
+      ]);
+
+      firebaseApp = appMod.getApps().length
+        ? appMod.getApp()
+        : appMod.initializeApp(firebaseConfig);
+
+      firebaseAuthMod = authMod;
+      firebaseAuth = authMod.getAuth(firebaseApp);
+      firebaseAuthProvider = new authMod.GoogleAuthProvider();
+      firebaseAuthProvider.setCustomParameters({ prompt: 'select_account' });
+
+      return { auth: firebaseAuth, authMod: firebaseAuthMod, provider: firebaseAuthProvider };
     }
 
     async function panelLogin() {
-      const userValue = val('loginUser');
-      const passValue = val('loginPass');
       const loginError = $('loginError');
-      if (!userValue || !passValue) {
-        loginError.textContent = 'Kullanıcı adı ve şifre gir.';
-        return;
-      }
-      const u = await sha256(userValue);
-      const p = await sha256(passValue);
-      const cu = '5a078bb4c32517900c0cf74caa05cfdb6a7ffeb9dfa041c1e2013736a31da796';
-      const cp = 'ba56aede685c455d2678694533f9ee9a6c99407c7a15bd2af82909d5f4f17410';
-      if (u === cu && p === cp) {
-        sessionStorage.setItem('modantaPanelLogin', 'ok');
+      loginError.textContent = '';
+
+      try {
+        const { auth, authMod, provider } = await ensureFirebaseAuth();
+        const result = await authMod.signInWithPopup(auth, provider);
+        const email = result.user?.email || '';
+
+        if (!isAllowedAdminEmail(email)) {
+          await authMod.signOut(auth);
+          loginError.textContent = 'Bu Google hesabı panel için yetkili değil.';
+          toast('Yetkisiz Google hesabı ile giriş engellendi.', 'err', 7000);
+          return;
+        }
+
         $('loginScreen').style.display = 'none';
-      } else {
-        loginError.textContent = 'Kullanıcı adı veya şifre hatalı.';
+        toast('Google girişi başarılı.');
+        if (!backendStarted) await initBackend();
+      } catch (err) {
+        console.error(err);
+        loginError.textContent = err?.message || 'Google girişi başarısız.';
+        toast('Google girişi başarısız.', 'err', 7000);
+      }
+    }
+
+    async function initAuthGate() {
+      try {
+        setBackendMode('Giriş bekleniyor', 'warn');
+        const { auth, authMod } = await ensureFirebaseAuth();
+
+        authMod.onAuthStateChanged(auth, async user => {
+          if (!user) {
+            $('loginScreen').style.display = 'flex';
+            return;
+          }
+
+          if (!isAllowedAdminEmail(user.email)) {
+            await authMod.signOut(auth);
+            $('loginScreen').style.display = 'flex';
+            $('loginError').textContent = 'Bu Google hesabı panel için yetkili değil.';
+            return;
+          }
+
+          $('loginScreen').style.display = 'none';
+          if (!backendStarted) await initBackend();
+        });
+      } catch (err) {
+        console.error(err);
+        $('loginScreen').style.display = 'flex';
+        $('loginError').textContent = 'Firebase Auth başlatılamadı.';
+        setBackendMode('Auth Hatası', 'err');
       }
     }
 
     function logoutPanel() {
-      askConfirm('Çıkış yapılsın mı?', 'Panelden çıkış yapmak istediğine emin misin?', ok => {
+      askConfirm('Çıkış yapılsın mı?', 'Panelden çıkış yapmak istediğine emin misin?', async ok => {
         if (!ok) return;
-        sessionStorage.removeItem('modantaPanelLogin');
+        const { auth, authMod } = await ensureFirebaseAuth();
+        await authMod.signOut(auth);
         location.reload();
       });
     }
@@ -1736,7 +1802,10 @@
       ]);
 
       fire = { ...fsMod, ...storageMod };
-      const app = appMod.initializeApp(firebaseConfig);
+      const app = appMod.getApps().length
+        ? appMod.getApp()
+        : appMod.initializeApp(firebaseConfig);
+      firebaseApp = app;
       const db = fsMod.getFirestore(app);
       const storage = storageMod.getStorage(app);
 
@@ -1809,6 +1878,8 @@
     }
 
     async function initBackend() {
+      if (backendStarted) return;
+      backendStarted = true;
       state.products = readLocal(keys.products, []);
       state.orders = readLocal(keys.orders, []);
       state.customers = readLocal(keys.customers, []);
@@ -2776,10 +2847,6 @@
     }
 
     function bindEvents() {
-      if (sessionStorage.getItem('modantaPanelLogin') === 'ok') $('loginScreen').style.display = 'none';
-      $('loginPass').addEventListener('keydown', event => {
-        if (event.key === 'Enter') panelLogin();
-      });
       $('productForm').addEventListener('submit', saveProduct);
       $('editProductForm').addEventListener('submit', saveEditedProduct);
       $('paymentForm').addEventListener('submit', savePayment);
@@ -2843,7 +2910,7 @@
 
     document.addEventListener('DOMContentLoaded', () => {
       bindEvents();
-      initBackend();
+      initAuthGate();
     });
   </script>
 </body>
