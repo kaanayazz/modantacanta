@@ -1136,7 +1136,7 @@
           <p>Ürün, sipariş, ödeme, müşteri, içerik ve canlı istatistik yönetimi.</p>
         </div>
         <div class="top-actions">
-          <a class="btn btn-dark" href="index.html" target="_blank" rel="noopener">Siteye Git</a>
+          <a class="btn btn-dark" href="/" target="_blank" rel="noopener">Siteye Git</a>
           <button class="btn btn-blue" type="button" onclick="exportBackup()">Yedek Al</button>
         </div>
       </div>
@@ -1572,12 +1572,9 @@
     let firebaseAuth = null;
     let firebaseAuthMod = null;
     let firebaseAuthProvider = null;
+    let firebaseAdminDb = null;
+    let firebaseAdminFsMod = null;
     let backendStarted = false;
-
-    const allowedAdminEmails = [
-      'volkanilgin762534@gmail.com',
-      'ikinciadmin@gmail.com'
-    ];
 
     const $ = id => document.getElementById(id);
     const $$ = selector => Array.from(document.querySelectorAll(selector));
@@ -1643,8 +1640,37 @@
       if (cb) cb(ok);
     }
 
-    function isAllowedAdminEmail(email) {
-      return allowedAdminEmails.includes(String(email || '').toLowerCase());
+    async function ensureAdminFirestore() {
+      if (firebaseAdminDb && firebaseAdminFsMod) {
+        return { db: firebaseAdminDb, fsMod: firebaseAdminFsMod };
+      }
+
+      await ensureFirebaseAuth();
+      const version = '10.12.5';
+      const fsMod = await import(`https://www.gstatic.com/firebasejs/${version}/firebase-firestore.js`);
+
+      firebaseAdminFsMod = fsMod;
+      firebaseAdminDb = fsMod.getFirestore(firebaseApp);
+
+      return { db: firebaseAdminDb, fsMod: firebaseAdminFsMod };
+    }
+
+    async function isAuthorizedAdminUser(user) {
+      if (!user || !user.uid) return false;
+
+      try {
+        const { db, fsMod } = await ensureAdminFirestore();
+        const adminRef = fsMod.doc(db, 'admins', user.uid);
+        const adminSnap = await fsMod.getDoc(adminRef);
+
+        if (!adminSnap.exists()) return false;
+
+        const data = adminSnap.data() || {};
+        return data.active === true;
+      } catch (err) {
+        console.error('Admin kontrol hatası:', err);
+        return false;
+      }
     }
 
     async function ensureFirebaseAuth() {
@@ -1677,11 +1703,11 @@
       try {
         const { auth, authMod, provider } = await ensureFirebaseAuth();
         const result = await authMod.signInWithPopup(auth, provider);
-        const email = result.user?.email || '';
+        const isAdmin = await isAuthorizedAdminUser(result.user);
 
-        if (!isAllowedAdminEmail(email)) {
+        if (!isAdmin) {
           await authMod.signOut(auth);
-          loginError.textContent = 'Bu Google hesabı panel için yetkili değil.';
+          loginError.textContent = 'Bu Google hesabı panel için yetkili değil. Firestore admins koleksiyonunda aktif admin kaydı yok.';
           toast('Yetkisiz Google hesabı ile giriş engellendi.', 'err', 7000);
           return;
         }
@@ -1707,10 +1733,12 @@
             return;
           }
 
-          if (!isAllowedAdminEmail(user.email)) {
+          const isAdmin = await isAuthorizedAdminUser(user);
+
+          if (!isAdmin) {
             await authMod.signOut(auth);
             $('loginScreen').style.display = 'flex';
-            $('loginError').textContent = 'Bu Google hesabı panel için yetkili değil.';
+            $('loginError').textContent = 'Bu Google hesabı panel için yetkili değil. Firestore admins koleksiyonunda aktif admin kaydı yok.';
             return;
           }
 
