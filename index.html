@@ -493,11 +493,11 @@ cartBtn.addEventListener("click",()=>openFullPage("cart"));
 
 function getRating(id){const item=reviews[id];if(!item||!item.rating)return{rating:5,count:0,text:"★★★★★"};const r=Number(item.rating||5);return{rating:r,count:1,text:"★".repeat(r)+"☆".repeat(5-r)}}
 function saveReviews(){localStorage.setItem("modantaReviews",JSON.stringify(reviews))}
-function addToCart(product,qty=1){if(!product)return;qty=Math.max(1,Number(qty||1));const existing=cart.find(i=>i.id===product.id);if(existing)existing.qty=Number(existing.qty||1)+qty;else cart.push({id:product.id,code:product.code||"",name:product.name||"",price:Number(product.price||0),imageUrl:product.imageUrl||"",category:product.category||"",qty});saveCart();showToast(qty+" adet ürün sepete eklendi");updateDoc(doc(db,"products",product.id),{views:increment(1)}).catch(()=>{})}
+function addToCart(product,qty=1){if(!product)return;qty=Math.max(1,Number(qty||1));const existing=cart.find(i=>i.id===product.id);if(existing)existing.qty=Number(existing.qty||1)+qty;else cart.push({id:product.id,code:product.code||"",name:product.name||"",price:Number(product.price||0),imageUrl:product.imageUrl||"",category:product.category||"",qty});saveCart();showToast(qty+" adet ürün sepete eklendi");updateDoc(doc(db,"products",product.id),{cartAdds:increment(qty)}).catch(()=>{})}
 
 function productDetailHTML(product){const items=[["Ürün Kodu",product.code||"Kod yok"],["Kategori",product.category||"Ürün"],["Stok Durumu",product.stockStatus||"Stok bilgisi"],["Stok Adedi",hasValue(product.stock)?product.stock:"Belirtilmedi"]];if(product.details){Object.entries(product.details).forEach(([k,v])=>{if(v)items.push([k,v])})}return items.map(([k,v])=>`<div class="modal-detail-item"><small>${k}</small><strong>${v}</strong></div>`).join("")}
 function setReviewStars(rating){selectedRating=Number(rating||0);reviewStars.querySelectorAll("button").forEach(b=>b.classList.toggle("active",Number(b.dataset.star)<=selectedRating))}
-function openProductModal(product){selectedProduct=product;modalQty=1;modalQtyText.textContent=modalQty;const savedReview=reviews[product.id]||{};modalImg.src=product.imageUrl||"";modalImg.alt=product.name||"Ürün";modalCategory.textContent=product.category||"Ürün";modalTitle.textContent=product.name||"Ürün";modalDesc.textContent=product.description||"Ürün açıklaması bulunmuyor.";modalTopPrice.innerHTML=`<span class="tl-icon">₺</span><span class="price-number">${money(product.price)}</span>`;modalDetailList.innerHTML=productDetailHTML(product);reviewText.value=savedReview.comment||"";setReviewStars(Number(savedReview.rating||0));reviewInfo.textContent=selectedRating?"Bu ürüne "+selectedRating+" yıldız verdiniz.":"Oy vermeye hazır.";productModal.classList.add("show");lockPageScroll()}
+function openProductModal(product){if(product&&product.id){updateDoc(doc(db,"products",product.id),{views:increment(1)}).catch(()=>{})}selectedProduct=product;modalQty=1;modalQtyText.textContent=modalQty;const savedReview=reviews[product.id]||{};modalImg.src=product.imageUrl||"";modalImg.alt=product.name||"Ürün";modalCategory.textContent=product.category||"Ürün";modalTitle.textContent=product.name||"Ürün";modalDesc.textContent=product.description||"Ürün açıklaması bulunmuyor.";modalTopPrice.innerHTML=`<span class="tl-icon">₺</span><span class="price-number">${money(product.price)}</span>`;modalDetailList.innerHTML=productDetailHTML(product);reviewText.value=savedReview.comment||"";setReviewStars(Number(savedReview.rating||0));reviewInfo.textContent=selectedRating?"Bu ürüne "+selectedRating+" yıldız verdiniz.":"Oy vermeye hazır.";productModal.classList.add("show");lockPageScroll()}
 function closeProductModal(){productModal.classList.remove("show");unlockPageScroll()}
 modalClose.addEventListener("click",closeProductModal);
 modalQtyMinus.addEventListener("click",()=>{modalQty=Math.max(1,modalQty-1);modalQtyText.textContent=modalQty});
@@ -1689,18 +1689,167 @@ Object.keys(cityData).forEach(c=>citySelect.insertAdjacentHTML("beforeend",`<opt
 citySelect.addEventListener("change",()=>{districtSelect.innerHTML=citySelect.value?`<option value="">İlçe seç</option>`:`<option value="">Önce il seç</option>`;districtSelect.disabled=!citySelect.value;(cityData[citySelect.value]||[]).forEach(d=>districtSelect.insertAdjacentHTML("beforeend",`<option value="${d}">${d}</option>`))});
 
 function orderMessage(code,total){const items=cart.map(i=>`- ${i.name} x${i.qty} = ₺${money(Number(i.price)*Number(i.qty||1))}`).join("%0A");return `Merhaba Modanta Çanta sipariş oluşturdum%0A%0ASipariş Kodu: ${code}%0A${items}%0AToplam: ₺${money(total)}%0A%0AAd Soyad: ${$("customerName").value}%0ATelefon: +90${$("customerPhone").value}%0AE-posta: ${$("emailName").value}${$("emailDomain").value}%0AKargo: ${$("cargoCompany").value}%0Aİl İlçe: ${citySelect.value} / ${districtSelect.value}%0AAdres: ${$("customerAddress").value}%0ANot: ${$("customerNote").value||"-"}`}
+function makeOrderCode(){
+  return "MOD-" + new Date().toISOString().slice(2,10).replaceAll("-","") + "-" + Date.now().toString().slice(-6);
+}
+function makeCustomerTag(){
+  return "MD-MUS-" + Date.now().toString().slice(-6) + "-" + Math.floor(100+Math.random()*900);
+}
 completeBtn.addEventListener("click",async()=>{
   clearError();
+  successBox.style.display="none";
+  paymentBox.style.display="none";
+
   if(cart.length===0)return showError("Sepet boş. Önce ürün eklemelisiniz.");
-  const name=$("customerName").value.trim(),phone=$("customerPhone").value.trim(),emailName=$("emailName").value.trim(),cargo=$("cargoCompany").value,city=citySelect.value,district=districtSelect.value,address=$("customerAddress").value.trim();
-  if(!name||!phone||phone.length!==10||!emailName||!cargo||!city||!district||!address)return showError("Lütfen ad soyad telefon e posta kargo il ilçe ve açık adres alanlarını doldurun.");
-  const total=cart.reduce((s,i)=>s+Number(i.price||0)*Number(i.qty||1),0),code="MOD-"+Date.now().toString().slice(-7);
-  const order={code,items:cart,total,customer:{name,phone:"+90"+phone,email:emailName+$("emailDomain").value,cargo,city,district,address,note:$("customerNote").value.trim()},createdAt:serverTimestamp(),status:"new"};
-  addDoc(collection(db,"orders"),order).catch(()=>{});
-  successBox.style.display="block";successBox.textContent="Sipariş oluşturuldu. Ödeme bilgileri hazırlandı.";
-  paymentBox.style.display="block";createdOrderCode.textContent=code;payName.textContent=paymentInfo.name;payIban.textContent=paymentInfo.iban;payBank.textContent=paymentInfo.bank;payNote.textContent=code+" sipariş ödemesi";
-  whatsappBtn.style.display="flex";cancelBtn.style.display="flex";whatsappBtn.onclick=()=>window.open("https://wa.me/"+contactPhone+"?text="+orderMessage(code,total),"_blank");
-  cancelBtn.onclick=()=>window.open("https://wa.me/"+contactPhone+"?text=Merhaba "+code+" kodlu siparişimi iptal etmek istiyorum","_blank");
+
+  const name=$("customerName").value.trim();
+  const phoneRaw=$("customerPhone").value.replace(/[^0-9]/g,"").trim();
+  $("customerPhone").value=phoneRaw;
+  const emailName=$("emailName").value.trim();
+  const emailDomain=$("emailDomain").value;
+  const email=emailName ? emailName + emailDomain : "";
+  const cargoCompany=$("cargoCompany").value;
+  const city=citySelect.value;
+  const district=districtSelect.value;
+  const address=$("customerAddress").value.trim();
+  const note=$("customerNote").value.trim();
+
+  if(!name)return showError("Ad soyad alanını doldur.");
+  if(!phoneRaw || phoneRaw.length!==10)return showError("Telefon numarasını +90 olmadan 10 hane olarak yaz.");
+  if(!emailName)return showError("E-posta kullanıcı adını yaz.");
+  if(!cargoCompany)return showError("Kargo firması seç.");
+  if(!city || !district)return showError("İl ve ilçe seç.");
+  if(!address)return showError("Açık adres alanını doldur.");
+
+  const phone="+90"+phoneRaw;
+  const total=cart.reduce((s,i)=>s+Number(i.price||0)*Number(i.qty||1),0);
+  const orderCode=makeOrderCode();
+
+  const orderItems=cart.map(i=>({
+    productId:i.id||"",
+    id:i.id||"",
+    code:i.code||"",
+    name:i.name||"Ürün",
+    productName:i.name||"Ürün",
+    category:i.category||"",
+    price:Number(i.price||0),
+    qty:Number(i.qty||1),
+    quantity:Number(i.qty||1),
+    imageUrl:i.imageUrl||"",
+    image:i.imageUrl||"",
+    lineTotal:Number(i.price||0)*Number(i.qty||1)
+  }));
+
+  const plainProductText=orderItems.map(i=>`${i.name} x${i.qty} = ₺${money(i.lineTotal)}`).join(" | ");
+
+  const orderData={
+    orderCode:orderCode,
+    code:orderCode,
+
+    name:name,
+    customerName:name,
+    customerFullName:name,
+    phone:phone,
+    customerPhone:phone,
+    email:email,
+    customerEmail:email,
+
+    cargoCompany:cargoCompany,
+    shippingCompany:cargoCompany,
+    city:city,
+    district:district,
+    address:`${address} / ${city} ${district}`,
+    openAddress:address,
+    note:note,
+
+    paymentStatus:"Ödeme bekleniyor",
+    status:"Alındı",
+    orderStatus:"Alındı",
+
+    total:total,
+    totalPrice:total,
+    grandTotal:total,
+    itemCount:orderItems.reduce((s,i)=>s+Number(i.qty||1),0),
+    products:plainProductText,
+    items:orderItems,
+
+    paymentName:paymentInfo.name||"",
+    paymentIban:paymentInfo.iban||"",
+    paymentBank:paymentInfo.bank||"",
+    paymentNote:orderCode+" sipariş ödemesi",
+
+    source:"modantacanta.com",
+    createdAt:serverTimestamp(),
+    updatedAt:serverTimestamp()
+  };
+
+  try{
+    completeBtn.disabled=true;
+    completeBtn.textContent="Sipariş kaydediliyor...";
+
+    const orderRef=await addDoc(collection(db,"orders"),orderData);
+
+    await addDoc(collection(db,"customers"),{
+      customerTag:makeCustomerTag(),
+      orderId:orderRef.id,
+      orderCode:orderCode,
+      name:name,
+      customerName:name,
+      phone:phone,
+      email:email,
+      address:`${address} / ${city} ${district}`,
+      city:city,
+      district:district,
+      cargoCompany:cargoCompany,
+      total:total,
+      createdAt:serverTimestamp()
+    }).catch(()=>{});
+
+    await Promise.all(orderItems.map(i=>{
+      if(!i.productId)return Promise.resolve();
+      return updateDoc(doc(db,"products",i.productId),{
+        soldCount:increment(Number(i.qty||1))
+      }).catch(()=>{});
+    }));
+
+    successBox.style.display="block";
+    successBox.textContent="Sipariş başarıyla oluşturuldu. Sipariş kodunuz: "+orderCode;
+
+    paymentBox.style.display="block";
+    $("paymentText").textContent=paymentInfo.text||"Siparişiniz alınmıştır. Ödeme yaptıktan sonra dekontu WhatsApp üzerinden göndermeniz gerekir.";
+    createdOrderCode.textContent=orderCode;
+    payName.textContent=paymentInfo.name||"-";
+    payIban.textContent=paymentInfo.iban||"-";
+    payBank.textContent=paymentInfo.bank||"-";
+    payNote.textContent=orderCode+" sipariş ödemesi";
+
+    whatsappBtn.style.display="flex";
+    cancelBtn.style.display="flex";
+
+    const msgItems=orderItems.map(i=>`- ${i.name} x${i.qty} = ₺${money(i.lineTotal)}`).join("%0A");
+    const message=`Merhaba Modanta Çanta sipariş oluşturdum%0A%0A`+
+      `Sipariş Kodu: ${orderCode}%0A`+
+      `${msgItems}%0A%0A`+
+      `Toplam: ₺${money(total)}%0A%0A`+
+      `Ad Soyad: ${name}%0A`+
+      `Telefon: ${phone}%0A`+
+      `E-posta: ${email}%0A`+
+      `Kargo: ${cargoCompany}%0A`+
+      `İl İlçe: ${city} / ${district}%0A`+
+      `Adres: ${address}%0A`+
+      `Not: ${note||"-"}`;
+
+    whatsappBtn.onclick=()=>window.open("https://wa.me/"+contactPhone+"?text="+message,"_blank");
+    cancelBtn.onclick=()=>window.open("https://wa.me/"+contactPhone+"?text=Merhaba "+orderCode+" kodlu siparişimi iptal etmek istiyorum","_blank");
+
+    showToast("Sipariş Firebase'e kaydedildi");
+  }catch(err){
+    console.error(err);
+    showError("Sipariş Firebase'e kaydolmadı. Hata: "+(err.message||"Firebase bağlantısını ve rules ayarlarını kontrol et."));
+  }finally{
+    completeBtn.disabled=false;
+    completeBtn.textContent="Siparişi Oluştur";
+  }
 });
 document.querySelectorAll(".copy-btn").forEach(btn=>btn.addEventListener("click",()=>{const el=$(btn.dataset.copy);navigator.clipboard.writeText(el.textContent||"");showToast("Kopyalandı")}));
 
