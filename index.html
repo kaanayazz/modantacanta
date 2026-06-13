@@ -13,6 +13,21 @@ function gtag(){dataLayer.push(arguments);}
 gtag('js',new Date());
 gtag('config','G-LMP6WZTGYJ');
 </script>
+<!-- Meta Pixel Code - Modanta Çanta -->
+<script>
+!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init','3899029683735736');
+fbq('track','PageView');
+</script>
+<noscript>
+<img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=3899029683735736&ev=PageView&noscript=1"/>
+</noscript>
+<!-- End Meta Pixel Code -->
 
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:Inter,Arial,Helvetica,sans-serif;-webkit-tap-highlight-color:transparent}
@@ -566,6 +581,35 @@ let reviews=JSON.parse(localStorage.getItem("modantaReviews")||"{}");
 let contactPhone="905435755840";
 let paymentInfo={name:"Modanta Çanta",iban:"TR00 0000 0000 0000 0000 0000 00",bank:"Banka bilgisi WhatsApp üzerinden teyit edilir"};
 
+function metaTrack(eventName, data={}){
+  try{
+    if(typeof fbq === "function"){
+      fbq('track', eventName, data);
+    }
+  }catch(e){}
+}
+function metaProductPayload(product, qty=1){
+  return {
+    content_ids:[String(product?.code || product?.id || '')],
+    content_name:String(product?.name || 'Ürün'),
+    content_type:'product',
+    value:Number(product?.price || 0) * Number(qty || 1),
+    currency:'TRY'
+  };
+}
+function metaCartPayload(){
+  const total=cart.reduce((s,i)=>s+Number(i.price||0)*Number(i.qty||1),0);
+  return {
+    content_ids:cart.map(i=>String(i.code || i.id || '')),
+    contents:cart.map(i=>({id:String(i.code || i.id || ''),quantity:Number(i.qty||1),item_price:Number(i.price||0)})),
+    content_type:'product',
+    num_items:cart.reduce((s,i)=>s+Number(i.qty||1),0),
+    value:total,
+    currency:'TRY'
+  };
+}
+
+
 function money(n){return Number(n||0).toLocaleString("tr-TR")}
 function normalizeCategory(v){return String(v||"").toLowerCase().replaceAll("ı","i").replaceAll("ğ","g").replaceAll("ü","u").replaceAll("ş","s").replaceAll("ö","o").replaceAll("ç","c").trim()}
 function hasValue(v){return v!==undefined&&v!==null&&String(v).trim()!==""}
@@ -590,7 +634,7 @@ function openFullPage(name){
   document.querySelectorAll(".full-page.show").forEach(p=>p.classList.remove("show"));
   page.classList.add("show");
   lockPageScroll();
-  if(name==="cart")renderCart();
+  if(name==="cart"){renderCart();if(cart.length>0)metaTrack("InitiateCheckout",metaCartPayload());}
 }
 function closeFullPages(){document.querySelectorAll(".full-page.show").forEach(p=>p.classList.remove("show"));unlockPageScroll()}
 document.querySelectorAll("[data-open-page]").forEach(el=>el.addEventListener("click",e=>{e.preventDefault();openFullPage(el.dataset.openPage)}));
@@ -602,11 +646,11 @@ function getRating(id){const list=getProductReviews(id);if(!list.length)return{r
 function saveReviews(){localStorage.setItem("modantaReviews",JSON.stringify(reviews))}
 function renderModalReviews(productId){if(!modalReviewList)return;const list=getProductReviews(productId).slice(0,20);modalReviewList.innerHTML=list.length?list.map(r=>`<div class="review-item"><strong>${"★".repeat(Number(r.rating||5))+"☆".repeat(5-Number(r.rating||5))} ${r.customerName||"Müşteri"}</strong><small>${r.productName||"Ürün"}</small><p>${r.comment||"Yorum metni yok."}</p></div>`).join(""):`<div class="review-empty">Henüz yorum yok.</div>`}
 
-function addToCart(product,qty=1){if(!product)return;qty=Math.max(1,Number(qty||1));const existing=cart.find(i=>i.id===product.id);if(existing)existing.qty=Number(existing.qty||1)+qty;else cart.push({id:product.id,code:product.code||"",name:product.name||"",price:Number(product.price||0),imageUrl:product.imageUrl||"",category:product.category||"",qty});saveCart();showToast(qty+" adet ürün sepete eklendi");updateDoc(doc(db,"products",product.id),{views:increment(1),cartAdds:increment(qty)}).catch(()=>{})}
+function addToCart(product,qty=1){if(!product)return;qty=Math.max(1,Number(qty||1));const existing=cart.find(i=>i.id===product.id);if(existing)existing.qty=Number(existing.qty||1)+qty;else cart.push({id:product.id,code:product.code||"",name:product.name||"",price:Number(product.price||0),imageUrl:product.imageUrl||"",category:product.category||"",qty});saveCart();showToast(qty+" adet ürün sepete eklendi");metaTrack("AddToCart",metaProductPayload(product,qty));updateDoc(doc(db,"products",product.id),{views:increment(1),cartAdds:increment(qty)}).catch(()=>{})}
 
 function productDetailHTML(product){const items=[["Ürün Kodu",product.code||"Kod yok"],["Kategori",product.category||"Ürün"],["Stok Durumu",product.stockStatus||"Stok bilgisi"],["Stok Adedi",hasValue(product.stock)?product.stock:"Belirtilmedi"]];if(product.details){Object.entries(product.details).forEach(([k,v])=>{if(v)items.push([k,v])})}return items.map(([k,v])=>`<div class="modal-detail-item"><small>${k}</small><strong>${v}</strong></div>`).join("")}
 function setReviewStars(rating){selectedRating=Number(rating||0);reviewStars.querySelectorAll("button").forEach(b=>b.classList.toggle("active",Number(b.dataset.star)<=selectedRating))}
-function openProductModal(product){selectedProduct=product;modalQty=1;modalQtyText.textContent=modalQty;const savedReview=reviews[product.id]||{};modalImg.src=product.imageUrl||"";modalImg.alt=product.name||"Ürün";modalCategory.textContent=product.category||"Ürün";modalTitle.textContent=product.name||"Ürün";modalDesc.textContent=product.description||"Ürün açıklaması bulunmuyor.";modalTopPrice.innerHTML=`<span class="tl-icon">₺</span><span class="price-number">${money(product.price)}</span>`;modalDetailList.innerHTML=productDetailHTML(product);reviewText.value=savedReview.comment||"";setReviewStars(Number(savedReview.rating||0));reviewInfo.textContent=selectedRating?"Bu ürüne "+selectedRating+" yıldız verdiniz.":"Oy vermeye hazır.";renderModalReviews(product.id);productModal.classList.add("show");lockPageScroll()}
+function openProductModal(product){selectedProduct=product;modalQty=1;modalQtyText.textContent=modalQty;const savedReview=reviews[product.id]||{};modalImg.src=product.imageUrl||"";modalImg.alt=product.name||"Ürün";modalCategory.textContent=product.category||"Ürün";modalTitle.textContent=product.name||"Ürün";modalDesc.textContent=product.description||"Ürün açıklaması bulunmuyor.";modalTopPrice.innerHTML=`<span class="tl-icon">₺</span><span class="price-number">${money(product.price)}</span>`;modalDetailList.innerHTML=productDetailHTML(product);reviewText.value=savedReview.comment||"";setReviewStars(Number(savedReview.rating||0));reviewInfo.textContent=selectedRating?"Bu ürüne "+selectedRating+" yıldız verdiniz.":"Oy vermeye hazır.";metaTrack("ViewContent",metaProductPayload(product,1));renderModalReviews(product.id);productModal.classList.add("show");lockPageScroll()}
 function closeProductModal(){productModal.classList.remove("show");unlockPageScroll()}
 modalClose.addEventListener("click",closeProductModal);
 modalQtyMinus.addEventListener("click",()=>{modalQty=Math.max(1,modalQty-1);modalQtyText.textContent=modalQty});
@@ -1841,6 +1885,7 @@ completeBtn.addEventListener("click",async()=>{
   };
   try{
     const orderRef=await addDoc(collection(db,"orders"),order);
+    metaTrack("Purchase",{content_ids:orderItems.map(i=>String(i.code||i.id||"")),contents:orderItems.map(i=>({id:String(i.code||i.id||""),quantity:Number(i.qty||1),item_price:Number(i.price||0)})),content_type:"product",num_items:order.itemCount,value:total,currency:"TRY",order_id:code});
     await addDoc(collection(db,"notifications"),{type:"order",title:"Yeni sipariş alındı",message:code+" kodlu yeni sipariş geldi",orderId:orderRef.id,orderCode:code,read:false,createdAt:serverTimestamp()}).catch(()=>{});
     await Promise.all(orderItems.map(i=>updateDoc(doc(db,"products",i.id),{soldCount:increment(i.qty),stock:increment(-i.qty)}).catch(()=>{})));
     successBox.style.display="block";successBox.textContent="Sipariş oluşturuldu. Ödeme bilgileri hazırlandı.";
