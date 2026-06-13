@@ -1,135 +1,105 @@
 import fs from "fs";
+import path from "path";
 import admin from "firebase-admin";
 
 const SITE_URL = "https://modantacanta.com";
-const SHOP_URL = `${SITE_URL}/alisveris.html`;
 const BRAND = "Modanta Çanta";
+const OUT_DIR = process.cwd();
 
-const serviceAccountRaw = process.env.FIREBASE_SERVICE_ACCOUNT;
-
-if (!serviceAccountRaw) {
-  throw new Error("FIREBASE_SERVICE_ACCOUNT GitHub Secret bulunamadı.");
+function esc(value = "") {
+  return String(value)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&apos;");
 }
 
-const serviceAccount = JSON.parse(serviceAccountRaw);
-
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
-  storageBucket: "modanta-canta.firebasestorage.app"
-});
-
-const db = admin.firestore();
-
-function xmlEscape(value = "") {
-  return String(value ?? "")
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&apos;");
+function normalizeAvailability(stock, status, target) {
+  const s = String(status || "").toLowerCase();
+  const inStock = Number(stock || 0) > 0 && !s.includes("yok") && !s.includes("tükendi");
+  if (target === "facebook") return inStock ? "in stock" : "out of stock";
+  return inStock ? "in_stock" : "out_of_stock";
 }
 
-function cleanPrice(value) {
-  const number = Number(value || 0);
-  return number > 0 ? `${number.toFixed(2)} TRY` : "0.00 TRY";
+function productCategory(category = "") {
+  if (category === "Çanta") return "Apparel & Accessories > Handbags, Wallets & Cases > Handbags";
+  if (category === "Gözlük") return "Apparel & Accessories > Clothing Accessories > Sunglasses";
+  if (category === "Saat") return "Apparel & Accessories > Jewelry > Watches";
+  return "Apparel & Accessories";
 }
 
-function availability(product) {
-  const stock = Number(product.stock || 0);
-  const status = String(product.stockStatus || "").toLowerCase();
+function itemXml(p, target) {
+  const id = p.code || p.id;
+  const title = p.name || "Modanta Ürün";
+  const desc = p.description || `${BRAND} koleksiyonunda yer alan ürün.`;
+  const price = Number(p.price || 0).toFixed(2);
+  const category = p.category || "Çanta";
+  const availability = normalizeAvailability(p.stock, p.stockStatus, target);
 
-  if (stock > 0 || status.includes("stokta")) {
-    return {
-      merchant: "in_stock",
-      facebook: "in stock"
-    };
-  }
-
-  return {
-    merchant: "out_of_stock",
-    facebook: "out of stock"
-  };
-}
-
-function merchantItem(id, p) {
-  const a = availability(p);
-
-  return `
-    <item>
-      <g:id>${xmlEscape(p.code || id)}</g:id>
-      <g:title>${xmlEscape(p.name || "Modanta Ürün")}</g:title>
-      <g:description>${xmlEscape(p.description || p.name || "Modanta Çanta ürünü")}</g:description>
-      <g:link>${xmlEscape(SHOP_URL)}</g:link>
-      <g:image_link>${xmlEscape(p.imageUrl || "")}</g:image_link>
-      <g:availability>${a.merchant}</g:availability>
-      <g:price>${cleanPrice(p.price)}</g:price>
-      <g:brand>${xmlEscape(p.brand || BRAND)}</g:brand>
-      <g:condition>${xmlEscape(p.condition || "new")}</g:condition>
-      <g:product_type>${xmlEscape(p.category || "Ürün")}</g:product_type>
+  return `    <item>
+      <g:id>${esc(id)}</g:id>
+      <g:title>${esc(title)}</g:title>
+      <g:description>${esc(desc)}</g:description>
+      <g:link>${SITE_URL}/</g:link>
+      <g:image_link>${esc(p.imageUrl || "")}</g:image_link>
+      <g:availability>${availability}</g:availability>
+      <g:price>${price} TRY</g:price>
+      <g:brand>${esc(BRAND)}</g:brand>
+      <g:condition>new</g:condition>
+      <g:product_type>${esc(category)}</g:product_type>
+      <g:google_product_category>${esc(productCategory(category))}</g:google_product_category>
       <g:identifier_exists>no</g:identifier_exists>
     </item>`;
 }
 
-function facebookItem(id, p) {
-  const a = availability(p);
+function feedXml(products, target) {
+  const title = target === "facebook"
+    ? `${BRAND} Facebook Ürün Feed`
+    : `${BRAND} Google Merchant Ürün Feed`;
 
-  return `
-    <item>
-      <g:id>${xmlEscape(p.code || id)}</g:id>
-      <g:title>${xmlEscape(p.name || "Modanta Ürün")}</g:title>
-      <g:description>${xmlEscape(p.description || p.name || "Modanta Çanta ürünü")}</g:description>
-      <g:link>${xmlEscape(SHOP_URL)}</g:link>
-      <g:image_link>${xmlEscape(p.imageUrl || "")}</g:image_link>
-      <g:availability>${a.facebook}</g:availability>
-      <g:price>${cleanPrice(p.price)}</g:price>
-      <g:brand>${xmlEscape(p.brand || BRAND)}</g:brand>
-      <g:condition>${xmlEscape(p.condition || "new")}</g:condition>
-      <g:product_type>${xmlEscape(p.category || "Ürün")}</g:product_type>
-    </item>`;
+  const description = target === "facebook"
+    ? `${BRAND} Meta katalog ürünleri`
+    : `${BRAND} Google Merchant Center ürün kataloğu`;
+
+  return `<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:g="http://base.google.com/ns/1.0">
+  <channel>
+    <title>${esc(title)}</title>
+    <link>${SITE_URL}/</link>
+    <description>${esc(description)}</description>
+
+${products.map(p => itemXml(p, target)).join("\n\n")}
+  </channel>
+</rss>
+`;
 }
 
 async function main() {
-  const snap = await db.collection("products").get();
-  const products = [];
+  const serviceAccountPath = process.env.GOOGLE_APPLICATION_CREDENTIALS;
 
-  snap.forEach(doc => {
-    const p = doc.data();
-    if (!p.name || !p.price || !p.imageUrl) return;
-    products.push({ id: doc.id, ...p });
+  if (!serviceAccountPath) {
+    throw new Error("GOOGLE_APPLICATION_CREDENTIALS ortam değişkeni eksik.");
+  }
+
+  admin.initializeApp({
+    credential: admin.credential.cert(JSON.parse(fs.readFileSync(serviceAccountPath, "utf8")))
   });
 
-  const merchantItems = products.map(p => merchantItem(p.id, p)).join("\n");
-  const facebookItems = products.map(p => facebookItem(p.id, p)).join("\n");
+  const snap = await admin.firestore()
+    .collection("products")
+    .where("stockStatus", "!=", "Tükendi")
+    .get();
 
-  const merchantXml = `<?xml version="1.0" encoding="UTF-8"?>
-<rss version="2.0" xmlns:g="http://base.google.com/ns/1.0">
-  <channel>
-    <title>Modanta Çanta Ürün Feed</title>
-    <link>${SITE_URL}</link>
-    <description>Modanta Çanta Google Merchant ürünleri</description>
-${merchantItems}
-  </channel>
-</rss>
-`;
+  const products = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
 
-  const facebookXml = `<?xml version="1.0" encoding="UTF-8"?>
-<rss version="2.0" xmlns:g="http://base.google.com/ns/1.0">
-  <channel>
-    <title>Modanta Çanta Facebook Ürün Feed</title>
-    <link>${SITE_URL}</link>
-    <description>Modanta Çanta Meta katalog ürünleri</description>
-${facebookItems}
-  </channel>
-</rss>
-`;
+  fs.writeFileSync(path.join(OUT_DIR, "merchant.xml"), feedXml(products, "merchant"), "utf8");
+  fs.writeFileSync(path.join(OUT_DIR, "facebook.xml"), feedXml(products, "facebook"), "utf8");
 
-  fs.writeFileSync("merchant.xml", merchantXml, "utf8");
-  fs.writeFileSync("facebook.xml", facebookXml, "utf8");
-
-  console.log(`Feed oluşturuldu. Ürün sayısı: ${products.length}`);
+  console.log(`Feed hazır: ${products.length} ürün`);
 }
 
-main().catch(error => {
-  console.error(error);
+main().catch(err => {
+  console.error(err);
   process.exit(1);
 });
