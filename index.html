@@ -196,8 +196,12 @@ img,button,a{-webkit-user-drag:none;user-select:none}
 .payment-box h3{font-size:24px;margin-bottom:10px}.payment-box p{line-height:1.7;color:#eef2ff;margin-bottom:10px}
 .pay-row{background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.16);border-radius:16px;padding:12px;margin-top:9px}.pay-row small{display:block;opacity:.82;margin-bottom:5px}.pay-row strong{font-size:16px;word-break:break-word}.copy-flex{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap}.copy-btn{background:#fff;color:#111;border:0;border-radius:12px;padding:10px 14px;font-weight:950;min-width:100px}
 .notice,.policy-list li{color:var(--muted);line-height:1.7;font-size:14px}.policy-list{padding-left:20px;margin-top:12px}.policy-list li{margin-bottom:10px}
+
+.review-list{display:grid;gap:10px;margin-top:16px}.review-item{border:1px solid var(--line);border-radius:16px;padding:12px;background:#fafafa}.review-item strong{display:block;font-size:14px;margin-bottom:4px}.review-item small{display:block;color:var(--muted);font-weight:800;margin-bottom:6px}.review-item p{color:#475467;line-height:1.55;font-size:14px;white-space:pre-line}.review-empty{border:1px dashed #cfd2da;border-radius:16px;padding:14px;text-align:center;color:var(--muted);font-weight:900;background:#fff}.track-box{display:grid;grid-template-columns:1fr 1fr auto;gap:10px;margin-bottom:18px}.track-list{display:grid;gap:12px}.track-card{background:#fff;border:1px solid var(--line);border-radius:22px;padding:18px;box-shadow:var(--shadow)}.track-head{display:flex;justify-content:space-between;gap:10px;align-items:flex-start;flex-wrap:wrap;margin-bottom:12px}.track-code{font-size:20px;font-weight:950}.track-status{display:inline-flex;align-items:center;justify-content:center;border-radius:999px;padding:8px 12px;font-weight:950;font-size:13px;background:#fff7db;color:#946200}.track-status.paid{background:#ecfdf3;color:#067647}.track-status.sent{background:#eff6ff;color:#155eef}.track-status.return{background:#fff3f3;color:#b42318}.track-info{display:grid;grid-template-columns:repeat(2,1fr);gap:9px;margin-top:10px}.track-info div{background:#fafafa;border:1px solid var(--line);border-radius:14px;padding:10px}.track-info small{display:block;color:var(--muted);font-weight:900;margin-bottom:4px}.track-info b{font-size:14px}.track-products{margin-top:12px;border-top:1px solid var(--line);padding-top:10px}.track-product{display:grid;grid-template-columns:52px 1fr auto;gap:10px;align-items:center;padding:8px 0}.track-product img{width:52px;height:52px;border-radius:12px;object-fit:cover;background:#f2f4f7}.track-product strong{font-size:14px}.track-product span{color:var(--muted);font-size:13px}.top-mini-btn{height:44px;background:#fff;color:#111;border:1px solid var(--line);padding:0 14px;border-radius:999px;font-size:13px;font-weight:950;display:flex;align-items:center;justify-content:center;box-shadow:0 10px 24px rgba(16,24,40,.06);transition:.22s ease}.top-mini-btn:hover{transform:translateY(-2px);border-color:#111}
 @media(max-width:980px){.products{grid-template-columns:repeat(2,1fr)}.modal-inner,.content-grid,.cart-layout{grid-template-columns:1fr}.modal-img{position:static;height:520px}.feature-grid,.contact-grid{grid-template-columns:1fr 1fr}}
 @media(max-width:650px){
+  .track-box{grid-template-columns:1fr}.track-info{grid-template-columns:1fr}.top-mini-btn{height:40px;padding:0 10px;font-size:11px}
+
   .nav{padding:10px 12px}.brand img{width:42px;height:42px;border-radius:13px}.brand-title{font-size:18px}.brand-title span{font-size:15px}.header-actions{gap:6px}.icon-btn{width:38px;height:38px;border-radius:12px}.cart-btn{height:40px;padding:0 10px;font-size:12px}.menu-btn{width:42px;height:42px;border-radius:13px}.main{padding:78px 8px 38px}
   .shop-title,.page-hero{padding:25px;border-radius:24px;min-height:auto}.shop-title p{font-size:15px}
   .filter-row{grid-template-columns:1fr}.sort-select,.cat-select{height:50px;min-width:0}
@@ -206,6 +210,89 @@ img,button,a{-webkit-user-drag:none;user-select:none}
   .modal-top-bar,.page-top-bar{height:70px;padding:0 12px}.modal-top-price{font-size:25px}.modal-top-price .tl-icon{font-size:23px}.modal-top-price .price-number{font-size:25px}.modal-close,.page-close{width:42px;height:42px;border-radius:14px;font-size:34px}.page-top-title{font-size:19px}
   .modal-page,.page-body{padding:14px 10px 30px}.modal-img{height:350px;border-radius:22px}.modal-info,.panel,.content-card{padding:17px;border-radius:22px}.modal-title{font-size:28px}.modal-desc{font-size:14px}.modal-detail-list,.feature-grid,.contact-grid,.email-row,.location-row{grid-template-columns:1fr}.review-stars button{font-size:28px}.image-card{min-height:310px;border-radius:22px}.cart-item{grid-template-columns:74px 1fr}.cart-item img{width:74px;height:74px}.remove-btn{grid-column:1/-1}
 }
+
+/* ÜST BAR TEMİZ VE HER EKRANDA SABİT */
+.menu-btn{width:auto!important;height:auto!important;border:0!important;background:transparent!important;color:#111!important;border-radius:0!important;box-shadow:none!important;font-size:34px!important;line-height:1!important;padding:4px 6px!important}
+.menu-btn:hover{background:transparent!important;transform:none!important;color:#000!important;box-shadow:none!important}
+.brand img{display:none!important}
+.header-actions .icon-btn,.top-mini-btn{display:none!important}
+.nav{min-height:74px}
+@media(max-width:650px){.nav{min-height:74px!important;padding:13px 18px!important}.brand-title{font-size:22px!important}.brand-title span{font-size:18px!important}.cart-btn{height:44px!important;padding:0 17px!important;font-size:14px!important}.menu-btn{font-size:34px!important}.main{padding-top:96px!important}}
+
+/* GELİŞMİŞ SİPARİŞ TAKİP */
+.track-box.advanced{grid-template-columns:1fr auto;align-items:end}
+.track-help{color:var(--muted);font-weight:800;font-size:13px;margin:8px 0 16px;line-height:1.6}
+.track-card.advanced{overflow:hidden}.track-alert{border-radius:16px;padding:14px;margin:12px 0;font-weight:900;line-height:1.55}.track-alert.wait{background:#fff7db;color:#946200;border:1px solid #fedf89}.track-alert.paid{background:#ecfdf3;color:#067647;border:1px solid #abefc6}.track-alert.sent{background:#eff6ff;color:#155eef;border:1px solid #b2ddff}.track-alert.return{background:#fff3f3;color:#b42318;border:1px solid #fecdca}.track-timeline{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:14px 0}.track-step{border:1px solid var(--line);background:#fafafa;border-radius:14px;padding:10px;text-align:center;font-weight:950;color:var(--muted);font-size:12px}.track-step.active{background:#111;color:#fff;border-color:#111}.track-step.done{background:#ecfdf3;color:#067647;border-color:#abefc6}.track-summary{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin:12px 0}.track-summary div{background:#fafafa;border:1px solid var(--line);border-radius:14px;padding:10px}.track-summary small{display:block;color:var(--muted);font-weight:900;margin-bottom:4px}.track-summary b{font-size:14px}.track-contact{margin-top:14px;display:flex;gap:10px;flex-wrap:wrap}.track-contact a{display:inline-flex;align-items:center;justify-content:center;border-radius:14px;padding:12px 15px;font-weight:950}.track-contact .wa{background:#178c4f;color:#fff}.track-contact .copy-order{background:#fff;border:1px solid var(--line);color:#111}
+@media(max-width:650px){.track-box.advanced,.track-timeline,.track-summary{grid-template-columns:1fr}.track-contact a{width:100%}}
+
+
+
+/* FINAL TAM UYUM DÜZENİ - MENÜ, KART, KARE GÖRSEL, RESPONSIVE */
+.side-menu{display:flex!important;flex-direction:column!important;padding:20px!important}
+.side-menu-head{flex:0 0 auto!important}
+.side-menu-links{flex:0 0 auto!important;display:block!important}
+.studio-box{margin-top:auto!important;margin-bottom:0!important;width:100%!important;position:relative!important}
+.side-link{min-height:52px!important;gap:12px!important}
+
+.product-img{aspect-ratio:1/1!important;height:auto!important;border-radius:22px!important}
+.product-img img{width:100%!important;height:100%!important;aspect-ratio:1/1!important;object-fit:cover!important;transform:none!important;transition:none!important}
+.product:hover .product-img img{transform:none!important}
+.product:hover{transform:translateY(-4px)!important}
+
+.modal-inner{align-items:start!important}
+.modal-img{width:100%!important;max-width:620px!important;height:auto!important;aspect-ratio:1/1!important;object-fit:cover!important;border-radius:28px!important;position:sticky!important;top:108px!important;margin:0 auto!important}
+.modal-page,.page-body{overflow-x:hidden!important}
+.modal-info,.panel,.content-card,.track-card{min-width:0!important}
+
+.order-btn,.quick-link,.modal-add,.review-submit,.black-btn,.white-btn,.cart-btn,.side-link,.copy-btn{white-space:normal!important;line-height:1.25!important;word-break:break-word!important}
+.form-grid input,.form-grid textarea,.form-grid select,#trackCode,.search-box input,.sort-select,.cat-select{min-width:0!important;max-width:100%!important}
+.filter-row{grid-template-columns:minmax(0,1fr) minmax(160px,210px) minmax(170px,235px)!important}
+
+.track-box.advanced{grid-template-columns:minmax(0,1fr) 220px!important;gap:12px!important;background:#fafafa!important;border:1px solid var(--line)!important;border-radius:24px!important;padding:14px!important;box-shadow:0 14px 34px rgba(16,24,40,.06)!important}
+#trackCode{height:54px!important;border-radius:16px!important;background:#fff!important;font-size:16px!important;font-weight:850!important;letter-spacing:.3px!important;text-transform:uppercase!important}
+#trackOrderBtn{height:54px!important;border-radius:16px!important;margin:0!important}
+.track-card.advanced{border-radius:26px!important;padding:20px!important}
+.track-head{align-items:center!important}
+.track-code{word-break:break-word!important}
+.track-product{grid-template-columns:58px minmax(0,1fr) auto!important}
+.track-product img{width:58px!important;height:58px!important;aspect-ratio:1/1!important}
+
+.cart-layout{grid-template-columns:minmax(0,1.1fr) minmax(330px,.9fr)!important}
+.cart-item{grid-template-columns:90px minmax(0,1fr) auto!important}
+.cart-item img{aspect-ratio:1/1!important}
+.cart-item h3,.cart-item p{word-break:break-word!important}
+
+@media(max-width:980px){
+  .filter-row{grid-template-columns:1fr 1fr!important}
+  .search-box{grid-column:1/-1!important}
+  .cart-layout{grid-template-columns:1fr!important}
+  .modal-img{position:static!important;max-width:560px!important}
+}
+@media(max-width:650px){
+  .side-menu{width:min(340px,88vw)!important;padding:18px!important}
+  .side-link{min-height:50px!important;padding:14px!important;border-radius:15px!important}
+  .studio-box{padding:12px!important;border-radius:15px!important}
+  .products{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:10px!important}
+  .product-img{border-radius:14px!important}
+  .product-img img{height:100%!important;border-radius:14px!important}
+  .filter-row{grid-template-columns:1fr!important;gap:10px!important}
+  .sort-select,.cat-select,.search-box input{width:100%!important;min-width:0!important;height:50px!important}
+  .modal-img{width:100%!important;max-width:100%!important;height:auto!important;aspect-ratio:1/1!important;border-radius:22px!important}
+  .track-box.advanced{grid-template-columns:1fr!important;padding:12px!important;border-radius:20px!important}
+  #trackCode,#trackOrderBtn{width:100%!important;height:52px!important}
+  .track-card.advanced{padding:15px!important;border-radius:22px!important}
+  .track-product{grid-template-columns:52px minmax(0,1fr)!important}
+  .track-product b:last-child{grid-column:1/-1;text-align:right!important}
+  .cart-item{grid-template-columns:74px minmax(0,1fr)!important}
+  .remove-btn{grid-column:1/-1!important;width:100%!important}
+}
+@media(max-width:390px){
+  .products{grid-template-columns:1fr!important}
+  .nav{gap:8px!important;padding-left:12px!important;padding-right:12px!important}
+  .cart-btn{padding:0 12px!important}
+  .brand-title{font-size:19px!important}.brand-title span{font-size:16px!important}
+}
+
 </style>
 </head>
 <body>
@@ -214,16 +301,9 @@ img,button,a{-webkit-user-drag:none;user-select:none}
   <nav class="nav">
     <button class="menu-btn" id="menuBtn" type="button">☰</button>
     <a href="#" class="brand" data-open-page="home">
-      <img src="https://pbs.twimg.com/media/HHaRfeXWIAExq29?format=jpg&name=240x240" alt="Modanta Çanta">
       <div class="brand-title">Modanta <span>Çanta</span></div>
     </a>
     <div class="header-actions">
-      <a id="wpIcon" class="icon-btn" target="_blank" aria-label="WhatsApp">
-        <img src="https://play-lh.googleusercontent.com/gmSt5wthfRdyU70ffBIHNS9cUGsMnn0W2GK8nkjUMcmgIgthZce97_6NkHZcq8NN0OA" alt="WhatsApp">
-      </a>
-      <a id="igIcon" class="icon-btn" target="_blank" aria-label="Instagram" href="https://www.instagram.com/modantacanta/">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" alt="Instagram">
-      </a>
       <button class="cart-btn" id="cartBtn" type="button">Sepet <span id="cartCount">0</span></button>
     </div>
   </nav>
@@ -235,11 +315,14 @@ img,button,a{-webkit-user-drag:none;user-select:none}
     <strong>Modanta Menü</strong>
     <button class="side-close" id="sideClose" type="button">×</button>
   </div>
-  <button class="side-link" type="button" data-open-page="home">Ürünler <span>›</span></button>
-  <button class="side-link" type="button" data-open-page="about">Hakkımızda <span>›</span></button>
-  <button class="side-link" type="button" data-open-page="contact">İletişim <span>›</span></button>
-  <button class="side-link" type="button" data-open-page="refund">İptal İade <span>›</span></button>
-  <button class="side-link" type="button" data-open-page="cart">Sepet <span>›</span></button>
+  <div class="side-menu-links">
+    <button class="side-link" type="button" data-open-page="home">Ürünler <span>›</span></button>
+    <button class="side-link" type="button" data-open-page="cart">Sepet <span>›</span></button>
+    <button class="side-link" type="button" data-open-page="orders">Siparişlerim <span>›</span></button>
+    <button class="side-link" type="button" data-open-page="refund">İptal İade <span>›</span></button>
+    <button class="side-link" type="button" data-open-page="contact">İletişim <span>›</span></button>
+    <button class="side-link" type="button" data-open-page="about">Hakkımızda <span>›</span></button>
+  </div>
   <a class="studio-box" href="https://kaanayaz.com.tr/" target="_blank" rel="noopener">Kaan Ayaz Studio<small>Web Developer</small></a>
 </aside>
 
@@ -304,6 +387,7 @@ img,button,a{-webkit-user-drag:none;user-select:none}
           </div>
           <textarea id="reviewText" placeholder="Bu ürün hakkında yorumunu yaz..."></textarea>
           <button class="review-submit" id="reviewSubmit" type="button">Yorumu Gönder</button>
+          <div class="review-list" id="modalReviewList"><div class="review-empty">Henüz yorum yok.</div></div>
         </div>
       </div>
     </div>
@@ -418,7 +502,7 @@ img,button,a{-webkit-user-drag:none;user-select:none}
           <button class="black-btn" id="whatsappBtn" type="button" style="display:none;margin-top:9px;background:#178c4f;border-color:#178c4f">WhatsApp Mesajını Gönder</button>
           <button class="white-btn" id="cancelBtn" type="button" style="display:none;margin-top:9px;color:#b42318">WhatsApp ile Siparişi İptal Et</button>
           <button class="white-btn" id="clearBtn" type="button" style="margin-top:9px">Sepeti Temizle</button>
-          <p class="notice" style="margin-top:12px">Sipariş oluşturulduktan sonra WhatsApp mesajı hazır olarak açılır. Müşteri sadece gönder butonuna basar.</p>
+          <p class="notice" style="margin-top:12px">  </p>
           <div class="success-box" id="successBox"></div>
           <div class="payment-box" id="paymentBox">
             <h3>Ödeme Bilgileri</h3>
@@ -435,13 +519,35 @@ img,button,a{-webkit-user-drag:none;user-select:none}
   </div>
 </section>
 
+
+<section class="full-page" id="ordersPage">
+  <div class="page-top-bar"><div class="page-top-title">Siparişlerim</div><button class="page-close" data-close-page type="button">×</button></div>
+  <div class="page-body">
+    <div class="page-container">
+      <section class="page-hero">
+        <h1>Siparişini <span>kod ile takip et</span></h1>
+        <p>Sipariş oluşturulduktan sonra verilen kodu yaz. Ödeme, hazırlık, kargo ve teslim sürecini panel ile aynı durum bilgileri üzerinden takip et.</p>
+      </section>
+      <div class="content-card">
+        <h2>Sipariş <span>sorgulama</span></h2>
+        <p class="track-help"> </p>
+        <div class="track-box advanced">
+          <input id="trackCode" placeholder="  MOD-1234567" autocomplete="off">
+          <button class="black-btn" id="trackOrderBtn" type="button" style="height:50px">Siparişimi Sorgula</button>
+        </div>
+        <div id="trackResult" class="track-list"><div class="review-empty">Sipariş durumunu görmek için sipariş kodunu yaz.</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <div class="toast" id="toast">Ürün sepete eklendi</div>
 <footer class="developer-footer" id="footerText"><strong>© Modanta Çanta Tüm Hakları Saklıdır</strong></footer>
 <a class="whatsapp-float" id="floatWp" href="https://wa.me/905435755840" target="_blank" rel="noopener">WhatsApp</a>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-app.js";
-import { getFirestore, collection, query, orderBy, onSnapshot, doc, updateDoc, increment, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-firestore.js";
+import { getFirestore, collection, query, orderBy, onSnapshot, doc, updateDoc, increment, addDoc, serverTimestamp, where, getDocs } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-firestore.js";
 
 // Firebase bağlantısı mevcut Modanta Çanta projesine bağlıdır
 const firebaseConfig={apiKey:"AIzaSyAnXahaeXWh0JK1a8jNerRAfkN0OEXXkFc",authDomain:"modanta-canta.firebaseapp.com",projectId:"modanta-canta",storageBucket:"modanta-canta.firebasestorage.app",messagingSenderId:"138476521828",appId:"1:138476521828:web:ea7c3bfb510b2c90fc9271"};
@@ -449,12 +555,12 @@ const app=initializeApp(firebaseConfig);
 const db=getFirestore(app);
 
 const $=id=>document.getElementById(id);
-const productsGrid=$("productsGrid"),cartCount=$("cartCount"),cartBtn=$("cartBtn"),wpIcon=$("wpIcon"),igIcon=$("igIcon"),searchInput=$("searchInput"),sortSelect=$("sortSelect"),categorySelect=$("categorySelect"),toast=$("toast"),footerText=$("footerText");
+const productsGrid=$("productsGrid"),cartCount=$("cartCount"),cartBtn=$("cartBtn"),searchInput=$("searchInput"),sortSelect=$("sortSelect"),categorySelect=$("categorySelect"),toast=$("toast"),footerText=$("footerText");
 const menuBtn=$("menuBtn"),sideMenu=$("sideMenu"),sideMenuBack=$("sideMenuBack"),sideClose=$("sideClose"),floatWp=$("floatWp");
-const productModal=$("productModal"),modalClose=$("modalClose"),modalImg=$("modalImg"),modalCategory=$("modalCategory"),modalTitle=$("modalTitle"),modalDesc=$("modalDesc"),modalTopPrice=$("modalTopPrice"),modalDetailList=$("modalDetailList"),modalAddBtn=$("modalAddBtn"),modalQtyMinus=$("modalQtyMinus"),modalQtyPlus=$("modalQtyPlus"),modalQtyText=$("modalQtyText"),reviewStars=$("reviewStars"),reviewText=$("reviewText"),reviewSubmit=$("reviewSubmit"),reviewInfo=$("reviewInfo");
+const productModal=$("productModal"),modalClose=$("modalClose"),modalImg=$("modalImg"),modalCategory=$("modalCategory"),modalTitle=$("modalTitle"),modalDesc=$("modalDesc"),modalTopPrice=$("modalTopPrice"),modalDetailList=$("modalDetailList"),modalAddBtn=$("modalAddBtn"),modalQtyMinus=$("modalQtyMinus"),modalQtyPlus=$("modalQtyPlus"),modalQtyText=$("modalQtyText"),reviewStars=$("reviewStars"),reviewText=$("reviewText"),reviewSubmit=$("reviewSubmit"),reviewInfo=$("reviewInfo"),modalReviewList=$("modalReviewList");
 const cartItems=$("cartItems"),itemCount=$("itemCount"),cartTotal=$("cartTotal"),completeBtn=$("completeBtn"),whatsappBtn=$("whatsappBtn"),cancelBtn=$("cancelBtn"),clearBtn=$("clearBtn"),errorBox=$("errorBox"),successBox=$("successBox"),paymentBox=$("paymentBox"),createdOrderCode=$("createdOrderCode"),payName=$("payName"),payIban=$("payIban"),payBank=$("payBank"),payNote=$("payNote");
 
-let allProducts=[],selectedProduct=null,modalQty=1,selectedRating=0,productQtyMap={},savedScrollY=0;
+let allProducts=[],allReviews=[],selectedProduct=null,modalQty=1,selectedRating=0,productQtyMap={},savedScrollY=0;
 let cart=JSON.parse(localStorage.getItem("modantaCart")||"[]");
 let reviews=JSON.parse(localStorage.getItem("modantaReviews")||"{}");
 let contactPhone="905435755840";
@@ -478,7 +584,7 @@ function unlockPageScroll(){document.body.classList.remove("modal-lock");documen
 function openFullPage(name){
   closeSideMenu();
   if(name==="home"){document.querySelectorAll(".full-page.show").forEach(p=>p.classList.remove("show"));return}
-  const map={about:"aboutPage",contact:"contactPage",refund:"refundPage",cart:"cartPage"};
+  const map={about:"aboutPage",contact:"contactPage",refund:"refundPage",cart:"cartPage",orders:"ordersPage"};
   const page=$(map[name]);
   if(!page)return;
   document.querySelectorAll(".full-page.show").forEach(p=>p.classList.remove("show"));
@@ -491,20 +597,33 @@ document.querySelectorAll("[data-open-page]").forEach(el=>el.addEventListener("c
 document.querySelectorAll("[data-close-page]").forEach(el=>el.addEventListener("click",closeFullPages));
 cartBtn.addEventListener("click",()=>openFullPage("cart"));
 
-function getRating(id){const item=reviews[id];if(!item||!item.rating)return{rating:5,count:0,text:"★★★★★"};const r=Number(item.rating||5);return{rating:r,count:1,text:"★".repeat(r)+"☆".repeat(5-r)}}
+function getProductReviews(id){return allReviews.filter(r=>r.productId===id && r.approved!==false)}
+function getRating(id){const list=getProductReviews(id);if(!list.length)return{rating:5,count:0,text:"★★★★★"};const avg=Math.round(list.reduce((s,r)=>s+Number(r.rating||5),0)/list.length);return{rating:avg,count:list.length,text:"★".repeat(avg)+"☆".repeat(5-avg)}}
 function saveReviews(){localStorage.setItem("modantaReviews",JSON.stringify(reviews))}
-function addToCart(product,qty=1){if(!product)return;qty=Math.max(1,Number(qty||1));const existing=cart.find(i=>i.id===product.id);if(existing)existing.qty=Number(existing.qty||1)+qty;else cart.push({id:product.id,code:product.code||"",name:product.name||"",price:Number(product.price||0),imageUrl:product.imageUrl||"",category:product.category||"",qty});saveCart();showToast(qty+" adet ürün sepete eklendi");updateDoc(doc(db,"products",product.id),{cartAdds:increment(qty)}).catch(()=>{})}
+function renderModalReviews(productId){if(!modalReviewList)return;const list=getProductReviews(productId).slice(0,20);modalReviewList.innerHTML=list.length?list.map(r=>`<div class="review-item"><strong>${"★".repeat(Number(r.rating||5))+"☆".repeat(5-Number(r.rating||5))} ${r.customerName||"Müşteri"}</strong><small>${r.productName||"Ürün"}</small><p>${r.comment||"Yorum metni yok."}</p></div>`).join(""):`<div class="review-empty">Henüz yorum yok.</div>`}
+
+function addToCart(product,qty=1){if(!product)return;qty=Math.max(1,Number(qty||1));const existing=cart.find(i=>i.id===product.id);if(existing)existing.qty=Number(existing.qty||1)+qty;else cart.push({id:product.id,code:product.code||"",name:product.name||"",price:Number(product.price||0),imageUrl:product.imageUrl||"",category:product.category||"",qty});saveCart();showToast(qty+" adet ürün sepete eklendi");updateDoc(doc(db,"products",product.id),{views:increment(1),cartAdds:increment(qty)}).catch(()=>{})}
 
 function productDetailHTML(product){const items=[["Ürün Kodu",product.code||"Kod yok"],["Kategori",product.category||"Ürün"],["Stok Durumu",product.stockStatus||"Stok bilgisi"],["Stok Adedi",hasValue(product.stock)?product.stock:"Belirtilmedi"]];if(product.details){Object.entries(product.details).forEach(([k,v])=>{if(v)items.push([k,v])})}return items.map(([k,v])=>`<div class="modal-detail-item"><small>${k}</small><strong>${v}</strong></div>`).join("")}
 function setReviewStars(rating){selectedRating=Number(rating||0);reviewStars.querySelectorAll("button").forEach(b=>b.classList.toggle("active",Number(b.dataset.star)<=selectedRating))}
-function openProductModal(product){if(product&&product.id){updateDoc(doc(db,"products",product.id),{views:increment(1)}).catch(()=>{})}selectedProduct=product;modalQty=1;modalQtyText.textContent=modalQty;const savedReview=reviews[product.id]||{};modalImg.src=product.imageUrl||"";modalImg.alt=product.name||"Ürün";modalCategory.textContent=product.category||"Ürün";modalTitle.textContent=product.name||"Ürün";modalDesc.textContent=product.description||"Ürün açıklaması bulunmuyor.";modalTopPrice.innerHTML=`<span class="tl-icon">₺</span><span class="price-number">${money(product.price)}</span>`;modalDetailList.innerHTML=productDetailHTML(product);reviewText.value=savedReview.comment||"";setReviewStars(Number(savedReview.rating||0));reviewInfo.textContent=selectedRating?"Bu ürüne "+selectedRating+" yıldız verdiniz.":"Oy vermeye hazır.";productModal.classList.add("show");lockPageScroll()}
+function openProductModal(product){selectedProduct=product;modalQty=1;modalQtyText.textContent=modalQty;const savedReview=reviews[product.id]||{};modalImg.src=product.imageUrl||"";modalImg.alt=product.name||"Ürün";modalCategory.textContent=product.category||"Ürün";modalTitle.textContent=product.name||"Ürün";modalDesc.textContent=product.description||"Ürün açıklaması bulunmuyor.";modalTopPrice.innerHTML=`<span class="tl-icon">₺</span><span class="price-number">${money(product.price)}</span>`;modalDetailList.innerHTML=productDetailHTML(product);reviewText.value=savedReview.comment||"";setReviewStars(Number(savedReview.rating||0));reviewInfo.textContent=selectedRating?"Bu ürüne "+selectedRating+" yıldız verdiniz.":"Oy vermeye hazır.";renderModalReviews(product.id);productModal.classList.add("show");lockPageScroll()}
 function closeProductModal(){productModal.classList.remove("show");unlockPageScroll()}
 modalClose.addEventListener("click",closeProductModal);
 modalQtyMinus.addEventListener("click",()=>{modalQty=Math.max(1,modalQty-1);modalQtyText.textContent=modalQty});
 modalQtyPlus.addEventListener("click",()=>{modalQty++;modalQtyText.textContent=modalQty});
 modalAddBtn.addEventListener("click",()=>{addToCart(selectedProduct,modalQty);modalAddBtn.textContent="Eklendi";setTimeout(()=>modalAddBtn.textContent="Sepete Ekle",900)});
 reviewStars.querySelectorAll("button").forEach(b=>b.addEventListener("click",()=>{setReviewStars(b.dataset.star);reviewInfo.textContent="Bu ürüne "+selectedRating+" yıldız vermeye hazırsınız."}));
-reviewSubmit.addEventListener("click",()=>{if(!selectedProduct)return;reviews[selectedProduct.id]={rating:selectedRating||5,comment:reviewText.value.trim(),date:new Date().toISOString()};saveReviews();reviewInfo.textContent="Yorumunuz kaydedildi. Teşekkür ederiz.";showToast("Yorum kaydedildi");renderProducts()});
+reviewSubmit.addEventListener("click",async()=>{
+  if(!selectedProduct)return;
+  const comment=reviewText.value.trim();
+  if(!comment){reviewInfo.textContent="Yorum yazmadan gönderemezsin.";return}
+  const customerName=$("customerName")?.value?.trim()||"Müşteri";
+  try{
+    await addDoc(collection(db,"reviews"),{productId:selectedProduct.id,productName:selectedProduct.name||"Ürün",productCode:selectedProduct.code||"",rating:selectedRating||5,comment,customerName,approved:true,createdAt:serverTimestamp()});
+    await addDoc(collection(db,"notifications"),{type:"review",title:"Yeni yorum geldi",message:(selectedProduct.name||"Ürün")+" için yeni yorum yapıldı",productId:selectedProduct.id,read:false,createdAt:serverTimestamp()}).catch(()=>{});
+    reviewText.value="";reviewInfo.textContent="Yorumunuz kaydedildi. Teşekkür ederiz.";showToast("Yorum kaydedildi");
+  }catch(err){reviewInfo.textContent="Yorum kaydedilemedi: "+(err.message||"Firebase hatası");}
+});
 
 function renderProducts(){
   let products=[...allProducts];const active=categorySelect.value;
@@ -1689,173 +1808,86 @@ Object.keys(cityData).forEach(c=>citySelect.insertAdjacentHTML("beforeend",`<opt
 citySelect.addEventListener("change",()=>{districtSelect.innerHTML=citySelect.value?`<option value="">İlçe seç</option>`:`<option value="">Önce il seç</option>`;districtSelect.disabled=!citySelect.value;(cityData[citySelect.value]||[]).forEach(d=>districtSelect.insertAdjacentHTML("beforeend",`<option value="${d}">${d}</option>`))});
 
 function orderMessage(code,total){const items=cart.map(i=>`- ${i.name} x${i.qty} = ₺${money(Number(i.price)*Number(i.qty||1))}`).join("%0A");return `Merhaba Modanta Çanta sipariş oluşturdum%0A%0ASipariş Kodu: ${code}%0A${items}%0AToplam: ₺${money(total)}%0A%0AAd Soyad: ${$("customerName").value}%0ATelefon: +90${$("customerPhone").value}%0AE-posta: ${$("emailName").value}${$("emailDomain").value}%0AKargo: ${$("cargoCompany").value}%0Aİl İlçe: ${citySelect.value} / ${districtSelect.value}%0AAdres: ${$("customerAddress").value}%0ANot: ${$("customerNote").value||"-"}`}
-function makeOrderCode(){
-  return "MOD-" + new Date().toISOString().slice(2,10).replaceAll("-","") + "-" + Date.now().toString().slice(-6);
-}
-function makeCustomerTag(){
-  return "MD-MUS-" + Date.now().toString().slice(-6) + "-" + Math.floor(100+Math.random()*900);
-}
 completeBtn.addEventListener("click",async()=>{
   clearError();
-  successBox.style.display="none";
-  paymentBox.style.display="none";
-
   if(cart.length===0)return showError("Sepet boş. Önce ürün eklemelisiniz.");
-
   const name=$("customerName").value.trim();
-  const phoneRaw=$("customerPhone").value.replace(/[^0-9]/g,"").trim();
-  $("customerPhone").value=phoneRaw;
+  const phone=$("customerPhone").value.trim();
   const emailName=$("emailName").value.trim();
-  const emailDomain=$("emailDomain").value;
-  const email=emailName ? emailName + emailDomain : "";
-  const cargoCompany=$("cargoCompany").value;
+  const cargo=$("cargoCompany").value;
   const city=citySelect.value;
   const district=districtSelect.value;
   const address=$("customerAddress").value.trim();
   const note=$("customerNote").value.trim();
-
-  if(!name)return showError("Ad soyad alanını doldur.");
-  if(!phoneRaw || phoneRaw.length!==10)return showError("Telefon numarasını +90 olmadan 10 hane olarak yaz.");
-  if(!emailName)return showError("E-posta kullanıcı adını yaz.");
-  if(!cargoCompany)return showError("Kargo firması seç.");
-  if(!city || !district)return showError("İl ve ilçe seç.");
-  if(!address)return showError("Açık adres alanını doldur.");
-
-  const phone="+90"+phoneRaw;
+  if(!name||!phone||phone.length!==10||!emailName||!cargo||!city||!district||!address)return showError("Lütfen ad soyad telefon e posta kargo il ilçe ve açık adres alanlarını doldurun.");
   const total=cart.reduce((s,i)=>s+Number(i.price||0)*Number(i.qty||1),0);
-  const orderCode=makeOrderCode();
-
-  const orderItems=cart.map(i=>({
-    productId:i.id||"",
-    id:i.id||"",
-    code:i.code||"",
-    name:i.name||"Ürün",
-    productName:i.name||"Ürün",
-    category:i.category||"",
-    price:Number(i.price||0),
-    qty:Number(i.qty||1),
-    quantity:Number(i.qty||1),
-    imageUrl:i.imageUrl||"",
-    image:i.imageUrl||"",
-    lineTotal:Number(i.price||0)*Number(i.qty||1)
-  }));
-
-  const plainProductText=orderItems.map(i=>`${i.name} x${i.qty} = ₺${money(i.lineTotal)}`).join(" | ");
-
-  const orderData={
-    orderCode:orderCode,
-    code:orderCode,
-
-    name:name,
-    customerName:name,
-    customerFullName:name,
-    phone:phone,
-    customerPhone:phone,
-    email:email,
-    customerEmail:email,
-
-    cargoCompany:cargoCompany,
-    shippingCompany:cargoCompany,
-    city:city,
-    district:district,
-    address:`${address} / ${city} ${district}`,
-    openAddress:address,
-    note:note,
-
+  const code="MOD-"+Date.now().toString().slice(-7);
+  const phoneFull="+90"+phone;
+  const email=emailName+$("emailDomain").value;
+  const orderItems=cart.map(i=>({id:i.id||"",code:i.code||"",name:i.name||"Ürün",qty:Number(i.qty||1),price:Number(i.price||0),imageUrl:i.imageUrl||"",category:i.category||""}));
+  const order={
+    orderCode:code,code,
+    name,customerName:name,
+    phone:phoneFull,email,
+    cargoCompany:cargo,shippingCompany:cargo,
+    city,district,address,note,
+    items:orderItems,
+    products:orderItems.map(i=>`${i.name} x${i.qty}`).join(", "),
+    total,itemCount:orderItems.reduce((s,i)=>s+i.qty,0),
     paymentStatus:"Ödeme bekleniyor",
     status:"Alındı",
-    orderStatus:"Alındı",
-
-    total:total,
-    totalPrice:total,
-    grandTotal:total,
-    itemCount:orderItems.reduce((s,i)=>s+Number(i.qty||1),0),
-    products:plainProductText,
-    items:orderItems,
-
-    paymentName:paymentInfo.name||"",
-    paymentIban:paymentInfo.iban||"",
-    paymentBank:paymentInfo.bank||"",
-    paymentNote:orderCode+" sipariş ödemesi",
-
-    source:"modantacanta.com",
-    createdAt:serverTimestamp(),
-    updatedAt:serverTimestamp()
+    read:false,
+    createdAt:serverTimestamp()
   };
-
   try{
-    completeBtn.disabled=true;
-    completeBtn.textContent="Sipariş kaydediliyor...";
-
-    const orderRef=await addDoc(collection(db,"orders"),orderData);
-
-    await addDoc(collection(db,"customers"),{
-      customerTag:makeCustomerTag(),
-      orderId:orderRef.id,
-      orderCode:orderCode,
-      name:name,
-      customerName:name,
-      phone:phone,
-      email:email,
-      address:`${address} / ${city} ${district}`,
-      city:city,
-      district:district,
-      cargoCompany:cargoCompany,
-      total:total,
-      createdAt:serverTimestamp()
-    }).catch(()=>{});
-
-    await Promise.all(orderItems.map(i=>{
-      if(!i.productId)return Promise.resolve();
-      return updateDoc(doc(db,"products",i.productId),{
-        soldCount:increment(Number(i.qty||1))
-      }).catch(()=>{});
-    }));
-
-    successBox.style.display="block";
-    successBox.textContent="Sipariş başarıyla oluşturuldu. Sipariş kodunuz: "+orderCode;
-
-    paymentBox.style.display="block";
-    $("paymentText").textContent=paymentInfo.text||"Siparişiniz alınmıştır. Ödeme yaptıktan sonra dekontu WhatsApp üzerinden göndermeniz gerekir.";
-    createdOrderCode.textContent=orderCode;
-    payName.textContent=paymentInfo.name||"-";
-    payIban.textContent=paymentInfo.iban||"-";
-    payBank.textContent=paymentInfo.bank||"-";
-    payNote.textContent=orderCode+" sipariş ödemesi";
-
-    whatsappBtn.style.display="flex";
-    cancelBtn.style.display="flex";
-
-    const msgItems=orderItems.map(i=>`- ${i.name} x${i.qty} = ₺${money(i.lineTotal)}`).join("%0A");
-    const message=`Merhaba Modanta Çanta sipariş oluşturdum%0A%0A`+
-      `Sipariş Kodu: ${orderCode}%0A`+
-      `${msgItems}%0A%0A`+
-      `Toplam: ₺${money(total)}%0A%0A`+
-      `Ad Soyad: ${name}%0A`+
-      `Telefon: ${phone}%0A`+
-      `E-posta: ${email}%0A`+
-      `Kargo: ${cargoCompany}%0A`+
-      `İl İlçe: ${city} / ${district}%0A`+
-      `Adres: ${address}%0A`+
-      `Not: ${note||"-"}`;
-
-    whatsappBtn.onclick=()=>window.open("https://wa.me/"+contactPhone+"?text="+message,"_blank");
-    cancelBtn.onclick=()=>window.open("https://wa.me/"+contactPhone+"?text=Merhaba "+orderCode+" kodlu siparişimi iptal etmek istiyorum","_blank");
-
-    showToast("Sipariş Firebase'e kaydedildi");
-  }catch(err){
-    console.error(err);
-    showError("Sipariş Firebase'e kaydolmadı. Hata: "+(err.message||"Firebase bağlantısını ve rules ayarlarını kontrol et."));
-  }finally{
-    completeBtn.disabled=false;
-    completeBtn.textContent="Siparişi Oluştur";
-  }
+    const orderRef=await addDoc(collection(db,"orders"),order);
+    await addDoc(collection(db,"notifications"),{type:"order",title:"Yeni sipariş alındı",message:code+" kodlu yeni sipariş geldi",orderId:orderRef.id,orderCode:code,read:false,createdAt:serverTimestamp()}).catch(()=>{});
+    await Promise.all(orderItems.map(i=>updateDoc(doc(db,"products",i.id),{soldCount:increment(i.qty),stock:increment(-i.qty)}).catch(()=>{})));
+    successBox.style.display="block";successBox.textContent="Sipariş oluşturuldu. Ödeme bilgileri hazırlandı.";
+    paymentBox.style.display="block";createdOrderCode.textContent=code;payName.textContent=paymentInfo.name||"-";payIban.textContent=paymentInfo.iban||"-";payBank.textContent=paymentInfo.bank||"-";payNote.textContent=code+" sipariş ödemesi";
+    whatsappBtn.style.display="flex";cancelBtn.style.display="flex";whatsappBtn.onclick=()=>window.open("https://wa.me/"+contactPhone+"?text="+orderMessage(code,total),"_blank");
+    cancelBtn.onclick=()=>window.open("https://wa.me/"+contactPhone+"?text=Merhaba "+code+" kodlu siparişimi iptal etmek istiyorum","_blank");
+  }catch(err){showError("Sipariş Firebase'e kaydedilemedi: "+(err.message||"Bağlantı hatası"));}
 });
+
+async function searchOrders(){
+  const code=String($("trackCode").value||"").trim().toUpperCase();
+  const result=$("trackResult");
+  if(!code){result.innerHTML=`<div class="review-empty">Sipariş kodunu yazmadan sorgulama yapılamaz.</div>`;return}
+  result.innerHTML=`<div class="review-empty">Sipariş durumu kontrol ediliyor...</div>`;
+  try{
+    const q=query(collection(db,"orders"),where("orderCode","==",code));
+    const snap=await getDocs(q);
+    let list=[];snap.forEach(d=>list.push({id:d.id,...d.data()}));
+    if(!list.length){
+      const q2=query(collection(db,"orders"),where("code","==",code));
+      const snap2=await getDocs(q2);
+      snap2.forEach(d=>list.push({id:d.id,...d.data()}));
+    }
+    result.innerHTML=list.length?list.map(trackOrderCard).join(""):`<div class="review-empty">Bu sipariş koduyla kayıt bulunamadı. Kodu kontrol edip tekrar dene.</div>`;
+  }catch(err){result.innerHTML=`<div class="review-empty">Sipariş sorgulanamadı: ${err.message||"Firebase hatası"}</div>`}
+}
+function trackStatusClass(o){const st=o.status||"";const ps=o.paymentStatus||"";if(st==="İade")return"track-status return";if(st==="Gönderildi"||st==="Kargoda")return"track-status sent";if(ps==="Ödendi")return"track-status paid";return"track-status"}
+function trackStatusText(o){if(o.status==="İade")return"İade Sürecinde";if(o.status==="Gönderildi")return"Gönderildi";if(o.status==="Kargoda")return"Kargoda";if(o.paymentStatus==="Ödendi")return"Ödeme Alındı";return"Ödeme Bekleniyor"}
+function trackStage(o){const st=o.status||"";const ps=o.paymentStatus||"";if(st==="İade")return 0;if(st==="Gönderildi")return 4;if(st==="Kargoda")return 3;if(ps==="Ödendi")return 2;return 1}
+function trackMessage(o){const stage=trackStage(o);if((o.status||"")==="İade")return{cls:"return",txt:"Bu sipariş iade sürecine alınmış. Detaylı bilgi için WhatsApp destek hattına sipariş kodunla yazabilirsin."};if(stage===4)return{cls:"sent",txt:"Siparişin gönderildi olarak görünüyor. Kargo teslim süreci taşıyıcı firma üzerinden devam eder."};if(stage===3)return{cls:"sent",txt:"Siparişin kargoya verilmiş. Kargo firması bilgisi aşağıda yer alıyor."};if(stage===2)return{cls:"paid",txt:"Ödemen panelde alındı olarak işaretlenmiş. Siparişin hazırlık ve kargo sürecine geçebilir."};return{cls:"wait",txt:"Siparişin alındı fakat ödeme bekleniyor. Ödeme sonrası dekontu WhatsApp üzerinden göndermelisin."}}
+function timelineHTML(o){const stage=trackStage(o);const labels=["Sipariş Alındı","Ödeme","Hazırlık/Kargo","Gönderildi"];return `<div class="track-timeline">${labels.map((l,i)=>`<div class="track-step ${stage>i+1?'done':stage===i+1?'active':''}">${l}</div>`).join("")}</div>`}
+function trackOrderCard(o){
+  const items=Array.isArray(o.items)?o.items:[];
+  const code=o.orderCode||o.code||o.id;
+  const msg=trackMessage(o);
+  const wpText=encodeURIComponent(`Merhaba ${code} kodlu siparişim hakkında bilgi almak istiyorum`);
+  return `<div class="track-card advanced"><div class="track-head"><div><div class="track-code">${code}</div><div style="color:var(--muted);font-weight:800;margin-top:4px">${o.name||o.customerName||"Müşteri"}</div></div><span class="${trackStatusClass(o)}">${trackStatusText(o)}</span></div>${timelineHTML(o)}<div class="track-alert ${msg.cls}">${msg.txt}</div><div class="track-summary"><div><small>Ödeme Durumu</small><b>${o.paymentStatus||"Ödeme bekleniyor"}</b></div><div><small>Sipariş Durumu</small><b>${o.status||"Alındı"}</b></div><div><small>Kargo Firması</small><b>${o.cargoCompany||o.shippingCompany||"Henüz seçilmedi"}</b></div><div><small>Adres Bölgesi</small><b>${o.city||""} ${o.district||""}</b></div><div><small>Toplam</small><b>₺${money(o.total)}</b></div><div><small>Ürün Adedi</small><b>${o.itemCount||items.reduce((s,i)=>s+Number(i.qty||1),0)}</b></div></div><div class="track-products">${items.map(i=>`<div class="track-product"><img src="${i.imageUrl||""}" alt=""><div><strong>${i.name||"Ürün"}</strong><br><span>${i.qty||1} adet • ${i.code||""}</span></div><b>₺${money(Number(i.price||0)*Number(i.qty||1))}</b></div>`).join("")||"Ürün bilgisi yok"}</div><div class="track-contact"><a class="wa" href="https://wa.me/${contactPhone}?text=${wpText}" target="_blank" rel="noopener">WhatsApp Destek</a><a class="copy-order" href="#" onclick="navigator.clipboard.writeText('${code}');showToast('Sipariş kodu kopyalandı');return false">Kodu Kopyala</a></div></div>`
+}
+$("trackOrderBtn")?.addEventListener("click",searchOrders);
+$("trackCode")?.addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();searchOrders()}});
 document.querySelectorAll(".copy-btn").forEach(btn=>btn.addEventListener("click",()=>{const el=$(btn.dataset.copy);navigator.clipboard.writeText(el.textContent||"");showToast("Kopyalandı")}));
 
-onSnapshot(doc(db,"siteContent","contact"),snap=>{if(!snap.exists())return;const d=snap.data();if(hasValue(d.whatsapp)){contactPhone=phoneClean(d.whatsapp);const link="https://wa.me/"+contactPhone;wpIcon.href=link;wpIcon.style.display="flex";floatWp.href=link;$("whatsappValue").href=link}if(hasValue(d.phone)){$("phoneValue").textContent=d.phone;$("phoneValue").href="tel:+"+phoneClean(d.phone)}if(hasValue(d.address))$("addressValue").textContent=d.address;igIcon.style.display="flex"});
+onSnapshot(doc(db,"siteContent","contact"),snap=>{if(!snap.exists())return;const d=snap.data();if(hasValue(d.whatsapp)){contactPhone=phoneClean(d.whatsapp);const link="https://wa.me/"+contactPhone;if(floatWp)floatWp.href=link;if($("whatsappValue"))$("whatsappValue").href=link}if(hasValue(d.phone)&&$("phoneValue")){$("phoneValue").textContent=d.phone;$("phoneValue").href="tel:+"+phoneClean(d.phone)}if(hasValue(d.address)&&$("addressValue"))$("addressValue").textContent=d.address;});
 onSnapshot(doc(db,"siteContent","seo"),snap=>{if(!snap.exists())return;const d=snap.data();if(hasValue(d.title))document.title=d.title;if(hasValue(d.footer)){const strong=footerText.querySelector("strong");if(strong)strong.textContent=d.footer}});
 onSnapshot(doc(db,"siteContent","payment"),snap=>{if(!snap.exists())return;paymentInfo={...paymentInfo,...snap.data()}});
+
+onSnapshot(query(collection(db,"reviews"),orderBy("createdAt","desc")),snapshot=>{allReviews=[];snapshot.forEach(docSnap=>allReviews.push({id:docSnap.id,...docSnap.data()}));renderProducts();if(selectedProduct)renderModalReviews(selectedProduct.id)},()=>{});
 onSnapshot(query(collection(db,"products"),orderBy("createdAt","desc")),snapshot=>{allProducts=[];snapshot.forEach(docSnap=>allProducts.push({id:docSnap.id,...docSnap.data()}));renderProducts()},error=>{productsGrid.innerHTML=`<div class="empty-products">Ürünler gösterilirken hata oluştu: ${error.message}</div>`});
 saveCart();
 </script>
