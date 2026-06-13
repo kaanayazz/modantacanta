@@ -1694,7 +1694,7 @@
       return {
         mode: 'local',
         serverTimestamp: () => new Date().toISOString(),
-        uploadProductImage: blob => blobToDataUrl(blob).then(url => ({ url, path: '' })),
+        uploadProductImage: blob => makeInlineProductImage(blob),
         add: async (name, data) => {
           const item = { id: uid(name), ...data, createdAt: data.createdAt || new Date().toISOString() };
           state[name].unshift(item);
@@ -1783,9 +1783,17 @@
         uploadProductImage: async (blob, code) => {
           const path = `products/${Date.now()}-${code}-1080x1080.jpg`;
           const imageRef = storageMod.ref(storage, path);
-          await storageMod.uploadBytes(imageRef, blob);
-          const url = await storageMod.getDownloadURL(imageRef);
-          return { url, path };
+          try {
+            await storageMod.uploadBytes(imageRef, blob);
+            const url = await storageMod.getDownloadURL(imageRef);
+            return { url, path, inline: false, imageSize: '1080x1080' };
+          } catch (err) {
+            const message = String(err?.code || err?.message || '').toLowerCase();
+            const blocked = message.includes('unauthorized') || message.includes('permission') || message.includes('storage/unauthorized');
+            if (!blocked) throw err;
+            toast('Firebase Storage izni yok. Görsel küçültülüp ürün kaydına eklendi.', 'warn', 8000);
+            return makeInlineProductImage(blob);
+          }
         },
         add: async (name, data) => fsMod.addDoc(fsMod.collection(db, name), data),
         update: async (name, id, data) => fsMod.updateDoc(fsMod.doc(db, name, id), data),
@@ -1831,6 +1839,53 @@
         reader.onerror = reject;
         reader.readAsDataURL(blob);
       });
+    }
+
+    function imageFromUrl(url) {
+      return new Promise((resolve, reject) => {
+        const img = new Image();
+        img.onload = () => resolve(img);
+        img.onerror = reject;
+        img.src = url;
+      });
+    }
+
+    async function compressImageToDataUrl(blob, size, quality) {
+      const sourceUrl = await blobToDataUrl(blob);
+      const img = await imageFromUrl(sourceUrl);
+      const canvas = document.createElement('canvas');
+      canvas.width = size;
+      canvas.height = size;
+      const ctx = canvas.getContext('2d');
+      ctx.fillStyle = '#fff';
+      ctx.fillRect(0, 0, size, size);
+      const scale = Math.max(size / img.width, size / img.height);
+      const width = img.width * scale;
+      const height = img.height * scale;
+      ctx.drawImage(img, (size - width) / 2, (size - height) / 2, width, height);
+      return canvas.toDataURL('image/jpeg', quality);
+    }
+
+    async function makeInlineProductImage(blob) {
+      const attempts = [
+        [900, 0.78],
+        [760, 0.72],
+        [620, 0.68],
+        [520, 0.64]
+      ];
+      let dataUrl = '';
+      let finalSize = 0;
+      for (const [size, quality] of attempts) {
+        dataUrl = await compressImageToDataUrl(blob, size, quality);
+        finalSize = size;
+        if (dataUrl.length < 850000) break;
+      }
+      return {
+        url: dataUrl,
+        path: '',
+        inline: true,
+        imageSize: `${finalSize}x${finalSize} inline`
+      };
     }
 
     function bindNumberInputs() {
@@ -2025,8 +2080,9 @@
           returnCount: 0,
           imageUrl: upload.url,
           imagePath: upload.path,
-          imageSize: '1080x1080',
+          imageSize: upload.imageSize || '1080x1080',
           imageCropped: true,
+          imageInline: !!upload.inline,
           createdAt: api.serverTimestamp()
         });
         $('productForm').reset();
@@ -2037,7 +2093,7 @@
         croppedProductBlob = null;
         cropImageObj = null;
         resetCode();
-        showStatus(status, 'ok', 'Ürün başarıyla kaydedildi.');
+        showStatus(status, 'ok', upload.inline ? 'Ürün kaydedildi. Firebase Storage izni olmadığı için görsel küçültülmüş olarak ürün kaydına eklendi.' : 'Ürün başarıyla kaydedildi.');
       } catch (err) {
         console.error(err);
         showStatus(status, 'err', err.message || 'Ürün kaydedilemedi.');
