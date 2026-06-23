@@ -18,8 +18,9 @@ function esc(value = "") {
 function normalizeAvailability(stock, status, target) {
   const s = String(status || "").toLowerCase();
   const inStock = Number(stock || 0) > 0 && !s.includes("yok") && !s.includes("tükendi");
-  if (target === "facebook") return inStock ? "in stock" : "out of stock";
-  return inStock ? "in_stock" : "out_of_stock";
+  return target === "facebook"
+    ? inStock ? "in stock" : "out of stock"
+    : inStock ? "in_stock" : "out_of_stock";
 }
 
 function productCategory(category = "") {
@@ -31,10 +32,11 @@ function productCategory(category = "") {
 
 function itemXml(p, target) {
   const id = p.code || p.id;
-  const title = p.name || "Modanta Ürün";
+  const title = p.name || p.title || "Modanta Ürün";
   const desc = p.description || `${BRAND} koleksiyonunda yer alan ürün.`;
   const price = Number(p.price || 0).toFixed(2);
   const category = p.category || "Çanta";
+  const image = p.imageUrl || p.image || p.photoUrl || "";
   const availability = normalizeAvailability(p.stock, p.stockStatus, target);
 
   return `    <item>
@@ -42,7 +44,7 @@ function itemXml(p, target) {
       <g:title>${esc(title)}</g:title>
       <g:description>${esc(desc)}</g:description>
       <g:link>${SITE_URL}/</g:link>
-      <g:image_link>${esc(p.imageUrl || "")}</g:image_link>
+      <g:image_link>${esc(image)}</g:image_link>
       <g:availability>${availability}</g:availability>
       <g:price>${price} TRY</g:price>
       <g:brand>${esc(BRAND)}</g:brand>
@@ -76,22 +78,31 @@ ${products.map(p => itemXml(p, target)).join("\n\n")}
 }
 
 async function main() {
-  const serviceAccountPath = process.env.GOOGLE_APPLICATION_CREDENTIALS;
+  const serviceAccountJson = process.env.FIREBASE_SERVICE_ACCOUNT;
 
-  if (!serviceAccountPath) {
-    throw new Error("GOOGLE_APPLICATION_CREDENTIALS ortam değişkeni eksik.");
+  if (!serviceAccountJson) {
+    throw new Error("FIREBASE_SERVICE_ACCOUNT GitHub secret eksik.");
   }
 
   admin.initializeApp({
-    credential: admin.credential.cert(JSON.parse(fs.readFileSync(serviceAccountPath, "utf8")))
+    credential: admin.credential.cert(JSON.parse(serviceAccountJson))
   });
 
   const snap = await admin.firestore()
     .collection("products")
-    .where("stockStatus", "!=", "Tükendi")
     .get();
 
-  const products = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+  const products = snap.docs
+    .map(doc => ({
+      id: doc.id,
+      ...doc.data()
+    }))
+    .filter(p => {
+      const status = String(p.stockStatus || "").toLowerCase();
+      const price = Number(p.price || 0);
+      const image = p.imageUrl || p.image || p.photoUrl || "";
+      return !status.includes("tükendi") && price > 0 && image;
+    });
 
   fs.writeFileSync(path.join(OUT_DIR, "merchant.xml"), feedXml(products, "merchant"), "utf8");
   fs.writeFileSync(path.join(OUT_DIR, "facebook.xml"), feedXml(products, "facebook"), "utf8");
